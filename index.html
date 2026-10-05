@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dita Veloci</title>
+<meta name="description" content="Allenamento alla tastiera per la Scuola Primaria: 10 missioni dalla riga di base ai piccoli racconti.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDF0F5; --surface:#FFFFFF; --ink:#1D2433; --muted:#5E6678; --line:#DCE1EA;
+    --accent:#5146C9; --accent-soft:#E7E5FA; --accent-ink:#3A31A0;
+    --ok:#1F8A5B; --ok-soft:#DDF3E8;
+    --warn:#C27606; --warn-soft:#FDEDCF;
+    --star:#F1AE1B; --star-off:#D7DCE5;
+    /* colori dita */
+    --f-mignolo:#C9BBF6; --f-anulare:#A3D5F7; --f-medio:#A9E5C3; --f-indice:#FFD49A; --f-pollice:#B5BFD0;
+    /* tastiera Mac */
+    --kb-base1:#E4E7EB; --kb-base2:#CDD2D9; --key1:#FFFFFF; --key2:#F2F3F6; --key-ink:#2B2F38;
+    --radius:16px;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:'Lexend',-apple-system,system-ui,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
+  button{font-family:inherit;cursor:pointer}
+  .hidden{display:none !important}
+  svg{display:block}
+
+  /* ---------- barra superiore ---------- */
+  .topbar{display:flex;align-items:center;gap:16px;padding:14px 28px;background:var(--surface);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.25rem;letter-spacing:-.01em}
+  .brand small{display:block;font-weight:400;font-size:.78rem;color:var(--muted);letter-spacing:0}
+  .topbar .spacer{flex:1}
+  .toggle{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px 7px 10px;font-size:.85rem;color:var(--muted)}
+  .toggle .dot{width:30px;height:18px;border-radius:9px;background:var(--line);position:relative;transition:.2s}
+  .toggle .dot::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.2);transition:.2s}
+  .toggle[aria-pressed="true"]{color:var(--ink)}
+  .toggle[aria-pressed="true"] .dot{background:var(--accent)}
+  .toggle[aria-pressed="true"] .dot::after{left:14px}
+
+  main{max-width:1180px;margin:0 auto;padding:28px 24px 40px}
+
+  /* ---------- home ---------- */
+  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center;margin-bottom:28px}
+  .hero h1{font-size:2.6rem;line-height:1.05;margin:0 0 10px;letter-spacing:-.02em}
+  .hero p{margin:0;color:var(--muted);font-size:1.05rem;line-height:1.5}
+  .namecard{background:var(--surface);border-radius:var(--radius);padding:22px;border:1px solid var(--line)}
+  .namecard label{font-size:.85rem;color:var(--muted);display:block;margin-bottom:8px}
+  .namecard input{width:100%;font:inherit;font-size:1.3rem;padding:12px 14px;border:2px solid var(--line);border-radius:12px;outline:none;color:var(--ink)}
+  .namecard input:focus{border-color:var(--accent)}
+  .namecard .hint{margin-top:10px;font-size:.85rem;color:var(--muted)}
+  .section-title{display:flex;align-items:baseline;justify-content:space-between;margin:6px 0 14px}
+  .section-title h2{margin:0;font-size:1.2rem}
+  .section-title span{color:var(--muted);font-size:.9rem}
+  .missions{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
+  .mcard{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;display:flex;flex-direction:column;gap:6px;min-height:150px;transition:transform .15s, box-shadow .15s, border-color .15s;color:var(--ink)}
+  .mcard:hover:not([disabled]){transform:translateY(-3px);box-shadow:0 10px 24px rgba(29,36,51,.10);border-color:var(--accent)}
+  .mcard .num{width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;font-weight:700}
+  .mcard.done .num{background:var(--ok-soft);color:var(--ok)}
+  .mcard h3{margin:4px 0 0;font-size:1.02rem}
+  .mcard p{margin:0;font-size:.8rem;color:var(--muted);line-height:1.35;flex:1}
+  .mcard .stars{display:flex;gap:3px}
+  .mcard[disabled]{cursor:not-allowed;background:#F5F7FA}
+  .mcard[disabled] > *:not(.lock){opacity:.45}
+  .mcard .lock{position:absolute;top:14px;right:14px;color:var(--muted)}
+  .teacher{margin-top:18px;display:flex;justify-content:flex-end}
+  /* Case */
+  .case-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+  .casa-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-size:.95rem;color:var(--ink);text-align:left;transition:border-color .15s, background .15s}
+  .casa-btn:hover{border-color:var(--c)}
+  .casa-btn.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff);font-weight:600}
+  .casa-btn .pallino{width:14px;height:14px;border-radius:50%;background:var(--c);flex:none}
+  .casa-avviso{min-height:18px;margin-top:8px;font-size:.85rem;color:var(--warn)}
+  .arena{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:28px}
+  .box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
+  .box h2{margin:0 0 12px;font-size:1.05rem;display:flex;justify-content:space-between;align-items:baseline}
+  .box h2 small{font-weight:400;font-size:.78rem;color:var(--muted)}
+  .rigaCasa{margin-bottom:12px}
+  .rigaCasa:last-child{margin-bottom:0}
+  .rigaCasa .top{display:flex;justify-content:space-between;align-items:center;font-size:.95rem;margin-bottom:5px}
+  .rigaCasa .nm{display:flex;align-items:center;gap:8px}
+  .rigaCasa .nm i{width:12px;height:12px;border-radius:50%}
+  .rigaCasa .nm em{font-style:normal;font-size:.72rem;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+  .rigaCasa b{font-variant-numeric:tabular-nums}
+  .rigaCasa .barra{height:10px;border-radius:5px;background:var(--bg);overflow:hidden}
+  .rigaCasa .barra i{display:block;height:100%;border-radius:5px;transition:width .5s}
+  #listaClass{list-style:none;margin:0;padding:0;font-size:.9rem}
+  #listaClass li{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--line)}
+  #listaClass li:last-child{border-bottom:0}
+  #listaClass .pl{display:flex;align-items:center;gap:8px;min-width:0}
+  #listaClass .pl i{width:10px;height:10px;border-radius:50%;flex:none}
+  #listaClass .pl span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #listaClass li.io{font-weight:600;color:var(--accent-ink)}
+  .nota{font-size:.75rem;color:var(--muted);margin-top:10px}
+  .casa-chip{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:7px 14px;font-size:.88rem;font-weight:600;color:#fff;background:var(--c)}
+  .casa-chip b{font-variant-numeric:tabular-nums;font-weight:700;opacity:.95}
+  .gain{display:inline-flex;align-items:center;gap:10px;margin:0 0 18px;padding:10px 16px;border-radius:12px;color:#fff;background:var(--c);font-weight:600}
+
+  /* ---------- gioco ---------- */
+  .gamehead{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .btn{border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:9px 14px;font-size:.9rem;display:inline-flex;align-items:center;gap:8px}
+  .btn:hover{border-color:var(--accent)}
+  .btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn.primary:hover{background:var(--accent-ink)}
+  .btn.big{font-size:1.05rem;padding:13px 22px;border-radius:14px}
+  .gtitle{flex:1}
+  .gtitle .k{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+  .gtitle .t{font-weight:700;font-size:1.15rem}
+  .stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:8px 14px;min-width:96px;text-align:center}
+  .stat .v{font-weight:700;font-size:1.25rem;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+
+  .panel{background:var(--surface);border-radius:20px;border:1px solid var(--line);padding:24px 34px 22px;margin-bottom:18px}
+  .progress{display:flex;gap:6px;margin-bottom:18px}
+  .progress i{flex:1;height:6px;border-radius:3px;background:var(--line);transition:background .3s}
+  .progress i.done{background:var(--ok)}
+  .progress i.now{background:var(--accent)}
+  #text{font-size:2.35rem;line-height:1.55;font-weight:500;min-height:3.2em;letter-spacing:.01em;color:#9AA2B2}
+  #text .w{white-space:nowrap;display:inline-block}
+  #text .ch{position:relative;display:inline-block;min-width:.32em;border-radius:6px;transition:color .1s}
+  #text .ch.done{color:var(--ok)}
+  #text .ch.done.had-err{color:var(--warn)}
+  #text .ch.now{color:var(--ink);background:var(--accent-soft)}
+  #text .ch.now::after{content:'';position:absolute;left:2px;right:2px;bottom:2px;height:4px;border-radius:2px;background:var(--accent);animation:blink 1s steps(2) infinite}
+  #text .ch.now.err{background:var(--warn-soft);animation:shake .25s}
+  #text .ch.now.err::after{background:var(--warn)}
+  @keyframes blink{50%{opacity:.25}}
+  @keyframes shake{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+  .below{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:10px;min-height:28px}
+  #next{color:#AAB1BF;font-size:1rem;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+  #fingerHint{display:flex;align-items:center;gap:8px;font-size:1rem;color:var(--muted);white-space:nowrap}
+  #fingerHint b{color:var(--ink)}
+  #fingerHint .sw{width:14px;height:14px;border-radius:4px}
+  #capsWarn{background:var(--warn-soft);color:#7A4A03;border-radius:10px;padding:8px 12px;font-size:.9rem;margin-top:10px}
+
+  /* ---------- tastiera Mac (layout italiano) ---------- */
+  .deck{display:flex;flex-direction:column;align-items:center;gap:6px}
+  .keyboard{width:100%;max-width:920px;background:linear-gradient(180deg,var(--kb-base1),var(--kb-base2));border-radius:20px;padding:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 1px 0 rgba(0,0,0,.08),0 18px 40px -18px rgba(29,36,51,.35)}
+  .keys{display:grid;grid-template-columns:repeat(58,1fr);grid-auto-rows:54px;gap:6px}
+  .key{position:relative;background:linear-gradient(180deg,var(--key1),var(--key2));border-radius:7px;color:var(--key-ink);box-shadow:0 1px 0 rgba(0,0,0,.22),0 2px 3px rgba(0,0,0,.08);display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:500;user-select:none;transition:transform .06s, box-shadow .06s, background .15s, color .15s;overflow:hidden}
+  .key::after{content:'';position:absolute;left:8px;right:8px;bottom:4px;height:3px;border-radius:2px;background:var(--f,transparent);opacity:.95}
+  body.tint .key[data-f]{background:linear-gradient(180deg,#fff 0%,var(--f) 260%)}
+  .key.dual{flex-direction:column;justify-content:center;gap:0;line-height:1.05}
+  .key.dual .s{font-size:.72rem;color:#6B7180}
+  .key.mod{font-size:.68rem;color:#4C5260;font-weight:400;align-items:flex-end;justify-content:flex-start;padding:0 8px 9px}
+  .key.mod.right{justify-content:flex-end}
+  .key.mod .sym{position:absolute;top:6px;right:8px;font-size:.85rem}
+  .key.mod.right .sym{left:8px;right:auto}
+  .key.bump::before{content:'';position:absolute;bottom:12px;left:50%;width:12px;height:2px;margin-left:-6px;border-radius:1px;background:#9AA0AC}
+  .key.half{height:50%;align-self:end;font-size:.6rem}
+  .arrows-ud{display:flex;flex-direction:column;gap:2px}
+  .arrows-ud .key{flex:1;font-size:.6rem}
+  .key.ret{grid-row:2 / span 2;grid-column:55 / span 4}
+  .key.down{transform:translateY(1px);box-shadow:0 0 0 rgba(0,0,0,.2),inset 0 1px 2px rgba(0,0,0,.12)}
+  .keyboard .keys .key.target{background:var(--accent);color:#fff;box-shadow:0 0 0 3px rgba(81,70,201,.28),0 1px 0 rgba(0,0,0,.25)}
+  .key.target .s,.key.target.mod{color:#fff}
+  .key.target::before{background:#fff}
+  .keyboard .keys .key.target-mod{background:#BEB8F2;color:var(--accent-ink)}
+  .keyboard .keys .key.miss{background:var(--warn-soft);color:#7A4A03}
+
+  /* ---------- mani guida ---------- */
+  .hands{width:100%;max-width:640px;height:auto}
+  .hands .finger{transition:fill .15s, transform .15s;stroke:#fff;stroke-width:3}
+  .hands .palm{fill:#E3E7EE;stroke:#fff;stroke-width:3}
+  .hands .finger.on{fill:var(--accent) !important;stroke:#fff}
+  .hands text{font-family:'Lexend',sans-serif;font-size:13px;fill:var(--muted)}
+
+  /* ---------- risultato ---------- */
+  .result{max-width:760px;margin:20px auto 0;background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:36px 40px;text-align:center}
+  .result h2{margin:6px 0 4px;font-size:2rem}
+  .result .sub{color:var(--muted);margin:0 0 22px}
+  .bigstars{display:flex;justify-content:center;gap:12px;margin:8px 0 6px}
+  .bigstars svg{width:64px;height:64px}
+  .bigstars .on{animation:pop .4s both}
+  .bigstars .on:nth-child(2){animation-delay:.15s}
+  .bigstars .on:nth-child(3){animation-delay:.3s}
+  @keyframes pop{0%{transform:scale(.2);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  .rstats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:18px 0 22px}
+  .rstats div{background:var(--bg);border-radius:14px;padding:14px}
+  .rstats .v{font-size:1.7rem;font-weight:700;font-variant-numeric:tabular-nums}
+  .rstats .l{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .review{text-align:left;background:var(--bg);border-radius:14px;padding:16px 18px;margin-bottom:24px}
+  .review h4{margin:0 0 10px;font-size:.95rem}
+  .review .list{display:flex;flex-wrap:wrap;gap:10px}
+  .review .item{display:flex;align-items:center;gap:8px;background:var(--surface);border-radius:10px;padding:6px 10px 6px 6px;font-size:.85rem;color:var(--muted)}
+  .review .cap{min-width:34px;height:34px;padding:0 6px;border-radius:7px;background:linear-gradient(#fff,#F2F3F6);box-shadow:0 1px 0 rgba(0,0,0,.2);display:grid;place-items:center;font-weight:600;color:var(--ink);border-bottom:3px solid var(--f,transparent)}
+  .actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+  .note{margin:0 0 18px;padding:10px 14px;border-radius:12px;background:var(--accent-soft);color:var(--accent-ink);font-size:.95rem}
+
+  @media (max-width:1000px){
+    .missions{grid-template-columns:repeat(3,1fr)}
+    .hero,.arena{grid-template-columns:1fr}
+    .keys{grid-auto-rows:40px;gap:4px}
+    .key{font-size:.8rem}
+    .key.mod{font-size:.55rem;padding:0 4px 6px}
+    #text{font-size:1.7rem}
+  }
+  @media (max-width:640px){
+    main{padding:16px}
+    .topbar{padding:12px 16px;flex-wrap:wrap}
+    .missions{grid-template-columns:1fr 1fr}
+    .hero h1{font-size:2rem}
+    .gamehead{flex-wrap:wrap}
+    .panel{padding:18px}
+    .keyboard{padding:8px;border-radius:12px}
+    .keys{grid-auto-rows:28px;gap:3px}
+    .key{font-size:.6rem;border-radius:4px}
+    .key.mod .sym,.key.mod span{display:none}
+    .key.dual .s{display:none}
+    .rstats{grid-template-columns:1fr}
+    .result{padding:24px 18px}
+  }
+</style>
+</head>
+<body class="">
+
+<header class="topbar">
+  <div class="brand">
+    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+      <rect x="2" y="4" width="36" height="32" rx="9" fill="#5146C9"/>
+      <rect x="2" y="4" width="36" height="28" rx="9" fill="#6B61DB"/>
+      <path d="M13 13h6.5a6 6 0 0 1 0 12H13z" fill="none" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+      <path d="M23 13l4 12 4-12" fill="none" stroke="#FFD49A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    <div>Dita Veloci<small>allenamento alla tastiera</small></div>
+  </div>
+  <div class="spacer"></div>
+  <button class="toggle" id="tVoice" aria-pressed="true"><span class="dot"></span>Voce</button>
+  <button class="toggle" id="tSound" aria-pressed="true"><span class="dot"></span>Suoni</button>
+  <button class="toggle" id="tTint" aria-pressed="false"><span class="dot"></span>Colori dita</button>
+</header>
+
+<main>
+  <!-- ===== HOME ===== -->
+  <section id="home">
+    <div class="hero">
+      <div>
+        <h1>Dieci dita,<br>dieci missioni.</h1>
+        <p>Ogni frase scritta bene porta punti alla tua <b>Casa</b>: Aquila, Cero, Quercia e Tasso si sfidano a colpi di tastiera. Indici su <b>F</b> e <b>J</b>, occhi sullo schermo: la tastiera e le dita colorate ti dicono sempre quale tasto premere.</p>
+      </div>
+      <div class="namecard">
+        <label for="name">Come ti chiami?</label>
+        <input id="name" maxlength="24" autocomplete="off" placeholder="Scrivi il tuo nome">
+        <div class="case-pick" id="scelteCasa"></div>
+        <div class="casa-avviso" id="casaAvviso"></div>
+        <div class="hint">I punti delle missioni completate si sommano alla tua Casa. Stelle e missioni sbloccate restano su questo computer.</div>
+      </div>
+    </div>
+    <div class="arena">
+      <div class="box"><h2>Sfida tra Case <small id="notaCase"></small></h2><div id="listaCase"></div></div>
+      <div class="box"><h2>Classifica di oggi <small>giocatori</small></h2><ol id="listaClass"></ol><div class="nota" id="notaClass"></div></div>
+    </div>
+    <div class="section-title"><h2>Le missioni</h2><span id="totStars"></span></div>
+    <div class="missions" id="missions"></div>
+    <div class="teacher"><button class="toggle" id="tUnlock" aria-pressed="false"><span class="dot"></span>Sblocca tutte (insegnante)</button></div>
+  </section>
+
+  <!-- ===== GIOCO ===== -->
+  <section id="game" class="hidden">
+    <div class="gamehead">
+      <button class="btn" id="exitBtn" title="Torna alle missioni (Esc)">
+        <svg width="16" height="16" viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Missioni
+      </button>
+      <div class="gtitle"><div class="k" id="gNum"></div><div class="t" id="gTitle"></div></div>
+      <span class="casa-chip" id="gCasa"></span>
+      <div class="stat"><div class="v" id="sPts">0</div><div class="l">Punti</div></div>
+      <div class="stat"><div class="v" id="sAcc">100%</div><div class="l">Precisione</div></div>
+      <div class="stat"><div class="v" id="sPpm">0</div><div class="l">Parole/min</div></div>
+      <div class="stat"><div class="v" id="sItem">1/8</div><div class="l">Frase</div></div>
+    </div>
+    <div class="panel">
+      <div class="progress" id="progress"></div>
+      <div id="text" aria-live="polite"></div>
+      <div class="below">
+        <div id="fingerHint"></div>
+        <div id="next"></div>
+      </div>
+      <div id="capsWarn" class="hidden">Il tasto <b>caps lock</b> è attivo: le lettere escono tutte maiuscole. Premilo una volta per spegnerlo.</div>
+    </div>
+    <div class="deck">
+      <div class="keyboard"><div class="keys" id="keys"></div></div>
+      <svg class="hands" viewBox="0 0 640 210" aria-hidden="true" id="hands"></svg>
+    </div>
+  </section>
+
+  <!-- ===== RISULTATO ===== -->
+  <section id="result" class="hidden">
+    <div class="result">
+      <div class="bigstars" id="rStars"></div>
+      <h2 id="rTitle"></h2>
+      <p class="sub" id="rSub"></p>
+      <div class="gain" id="rGain"></div>
+      <div class="rstats">
+        <div><div class="v" id="rAcc"></div><div class="l">Precisione</div></div>
+        <div><div class="v" id="rPpm"></div><div class="l">Parole al minuto</div></div>
+        <div><div class="v" id="rTime"></div><div class="l">Tempo</div></div>
+      </div>
+      <div class="review" id="rReview"></div>
+      <div class="actions">
+        <button class="btn big" id="rMap">Missioni</button>
+        <button class="btn big" id="rRetry">Riprova</button>
+        <button class="btn big primary" id="rNext">Prossima missione</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+/* =========================================================
+   CONTENUTI — 10 missioni per la Primaria (3ª-5ª)
+   Solo frasi di senso compiuto, in difficoltà crescente:
+   minuscole → maiuscole → accenti → punteggiatura → numeri → testi.
+   ========================================================= */
+const MISSIONS = [
+  { title:'Prime frasi', desc:'Frasi brevi, tutte minuscole. Indici su F e J.', items:[
+    'il sole splende','la mamma legge un libro','il cane corre nel prato','oggi piove forte',
+    'la nonna fa i biscotti','io gioco con mio fratello','il gatto beve il latte','la maestra apre la porta' ]},
+  { title:'Gli animali', desc:'Frasi un po\' più lunghe, sempre minuscole.', items:[
+    'la giraffa ha il collo lungo','il delfino nuota veloce nel mare','le formiche portano le briciole nella tana','il riccio dorme sotto le foglie',
+    'il pappagallo ripete le parole','il gufo vede bene di notte','la lumaca porta la casa sulla schiena','il pinguino scivola sul ghiaccio' ]},
+  { title:'A scuola', desc:'La nostra giornata in classe.', items:[
+    'apro lo zaino e prendo il quaderno','la campanella suona alle otto','scrivo la data alla lavagna','in palestra giochiamo a pallavolo',
+    'a merenda mangio una mela','il mio astuccio ha tante matite','leggiamo una storia tutti insieme','in giardino facciamo la ricreazione' ]},
+  { title:'Le maiuscole', desc:'Nomi propri e inizio frase: shift con la mano opposta.', items:[
+    'Marco gioca a calcio con Luca','Sara e Giulia leggono un fumetto','Il fiume Po attraversa la pianura','La Lombardia ha molti laghi',
+    'Napoli si trova in Campania','Il cane di Paolo si chiama Fido','Domenica andiamo a trovare la zia Anna','Sul Monte Rosa la neve resta anche in estate' ]},
+  { title:'Gli accenti', desc:'À, È, Ì, Ò, Ù sono a destra. É si fa con shift.', items:[
+    'Papà guida piano sotto la pioggia','La città è piena di luci','Lunedì andiamo in piscina','Il bambù cresce molto in fretta',
+    'Oggi però il cielo è grigio','Domani andrò al mare con i nonni','Il caffè della nonna è caldo','Mi chiedo perché il mare è salato' ]},
+  { title:'Punteggiatura', desc:'Virgole, punti, apostrofi, domande ed esclamazioni.', items:[
+    'Ciao, come stai?','Che bello, oggi è sabato!',"L'albero del giardino è molto alto.","Dov'è finito il mio zaino?",
+    'Nello zaino ho penna, matita e gomma.',"Sì, vengo anch'io alla festa!",'Ho tre gatti: Neve, Ombra e Pepe.','Attenzione: il gelato si scioglie!' ]},
+  { title:'Numeri e date', desc:'La riga più in alto, senza guardare le mani.', items:[
+    'Ho 9 anni e vado in quarta.','La nostra classe ha 22 alunni.','Un anno ha 12 mesi e 365 giorni.','Una settimana ha 7 giorni.',
+    'Il treno parte alle 8 e 15.','Nel 1492 Colombo arrivò in America.','Ho letto 3 libri e 15 fumetti.','Il mio compleanno è il 14 maggio.' ]},
+  { title:'Natura e stagioni', desc:'Frasi complete con tutto quello che hai imparato.', items:[
+    'In primavera i prati si riempiono di fiori.',"D'estate le giornate sono lunghe e calde.",'In autunno le foglie diventano gialle e arancioni.',"D'inverno il lago si copre di ghiaccio.",
+    "Dopo il temporale è comparso l'arcobaleno.",'Le rondini tornano quando arriva il caldo.',"Il vento del nord porta l'aria fredda.",'Di notte le stelle brillano sopra la collina.' ]},
+  { title:'Proverbi', desc:'Antichi detti da scrivere senza errori.', items:[
+    'Chi va piano va sano e va lontano.','Chi trova un amico trova un tesoro.','Rosso di sera, bel tempo si spera.',"L'unione fa la forza.",
+    'Meglio tardi che mai.','Chi semina vento raccoglie tempesta.','Non tutte le ciambelle riescono col buco.',"Sbagliando s'impara." ]},
+  { title:'Piccoli racconti', desc:'Frasi lunghe: ritmo regolare, senza fretta.', items:[
+    'Ogni mattina il fornaio sveglia il paese con il profumo del pane caldo.',
+    'Nel bosco una volpe curiosa seguiva le orme di un piccolo coniglio.',
+    "Il capitano guardò il mare e disse: oggi si parte per un'isola lontana.",
+    'Quando nevica, i bambini costruiscono un pupazzo con il naso di carota.',
+    'La biblioteca della scuola custodisce storie di draghi, pirati e astronauti.',
+    'Sulla cima della montagna il vento soffiava forte tra le rocce.',
+    'Il drago del castello aveva paura del buio e dormiva con una lanterna accesa.',
+    'Alla fine della gara tutta la squadra festeggiò insieme sotto la pioggia.' ]}
+];
+
+/* =========================================================
+   TASTIERA — layout italiano (Mac "Italiano – Pro" / ISO)
+   Griglia di 58 colonne: 1 tasto standard = 4 colonne.
+   ========================================================= */
+const k = (b, s, span=4, extra={}) => ({ b, s, span, ...extra });
+const m = (id, label, span, extra={}) => ({ mod:id, label, span, ...extra });
+const ROWS = [
+  [k('\\','|'),k('1','!'),k('2','"'),k('3','£'),k('4','$'),k('5','%'),k('6','&'),k('7','/'),k('8','('),k('9',')'),k('0','='),k("'",'?'),k('ì','^'),m('delete','delete',6,{right:1,sym:'⌫'})],
+  [m('tab','tab',6,{sym:'⇥'}),k('q'),k('w'),k('e'),k('r'),k('t'),k('y'),k('u'),k('i'),k('o'),k('p'),k('è','é'),k('+','*')],
+  [m('caps','caps lock',6,{sym:'⇪'}),k('a'),k('s'),k('d'),k('f',null,4,{bump:1}),k('g'),k('h'),k('j',null,4,{bump:1}),k('k'),k('l'),k('ò','ç'),k('à','°'),k('ù','§')],
+  [m('shiftL','shift',5,{sym:'⇧'}),k('<','>'),k('z'),k('x'),k('c'),k('v'),k('b'),k('n'),k('m'),k(',',';'),k('.',':'),k('-','_'),m('shiftR','shift',9,{right:1,sym:'⇧'})],
+  [m('fn','fn',4),m('ctrl','control',4,{sym:'⌃'}),m('optL','option',4,{sym:'⌥'}),m('cmdL','command',5,{sym:'⌘'}),m('space','',20),m('cmdR','command',5,{right:1,sym:'⌘'}),m('optR','option',4,{right:1,sym:'⌥'}),m('left','◀',4,{half:1}),'UD',m('right','▶',4,{half:1})]
+];
+
+const FINGERS = {
+  'mignolo-s':"\\1qa<z", 'anulare-s':'2wsx', 'medio-s':'3edc', 'indice-s':'45rtfgvb',
+  'indice-d':'67yuhjnm', 'medio-d':'8ik,', 'anulare-d':'9ol.', 'mignolo-d':"0'ìpè+òàù-"
+};
+const MOD_FINGER = { tab:'mignolo-s', caps:'mignolo-s', shiftL:'mignolo-s', delete:'mignolo-d', ret:'mignolo-d', shiftR:'mignolo-d', space:'pollice' };
+const FINGER_NAME = {
+  'mignolo-s':'mignolo sinistro','anulare-s':'anulare sinistro','medio-s':'medio sinistro','indice-s':'indice sinistro',
+  'indice-d':'indice destro','medio-d':'medio destro','anulare-d':'anulare destro','mignolo-d':'mignolo destro','pollice':'pollice'
+};
+const fingerOf = {};
+for (const [f, chars] of Object.entries(FINGERS)) for (const c of chars) fingerOf[c] = f;
+const fColor = f => f ? `var(--f-${f.split('-')[0]})` : 'transparent';
+
+const keyEl = {};      // id tasto -> elemento
+const charMap = {};    // carattere -> { id, shift, finger }
+
+function buildKeyboard(){
+  const wrap = document.getElementById('keys');
+  ROWS.forEach((row, r) => {
+    row.forEach(def => {
+      if (def === 'UD') {   // freccia su/giù impilate (stile Mac)
+        const ud = document.createElement('div');
+        ud.className = 'arrows-ud'; ud.style.gridRow = r+1; ud.style.gridColumn = 'span 4';
+        ud.innerHTML = '<div class="key">▲</div><div class="key">▼</div>';
+        wrap.appendChild(ud); return;
+      }
+      const el = document.createElement('div');
+      el.className = 'key'; el.style.gridRow = r+1; el.style.gridColumn = `span ${def.span}`;
+      let id, finger;
+      if (def.mod) {
+        id = def.mod; finger = MOD_FINGER[id];
+        if (def.half) { el.classList.add('half'); el.textContent = def.label; }
+        else if (id !== 'space') {
+          el.classList.add('mod'); if (def.right) el.classList.add('right');
+          el.innerHTML = (def.sym ? `<i class="sym">${def.sym}</i>` : '') + `<span>${def.label}</span>`;
+        }
+      } else {
+        id = 'k_' + def.b; finger = fingerOf[def.b];
+        const isLetter = /^[a-z]$/.test(def.b);
+        if (isLetter) el.textContent = def.b.toUpperCase();
+        else if (def.s) { el.classList.add('dual'); el.innerHTML = `<span class="s">${def.s}</span><span>${def.b}</span>`; }
+        else el.textContent = def.b;
+        if (def.bump) el.classList.add('bump');
+        charMap[def.b] = { id, shift:false, finger };
+        if (isLetter) charMap[def.b.toUpperCase()] = { id, shift:true, finger };
+        else if (def.s) charMap[def.s] = { id, shift:true, finger };
+      }
+      if (finger) { el.dataset.f = finger; el.style.setProperty('--f', fColor(finger)); }
+      keyEl[id] = el; wrap.appendChild(el);
+    });
+  });
+  // return ISO: occupa due righe (colonne 55-58, righe 2-3)
+  const ret = document.createElement('div');
+  ret.className = 'key mod right ret'; ret.dataset.f = 'mignolo-d'; ret.style.setProperty('--f', fColor('mignolo-d'));
+  ret.innerHTML = '<i class="sym">↩</i><span>return</span>';
+  keyEl.ret = ret; wrap.appendChild(ret);
+  charMap[' '] = { id:'space', shift:false, finger:'pollice' };
+}
+
+/* ---------- mani guida (SVG) ---------- */
+function buildHands(){
+  // Mano sinistra disegnata in un box 300x190; la destra è la stessa, specchiata.
+  const hand = side => `
+    <rect class="finger" data-f="mignolo-${side}" x="52"  y="62" width="32" height="74" rx="16"/>
+    <rect class="finger" data-f="anulare-${side}" x="90"  y="30" width="32" height="104" rx="16"/>
+    <rect class="finger" data-f="medio-${side}"   x="128" y="16" width="32" height="118" rx="16"/>
+    <rect class="finger" data-f="indice-${side}"  x="166" y="32" width="32" height="102" rx="16"/>
+    <rect class="finger" data-f="pollice" data-side="${side}" x="186" y="84" width="34" height="88" rx="17" transform="rotate(58 203 160)"/>
+    <rect class="palm" x="48" y="104" width="172" height="90" rx="40"/>`;
+  document.getElementById('hands').innerHTML = `
+    <g transform="translate(10,0)">${hand('s')}</g>
+    <g transform="translate(630,0) scale(-1,1)">${hand('d')}</g>
+    <text x="144" y="208" text-anchor="middle">mano sinistra</text>
+    <text x="496" y="208" text-anchor="middle">mano destra</text>`;
+  document.querySelectorAll('#hands .finger').forEach(f => f.style.fill = fColor(f.dataset.f));
+}
+
+/* =========================================================
+   STATO, SALVATAGGIO, AUDIO
+   ========================================================= */
+const STORE_KEY = 'ditaveloci.v1';
+let store = { lastName:'', unlock:false, voice:true, sound:true, tint:false, profiles:{} };
+try { Object.assign(store, JSON.parse(localStorage.getItem(STORE_KEY)) || {}); } catch(e) {}
+const save = () => { try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch(e) {} };
+const playerName = () => (document.getElementById('name').value.trim() || 'Giocatore');
+const profile = () => (store.profiles[playerName().toLowerCase()] ||= { stars:{}, best:{} });
+
+let actx = null;
+function beep(freq, dur=.05, type='sine', vol=.05){
+  if (!store.sound) return;
+  try {
+    actx ||= new (window.AudioContext || window.webkitAudioContext)();
+    const o = actx.createOscillator(), g = actx.createGain();
+    o.type = type; o.frequency.value = freq;
+    g.gain.setValueAtTime(vol, actx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.0001, actx.currentTime + dur);
+    o.connect(g).connect(actx.destination); o.start(); o.stop(actx.currentTime + dur);
+  } catch(e) {}
+}
+function speak(text){
+  if (!store.voice || !('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'it-IT'; u.rate = .9;
+  const v = speechSynthesis.getVoices().find(v => v.lang && v.lang.startsWith('it'));
+  if (v) u.voice = v;
+  speechSynthesis.speak(u);
+}
+
+/* =========================================================
+   SFIDA TRA CASE (stesso schema di aceriobasket)
+   - la Casa si sceglie prima di giocare (sessionStorage: Mac di laboratorio condivisi)
+   - a fine missione i punti partono con un pixel GET verso Apps Script
+     (funziona anche con CSP restrittive) e si sommano alla Casa
+   - URL_CLASSIFICA vuoto = classifica solo locale su questo browser
+   Backend: file "classifica.gs" nella stessa cartella (istruzioni dentro).
+   ========================================================= */
+const URL_CLASSIFICA = 'https://script.google.com/macros/s/AKfycbwyF8JgA86X7kOhIeaqQhNQPlMwtkXcZwv-Qmf-6Tau7S0ibK17PYTgh-quZuDnVUI/exec';
+const CASE = [
+  { id:'AquilaBlu',    nome:'Aquila Blu',    col:'#2b5aa8' },
+  { id:'CeroGiallo',   nome:'Cero Giallo',   col:'#e8b62a' },
+  { id:'QuerciaVerde', nome:'Quercia Verde', col:'#2f8a5b' },
+  { id:'TassoRosso',   nome:'Tasso Rosso',   col:'#c0392b' }
+];
+const casaById = id => CASE.find(c => c.id === id);
+let casa = '';
+try { casa = sessionStorage.getItem('ditaveloci_casa') || ''; } catch(e) {}
+let totCase = {}, topGiocatori = [];
+const pulisci = t => String(t).replace(/[<>&"]/g, '');
+
+const LOCAL_KEY = 'ditaveloci_classifica';
+const oggi = () => new Date().toISOString().slice(0, 10);
+function classificaLocale(){ try { return JSON.parse(localStorage.getItem(LOCAL_KEY)) || []; } catch(e) { return []; } }
+
+function segnaPunteggio(dati){
+  if (URL_CLASSIFICA) {
+    new Image().src = URL_CLASSIFICA + '?' + new URLSearchParams({ action:'segna', ...dati });
+    setTimeout(caricaClassifiche, 2500);
+  } else {
+    const l = classificaLocale(); l.push({ n:dati.nome, c:dati.casa, p:+dati.punti, d:oggi() });
+    try { localStorage.setItem(LOCAL_KEY, JSON.stringify(l)); } catch(e) {}
+    caricaClassifiche();
+  }
+}
+async function caricaClassifiche(){
+  if (!URL_CLASSIFICA) {
+    const l = classificaLocale(), t = {}, g = {};
+    CASE.forEach(c => t[c.id] = 0);
+    l.forEach(r => {
+      if (t[r.c] !== undefined) t[r.c] += r.p || 0;
+      if (r.d === oggi()) { const k = r.n + '|' + r.c; g[k] = g[k] || { n:r.n, c:r.c, p:0 }; g[k].p += r.p || 0; }
+    });
+    totCase = t; topGiocatori = Object.values(g).sort((a,b) => b.p - a.p).slice(0, 10);
+  } else {
+    try {
+      const [rc, rt] = await Promise.all([
+        fetch(URL_CLASSIFICA + '?action=case', { cache:'no-store' }),
+        fetch(URL_CLASSIFICA + '?action=top',  { cache:'no-store' })
+      ]);
+      totCase = await rc.json();          // { AquilaBlu:n, CeroGiallo:n, ... }
+      topGiocatori = await rt.json();     // [{ n, c, p }, ...] di oggi
+    } catch(e) { $('notaClass').textContent = 'classifica non raggiungibile'; }
+  }
+  mostraClassifiche();
+}
+function mostraClassifiche(){
+  const max = Math.max(1, ...CASE.map(c => totCase[c.id] || 0));
+  $('listaCase').innerHTML = CASE.slice().sort((a,b) => (totCase[b.id]||0) - (totCase[a.id]||0)).map(c => {
+    const p = totCase[c.id] || 0;
+    return `<div class="rigaCasa"><div class="top"><span class="nm"><i style="background:${c.col}"></i>${c.nome}${c.id === casa ? '<em>la tua</em>' : ''}</span><b>${p}</b></div>
+      <div class="barra"><i style="width:${Math.round(p/max*100)}%;background:${c.col}"></i></div></div>`;
+  }).join('');
+  const mio = pulisci(playerName());
+  $('listaClass').innerHTML = topGiocatori.length
+    ? topGiocatori.map((r, i) => {
+        const c = casaById(r.c), nm = pulisci(r.n);
+        return `<li class="${nm === mio && r.c === casa ? 'io' : ''}"><span class="pl"><i style="background:${c ? c.col : 'var(--line)'}"></i><span>${i+1}. ${nm}</span></span><b>${+r.p || 0}</b></li>`;
+      }).join('')
+    : '<li><span class="pl"><span>Ancora nessun punteggio oggi</span></span></li>';
+  $('notaCase').textContent = 'punti totali';
+  $('notaClass').textContent = URL_CLASSIFICA ? 'condivisa · si aggiorna da sola · si azzera a mezzanotte' : 'classifica locale di questo computer';
+  aggiornaChip();
+}
+function aggiornaChip(){
+  const c = casaById(casa); if (!c) return;
+  $('gCasa').style.setProperty('--c', c.col);
+  $('gCasa').innerHTML = `${c.nome} <b>${totCase[c.id] || 0}</b>`;
+}
+function buildCase(){
+  $('scelteCasa').innerHTML = CASE.map(c =>
+    `<button class="casa-btn${casa === c.id ? ' sel' : ''}" data-id="${c.id}" style="--c:${c.col}"><span class="pallino"></span>${c.nome}</button>`).join('');
+  $('scelteCasa').addEventListener('click', e => {
+    const b = e.target.closest('.casa-btn'); if (!b) return;
+    casa = b.dataset.id;
+    try { sessionStorage.setItem('ditaveloci_casa', casa); } catch(err) {}
+    [...$('scelteCasa').children].forEach(x => x.classList.toggle('sel', x.dataset.id === casa));
+    $('casaAvviso').textContent = '';
+    mostraClassifiche();
+  });
+}
+function casaSceltaOk(){
+  if (casa) return true;
+  $('casaAvviso').textContent = 'Scegli prima la tua Casa!';
+  $('scelteCasa').animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}], {duration:220});
+  $('scelteCasa').scrollIntoView({ behavior:'smooth', block:'center' });
+  return false;
+}
+
+/* ---------- icone ---------- */
+const starSVG = (on, size=18) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" class="${on?'on':''}"><path d="M12 2.6l2.85 5.95 6.5.8-4.78 4.5 1.2 6.45L12 17.2l-5.77 3.1 1.2-6.45L2.65 9.35l6.5-.8z" fill="${on?'var(--star)':'var(--star-off)'}" stroke="${on?'#D9960C':'none'}" stroke-width="1" stroke-linejoin="round"/></svg>`;
+const lockSVG = '<svg width="18" height="18" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2.5" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5" fill="none" stroke="currentColor" stroke-width="2"/></svg>';
+
+/* =========================================================
+   SCHERMATE
+   ========================================================= */
+const $ = id => document.getElementById(id);
+function show(id){ ['home','game','result'].forEach(s => $(s).classList.toggle('hidden', s !== id)); window.scrollTo(0,0); }
+
+const isUnlocked = i => store.unlock || i === 0 || (profile().stars[i-1] || 0) >= 1;
+
+function renderHome(){
+  if (G) clearTimeout(G.timer);
+  const p = profile();
+  $('missions').innerHTML = MISSIONS.map((ms, i) => {
+    const st = p.stars[i] || 0, open = isUnlocked(i);
+    return `<button class="mcard ${st?'done':''}" data-i="${i}" ${open?'':'disabled'}>
+      ${open ? '' : `<span class="lock">${lockSVG}</span>`}
+      <span class="num">${i+1}</span>
+      <h3>${ms.title}</h3><p>${ms.desc}</p>
+      <span class="stars">${[1,2,3].map(n => starSVG(st >= n)).join('')}</span>
+    </button>`;
+  }).join('');
+  const tot = Object.values(p.stars).reduce((a,b) => a+b, 0);
+  $('totStars').textContent = `${tot} stelle su ${MISSIONS.length*3}`;
+  show('home');
+}
+
+/* ---------- partita ---------- */
+let G = null;   // stato della missione in corso
+
+function startMission(i){
+  if (G) clearTimeout(G.timer);
+  store.lastName = $('name').value.trim(); save();
+  G = { mi:i, item:0, correct:0, wrong:0, chars:0, timeMs:0, errBy:{}, t0:0, points:0 };
+  aggiornaChip();
+  $('gNum').textContent = `Missione ${i+1}`;
+  $('gTitle').textContent = MISSIONS[i].title;
+  $('progress').innerHTML = MISSIONS[i].items.map(() => '<i></i>').join('');
+  show('game');
+  loadItem();
+  updateStats();
+}
+
+function loadItem(){
+  const items = MISSIONS[G.mi].items;
+  G.text = items[G.item]; G.pos = 0; G.t0 = 0; G.errHere = false; G.errItem = 0;
+  // parole raggruppate per non spezzarle a capo
+  const parts = G.text.split(/( )/);
+  let html = '', idx = 0;
+  for (const part of parts) {
+    if (part === ' ') { html += `<span class="ch sp" data-i="${idx++}"> </span>`; continue; }
+    if (!part) continue;
+    html += '<span class="w">' + [...part].map(c => `<span class="ch" data-i="${idx++}">${c.replace('<','&lt;')}</span>`).join('') + '</span>';
+  }
+  $('text').innerHTML = html;
+  G.els = [...$('text').querySelectorAll('.ch')];
+  [...$('progress').children].forEach((d, n) => d.className = n < G.item ? 'done' : n === G.item ? 'now' : '');
+  $('sItem').textContent = `${G.item+1}/${items.length}`;
+  $('next').textContent = items[G.item+1] ? 'Poi: ' + items[G.item+1] : '';
+  markCurrent();
+  speak(G.text);
+}
+
+function markCurrent(){
+  G.els.forEach((e, n) => e.classList.toggle('now', n === G.pos));
+  document.querySelectorAll('.key.target, .key.target-mod').forEach(e => e.classList.remove('target','target-mod'));
+  document.querySelectorAll('#hands .finger.on').forEach(e => e.classList.remove('on'));
+  const c = G.text[G.pos], info = charMap[c];
+  if (!info) { $('fingerHint').textContent = ''; return; }
+  keyEl[info.id].classList.add('target');
+  lightFinger(info.finger, info.id === 'space');
+  let hint = `<span class="sw" style="background:${fColor(info.finger)}"></span>Usa il <b>${FINGER_NAME[info.finger]}</b>`;
+  if (info.shift) {
+    // shift con la mano opposta a quella che preme il tasto
+    const shiftId = info.finger.endsWith('-s') ? 'shiftR' : 'shiftL';
+    keyEl[shiftId].classList.add('target-mod');
+    lightFinger(MOD_FINGER[shiftId]);
+    hint += ` + <b>${FINGER_NAME[MOD_FINGER[shiftId]]}</b> su shift`;
+  }
+  $('fingerHint').innerHTML = hint;
+}
+function lightFinger(f, bothThumbs){
+  document.querySelectorAll(`#hands .finger[data-f="${f}"]`).forEach((e, n) => { if (bothThumbs || f !== 'pollice' || n === 0) e.classList.add('on'); });
+}
+
+function pressVisual(id, wrong){
+  const el = keyEl[id]; if (!el) return;
+  el.classList.add('down'); if (wrong) el.classList.add('miss');
+  setTimeout(() => el.classList.remove('down','miss'), wrong ? 260 : 110);
+}
+
+function updateStats(){
+  const tot = G.correct + G.wrong;
+  $('sPts').textContent = G.points;
+  $('sAcc').textContent = (tot ? Math.round(G.correct / tot * 100) : 100) + '%';
+  const ms = G.timeMs + (G.t0 ? performance.now() - G.t0 : 0);
+  $('sPpm').textContent = ms > 2000 ? Math.round((G.chars + G.pos) / 5 / (ms / 60000)) : 0;
+}
+
+function onKey(e){
+  if ($('game').classList.contains('hidden')) return;
+  if (e.key === 'Escape') { speechSynthesis.cancel?.(); renderHome(); return; }
+  $('capsWarn').classList.toggle('hidden', !e.getModifierState?.('CapsLock'));
+  if (e.metaKey || e.ctrlKey) return;
+  if (e.key === 'Shift') { pressVisual(e.code === 'ShiftRight' ? 'shiftR' : 'shiftL'); return; }
+  if (e.key.length !== 1) return;
+  e.preventDefault();   // evita scroll con spazio e "ricerca rapida" con ' su Firefox
+
+  const target = G.text[G.pos];
+  const typed = e.key === '’' ? "'" : e.key;
+  const pressed = charMap[typed];
+  if (typed === target) {
+    if (!G.t0) G.t0 = performance.now();
+    pressVisual(pressed.id);
+    if (pressed.shift) pressVisual(pressed.finger.endsWith('-s') ? 'shiftR' : 'shiftL');
+    G.els[G.pos].classList.remove('err');
+    G.els[G.pos].classList.add('done');
+    if (G.errHere) G.els[G.pos].classList.add('had-err');
+    G.errHere = false; G.correct++; G.pos++;
+    beep(880, .03, 'triangle', .03);
+    if (G.pos >= G.text.length) return finishItem();
+    markCurrent();
+  } else {
+    G.wrong++; G.errHere = true; G.errItem++;
+    G.errBy[target] = (G.errBy[target] || 0) + 1;
+    if (pressed) pressVisual(pressed.id, true);
+    const cur = G.els[G.pos];
+    cur.classList.remove('err'); void cur.offsetWidth; cur.classList.add('err');
+    beep(196, .09, 'sine', .05);
+  }
+  updateStats();
+}
+
+function finishItem(){
+  G.timeMs += performance.now() - G.t0; G.t0 = 0;
+  G.chars += G.text.length; G.pos = 0;
+  // punti frase: 1 per carattere, -2 per ogni errore (mai sotto zero)
+  G.points += Math.max(0, G.text.length - 2 * G.errItem);
+  updateStats();
+  G.item++;
+  // il timer viene annullato se si esce o si riavvia durante la pausa tra due frasi
+  G.timer = setTimeout(G.item < MISSIONS[G.mi].items.length ? loadItem : finishMission, 380);
+}
+
+/* ---------- risultato ---------- */
+function finishMission(){
+  const tot = G.correct + G.wrong;
+  const acc = tot ? G.correct / tot * 100 : 100;
+  const ppm = G.timeMs ? Math.round(G.chars / 5 / (G.timeMs / 60000)) : 0;
+  const stars = acc >= 96 ? 3 : acc >= 90 ? 2 : acc >= 80 ? 1 : 0;
+  const p = profile(), i = G.mi;
+  const prevStars = p.stars[i] || 0;
+  p.stars[i] = Math.max(prevStars, stars);
+  const punti = G.points + stars * 10;   // bonus: 10 punti per stella
+  const c = casaById(casa);
+  segnaPunteggio({ nome:playerName().slice(0, 16), casa, punti, missione:i+1, precisione:Math.round(acc), ppm });
+  $('rGain').style.setProperty('--c', c.col);
+  $('rGain').textContent = `+${punti} punti per ${c.nome}` + (stars ? ` (bonus stelle +${stars*10})` : '');
+  const best = p.best[i];
+  if (!best || ppm > best.ppm) p.best[i] = { ppm, acc:Math.round(acc) };
+  save();
+
+  $('rStars').innerHTML = [1,2,3].map(n => starSVG(stars >= n, 64)).join('');
+  $('rTitle').textContent = stars === 3 ? 'Perfetto!' : stars === 2 ? 'Molto bene!' : stars === 1 ? 'Missione superata' : 'Quasi!';
+  const name = playerName();
+  $('rSub').textContent = stars
+    ? `${name}, hai completato «${MISSIONS[i].title}».` + (stars > prevStars && prevStars ? ' Nuovo record di stelle.' : '')
+    : `${name}, serve almeno l'80% di precisione per la stella. Vai piano: la velocità arriva da sola.`;
+  $('rAcc').textContent = Math.round(acc) + '%';
+  $('rPpm').textContent = ppm;
+  const s = Math.round(G.timeMs / 1000);
+  $('rTime').textContent = `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+  const worst = Object.entries(G.errBy).sort((a,b) => b[1]-a[1]).slice(0, 6);
+  $('rReview').innerHTML = worst.length
+    ? '<h4>Tasti da ripassare</h4><div class="list">' + worst.map(([c, n]) => {
+        const info = charMap[c] || {};
+        const label = c === ' ' ? 'spazio' : c;
+        const fn = info.finger ? FINGER_NAME[info.finger] : '';
+        return `<div class="item"><span class="cap" style="--f:${fColor(info.finger)}">${label.replace('<','&lt;')}</span>${n} ${n === 1 ? "errore" : "errori"}${fn ? ' · ' + fn : ''}${info.shift ? ' + shift' : ''}</div>`;
+      }).join('') + '</div>'
+    : '<h4>Nessun errore</h4><div style="color:var(--muted);font-size:.9rem">Tutti i tasti premuti al primo colpo.</div>';
+
+  const hasNext = i + 1 < MISSIONS.length;
+  $('rNext').classList.toggle('hidden', !hasNext || !isUnlocked(i + 1));
+  if (stars === 3 && i === MISSIONS.length - 1) $('rSub').textContent = `${name}, hai completato tutte le missioni con il massimo delle stelle.`;
+  if (stars) beep(660, .12, 'triangle', .05), setTimeout(() => beep(990, .18, 'triangle', .05), 130);
+  show('result');
+}
+
+/* =========================================================
+   AVVIO E COLLEGAMENTI
+   ========================================================= */
+function bindToggle(id, key, after){
+  const b = $(id);
+  const sync = () => { b.setAttribute('aria-pressed', store[key]); after && after(); };
+  b.addEventListener('click', () => { store[key] = !store[key]; save(); sync(); b.blur(); });
+  sync();
+}
+
+buildKeyboard();
+buildHands();
+// controllo di coerenza: ogni carattere delle frasi deve esistere in tastiera
+MISSIONS.forEach((ms, i) => ms.items.forEach(t => [...t].forEach(c => { if (!charMap[c]) console.warn(`Missione ${i+1}: carattere non mappato «${c}» in «${t}»`); })));
+
+$('name').value = store.lastName || '';
+$('name').addEventListener('input', () => { renderHome(); mostraClassifiche(); });
+$('missions').addEventListener('click', e => { const c = e.target.closest('.mcard'); if (c && !c.disabled && casaSceltaOk()) startMission(+c.dataset.i); });
+$('exitBtn').addEventListener('click', () => { speechSynthesis.cancel?.(); renderHome(); });
+$('rMap').addEventListener('click', renderHome);
+$('rRetry').addEventListener('click', () => startMission(G.mi));
+$('rNext').addEventListener('click', () => startMission(G.mi + 1));
+document.addEventListener('keydown', onKey);
+setInterval(() => { if (G && !$('game').classList.contains('hidden')) updateStats(); }, 1000);
+
+bindToggle('tVoice', 'voice', () => { if (!store.voice && 'speechSynthesis' in window) speechSynthesis.cancel(); });
+bindToggle('tSound', 'sound');
+bindToggle('tTint', 'tint', () => document.body.classList.toggle('tint', store.tint));
+bindToggle('tUnlock', 'unlock', () => { if (!$('home').classList.contains('hidden')) renderHome(); });
+buildCase();
+renderHome();
+caricaClassifiche();
+setInterval(caricaClassifiche, 15000);
+</script>
+</body>
+</html>
