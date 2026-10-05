@@ -48,49 +48,126 @@
   body.ingame .progress{margin-bottom:12px}
   body.ingame .deck-c{gap:2px}
 
-  /* ---------- home ---------- */
-  .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center;margin-bottom:28px}
-  .hero h1{font-size:2.6rem;line-height:1.05;margin:0 0 10px;letter-spacing:-.02em}
-  .hero p{margin:0;color:var(--muted);font-size:1.05rem;line-height:1.5}
-  .namecard{background:var(--surface);border-radius:var(--radius);padding:22px;border:1px solid var(--line)}
-  .namecard label{font-size:.85rem;color:var(--muted);display:block;margin-bottom:8px}
-  .namecard input{width:100%;font:inherit;font-size:1.3rem;padding:12px 14px;border:2px solid var(--line);border-radius:12px;outline:none;color:var(--ink)}
-  .namecard input:focus{border-color:var(--accent)}
-  .namecard .hint{margin-top:10px;font-size:.85rem;color:var(--muted)}
-  .section-title{display:flex;align-items:baseline;justify-content:space-between;margin:6px 0 14px}
-  .section-title h2{margin:0;font-size:1.2rem}
-  .section-title span{color:var(--muted);font-size:.9rem}
-  .missions{display:grid;grid-template-columns:repeat(5,1fr);gap:14px}
-  .mcard{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;display:flex;flex-direction:column;gap:6px;min-height:150px;transition:transform .15s, box-shadow .15s, border-color .15s;color:var(--ink)}
-  .mcard:hover:not([disabled]){transform:translateY(-3px);box-shadow:0 10px 24px rgba(29,36,51,.10);border-color:var(--accent)}
-  .mcard .num{width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;font-weight:700}
-  .mcard.done .num{background:var(--ok-soft);color:var(--ok)}
-  .mcard h3{margin:4px 0 0;font-size:1.02rem}
-  .mcard p{margin:0;font-size:.8rem;color:var(--muted);line-height:1.35;flex:1}
-  .mcard .stars{display:flex;gap:3px}
-  .mcard[disabled]{cursor:not-allowed;background:#F5F7FA}
-  .mcard[disabled] > *:not(.lock){opacity:.45}
-  .mcard .lock{position:absolute;top:14px;right:14px;color:var(--muted)}
-  .teacher{margin-top:18px;display:flex;justify-content:flex-end}
-  .archivio{margin-left:14px;font-size:.85rem;color:var(--muted)}
-  .seg{display:inline-flex;gap:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:4px;margin:0 0 14px}
-  .seg button{border:0;background:transparent;border-radius:10px;padding:8px 18px;display:flex;flex-direction:column;align-items:flex-start;color:var(--muted);font-size:.78rem;line-height:1.2}
-  .seg button b{font-size:1.05rem;color:var(--ink)}
-  .seg button[aria-selected="true"]{background:var(--accent);color:#E7E5FA}
-  .seg button[aria-selected="true"] b{color:#fff}
+  /* ---------- home: lobby da videogioco, tutta in una schermata ---------- */
+  body.lobby{height:100vh;display:flex;flex-direction:column;overflow:hidden;color:#EDEBFF;
+    background:radial-gradient(1100px 520px at 50% -8%,rgba(107,97,219,.55),transparent 65%),radial-gradient(700px 400px at 100% 100%,rgba(242,183,53,.12),transparent 70%),linear-gradient(180deg,#1C1850,#0F0D2B)}
+  body.lobby::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.5;
+    background-image:radial-gradient(rgba(255,255,255,.55) 1px,transparent 1.4px),radial-gradient(rgba(255,255,255,.35) 1px,transparent 1.4px);
+    background-size:140px 140px,90px 90px;background-position:0 0,45px 60px}
+  body.lobby .topbar{background:transparent;border-bottom:1px solid rgba(255,255,255,.08);position:relative}
+  body.lobby .brand{color:#fff}
+  body.lobby .brand small{color:rgba(255,255,255,.55)}
+  body.lobby .toggle{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#B9B5EA}
+  body.lobby .toggle[aria-pressed="true"]{color:#fff}
+  body.lobby .toggle .dot{background:rgba(255,255,255,.18)}
+  body.lobby main{flex:1;min-height:0;max-width:none;width:100%;padding:18px 28px 20px;position:relative}
+  #home{height:100%;display:grid;grid-template-columns:clamp(270px,19vw,360px) minmax(0,1fr) clamp(270px,19vw,360px);gap:22px}
+  .l-col,.r-col{display:flex;flex-direction:column;gap:16px;min-height:0}
+  .c-col{display:flex;flex-direction:column;min-height:0}
+  .pg{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:16px 18px;box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.1)}
+  .pg h2,.lbl-g{margin:0 0 10px;font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:#A9A4EC;display:flex;justify-content:space-between;align-items:baseline}
+  .pg h2 small{font-size:.7rem;letter-spacing:.04em;text-transform:none;color:rgba(255,255,255,.45);font-weight:400}
+  #name{width:100%;font:inherit;font-size:1.35rem;font-weight:600;padding:11px 14px;margin-bottom:14px;border:2px solid rgba(255,255,255,.16);border-radius:14px;outline:none;color:#fff;background:rgba(0,0,0,.28)}
+  #name::placeholder{color:rgba(255,255,255,.4);font-weight:400}
+  #name:focus{border-color:#FFD86B;box-shadow:0 0 0 4px rgba(255,216,107,.18)}
+  .case-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .casa-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px 9px;border-radius:14px;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#DCD9FB;font-size:.82rem;font-weight:600;transition:transform .15s,border-color .15s,background .15s,box-shadow .15s}
+  .casa-btn svg{width:42px;height:48px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+  .casa-btn:hover{transform:translateY(-2px);border-color:var(--c)}
+  .casa-btn.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 32%,transparent);color:#fff;box-shadow:0 0 22px color-mix(in srgb,var(--c) 70%,transparent);transform:scale(1.04)}
+  .casa-avviso{min-height:18px;margin-top:8px;font-size:.85rem;color:#FFD86B;text-align:center}
+  .regole{font-size:.78rem;line-height:1.45;color:rgba(255,255,255,.55);margin-top:auto}
+  .regole b{color:rgba(255,255,255,.85)}
+  /* centro: intestazione e mappa */
+  .c-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:6px}
+  .c-head h1{margin:0;font-size:clamp(1.6rem,2.1vw,2.3rem);letter-spacing:-.01em;color:#fff;text-shadow:0 2px 14px rgba(107,97,219,.8)}
+  .archivio{display:block;margin-top:4px;font-size:.82rem;color:rgba(255,255,255,.55)}
+  /* libro delle frasi */
+  .libro-wrap{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
+  .libro{position:relative;width:min(1000px,100%,calc((100vh - 300px) * 1.6));aspect-ratio:1.6;perspective:4200px}
+  .libro .cop{position:absolute;inset:-14px -16px;border-radius:18px;background:linear-gradient(135deg,#6B61DB,#3A31A0 60%,#2A2270);
+    box-shadow:0 30px 70px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.12)}
+  .libro .cop::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:18px;margin-left:-9px;background:linear-gradient(90deg,#241D6A,#4A41B8,#241D6A)}
+  .pagine{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;box-shadow:0 3px 0 #E7DFC6,0 6px 0 #D8CFB2,0 9px 0 #C9BF9F;border-radius:8px}
+  .pagina{position:relative;overflow:hidden;color:#1D2433;padding:clamp(18px,2.4vw,34px) clamp(20px,2.6vw,38px);
+    background:repeating-linear-gradient(180deg,transparent 0 31px,rgba(43,90,168,.13) 31px 32px),#FFFDF6}
+  .pagina.sx{border-radius:8px 0 0 8px;box-shadow:inset -26px 0 30px -20px rgba(80,60,20,.35)}
+  .pagina.dx{border-radius:0 8px 8px 0;box-shadow:inset 26px 0 30px -20px rgba(80,60,20,.35)}
+  .pagina h3{margin:0 0 12px;font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.2rem,1.6vw,1.6rem);color:#3A31A0}
+  .indice{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+  .indice button{width:100%;display:flex;align-items:center;gap:12px;padding:5px 8px;border:0;border-radius:10px;background:none;text-align:left;color:#1D2433;font:inherit;transition:background .15s}
+  .indice button:hover{background:rgba(81,70,201,.08)}
+  .indice button.sel{background:rgba(81,70,201,.15)}
+  .indice .ti,.cap .tile{flex:none;display:grid;place-items:center;border-radius:10px;background:var(--h);color:#fff;font-weight:800;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
+  .indice .ti{width:34px;height:34px;font-size:var(--fs,.8rem)}
+  .indice .ti svg,.cap .tile svg{width:62%;height:62%;fill:#fff}
+  .indice .tt{flex:1;min-width:0;display:flex;flex-direction:column}
+  .indice .tt b{font-size:.95rem}
+  .indice .tt small{font-size:.74rem;color:#5E6678;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .indice .pg-n{font-family:'Fraunces',serif;font-style:italic;color:#9AA2B2;font-size:.9rem}
+  .indice .st{display:flex;gap:1px}
+  .indice .st svg:not(.on){opacity:.35}
+  .cap{height:100%;display:flex;flex-direction:column;align-items:flex-start}
+  .cap .num{font-size:.74rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#9AA2B2}
+  .cap .testa{display:flex;align-items:center;gap:14px;margin:8px 0 6px}
+  .cap .tile{--t:clamp(52px,4.6vw,72px);width:var(--t);height:var(--t);border-radius:16px;font-size:calc(var(--t) * var(--fsr,.3))}
+  .cap h3{margin:0;font-size:clamp(1.5rem,2.2vw,2.2rem)}
+  .cap .desc{margin:0 0 12px;color:#5E6678;font-size:.95rem}
+  .cap .ante{width:100%}
+  .cap .ante .lbl{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#9AA2B2;margin-bottom:4px}
+  .cap .ante ol{margin:0;padding-left:1.3em;font-size:clamp(.95rem,1.15vw,1.15rem);line-height:32px;color:#2B2F38}
+  .cap .ante li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cap .ante span{display:block;color:#9AA2B2;font-style:italic;line-height:32px}
+  body.upper .cap .ante ol{text-transform:uppercase}
+  .vuota{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#5E6678;gap:10px}
+  .vuota svg{width:90px;height:90px;fill:#C9C3FF}
+  .vuota h3{color:#3A31A0}
+  .vuota p{margin:0;max-width:30ch}
+  /* foglio che si gira (3D) */
+  .foglio{position:absolute;top:0;right:0;width:50%;height:100%;transform-origin:0 50%;transform-style:preserve-3d;pointer-events:none;z-index:5}
+  .foglio .f,.foglio .r{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;
+    background:repeating-linear-gradient(180deg,transparent 0 31px,rgba(43,90,168,.13) 31px 32px),#FFFDF6}
+  .foglio .f{border-radius:0 8px 8px 0;box-shadow:inset 26px 0 30px -20px rgba(80,60,20,.3)}
+  .foglio .r{transform:rotateY(180deg);border-radius:8px 0 0 8px;box-shadow:inset -26px 0 30px -20px rgba(80,60,20,.3)}
+  .foglio .ombra{position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.2),transparent 60%);opacity:0;animation:ombraFoglio var(--d) ease-in-out var(--ritardo) forwards}
+  @keyframes volta{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
+  @keyframes ombraFoglio{0%,100%{opacity:0}50%{opacity:1}}
+  .libro-btn{display:flex;gap:14px}
+  .btn-sfoglia,.btn-scrivi{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:13px 30px;font-size:1.15rem;font-weight:700;transition:transform .08s}
+  .btn-sfoglia{color:#fff;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.3)}
+  .btn-sfoglia:hover{background:rgba(255,255,255,.18)}
+  .btn-sfoglia svg{width:22px;height:22px;fill:currentColor}
+  .btn-scrivi{border:0;color:#fff;background:linear-gradient(180deg,#5BD38F,#1F8A5B);box-shadow:0 5px 0 #146B44,0 12px 24px rgba(0,0,0,.35)}
+  .btn-scrivi:active,.btn-sfoglia:active{transform:translateY(3px)}
+  .libro-btn small{align-self:center;color:rgba(255,255,255,.45);font-size:.78rem}
+  /* scelta della classe */
+  .classi{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
+  .classi button{aspect-ratio:1;border-radius:14px;border:2px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#DCD9FB;font:inherit;font-size:1.25rem;font-weight:700;transition:transform .15s,background .15s}
+  .classi button:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.35)}
+  .classi button[aria-selected="true"]{background:linear-gradient(180deg,#FFE58A,#F2B735);color:#3A2600;border-color:#FFE58A;box-shadow:0 0 18px rgba(242,183,53,.55)}
+  @media (prefers-reduced-motion:reduce){.foglio{animation-duration:.01s !important}}
+  /* colonne laterali in tema scuro */
+  #home .rigaCasa .top{color:#EDEBFF}
+  #home .rigaCasa .nm em{color:#FFD86B;border-color:rgba(255,216,107,.4)}
+  #home .rigaCasa .barra{background:rgba(255,255,255,.1)}
+  #home .rk{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:rgba(255,255,255,.1);font-size:.72rem;font-weight:700;margin-right:2px}
+  #home .rigaCasa:first-child .rk{background:#F2B735;color:#3A2600}
+  #listaClass li{border-bottom-color:rgba(255,255,255,.08)!important}
+  #listaClass li.io{color:#FFD86B!important}
+  #home .nota{color:rgba(255,255,255,.45)}
+  @media (max-width:1100px){
+    body.lobby{height:auto;overflow:auto}
+    #home{grid-template-columns:1fr;height:auto}
+  }
   body.upper #text,body.upper #next{text-transform:uppercase}
   body.upper #text{letter-spacing:.06em}
   body[data-fascia="prima"] #text,body[data-fascia="seconda"] #text{font-size:clamp(2.2rem,2.7vw,3.4rem);min-height:1.6em}
   /* trofei: riga dei numeri */
-  .trofei{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:24px}
-  .trofei .row{display:flex;gap:6px;flex-wrap:wrap}
   .tcap{position:relative;width:50px;height:50px;border-radius:9px;background:linear-gradient(#fff,#F0F2F5);box-shadow:0 1px 0 rgba(0,0,0,.18);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05;font-weight:600;color:#B5BCC8}
   .tcap .s{font-size:.68rem;font-weight:400}
   .tcap.conq{background:linear-gradient(180deg,#FFEDB3,#F2B735);color:#5A3B00;box-shadow:0 1px 0 rgba(120,80,0,.45),0 0 12px rgba(242,183,53,.5)}
   .tcap.conq .s{color:#7A5300}
   .tcap.off{opacity:.35}
-  .trofei .lbl{font-size:.9rem;color:var(--muted)}
-  .trofei .lbl b{display:block;color:var(--ink);font-size:1.05rem}
   /* conquista nella schermata finale */
   .conquista{display:flex;align-items:center;justify-content:center;gap:22px;margin:0 0 22px;padding:16px;border-radius:16px;background:#FFF7DF}
   .conquista .stage{position:relative;width:110px;height:110px;display:grid;place-items:center}
@@ -123,16 +200,6 @@
   @media (prefers-reduced-motion:reduce){.cerim .att,.cerim .att::after,.btn-patente{animation:none}}
   @media (prefers-reduced-motion:reduce){.conquista .rays,.conquista .big,.conquista .big::after{animation:none}}
   /* Case */
-  .case-pick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-  .casa-btn{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-size:.95rem;color:var(--ink);text-align:left;transition:border-color .15s, background .15s}
-  .casa-btn:hover{border-color:var(--c)}
-  .casa-btn.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff);font-weight:600}
-  .casa-btn .pallino{width:14px;height:14px;border-radius:50%;background:var(--c);flex:none}
-  .casa-avviso{min-height:18px;margin-top:8px;font-size:.85rem;color:var(--warn)}
-  .arena{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;margin-bottom:28px}
-  .box{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px}
-  .box h2{margin:0 0 12px;font-size:1.05rem;display:flex;justify-content:space-between;align-items:baseline}
-  .box h2 small{font-weight:400;font-size:.78rem;color:var(--muted)}
   .rigaCasa{margin-bottom:12px}
   .rigaCasa:last-child{margin-bottom:0}
   .rigaCasa .top{display:flex;justify-content:space-between;align-items:center;font-size:.95rem;margin-bottom:5px}
@@ -290,8 +357,6 @@
   .note{margin:0 0 18px;padding:10px 14px;border-radius:12px;background:var(--accent-soft);color:var(--accent-ink);font-size:.95rem}
 
   @media (max-width:1000px){
-    .missions{grid-template-columns:repeat(3,1fr)}
-    .hero,.arena{grid-template-columns:1fr}
     .keys{grid-auto-rows:40px;gap:4px}
     .key{font-size:.8rem}
     .key.mod{font-size:.55rem;padding:0 4px 6px}
@@ -301,8 +366,6 @@
   @media (max-width:640px){
     main{padding:16px}
     .topbar{padding:12px 16px;flex-wrap:wrap}
-    .missions{grid-template-columns:1fr 1fr}
-    .hero h1{font-size:2rem}
     .gamehead{flex-wrap:wrap}
     .panel{padding:18px}
     .keyboard{padding:8px;border-radius:12px}
@@ -337,28 +400,41 @@
 <main>
   <!-- ===== HOME ===== -->
   <section id="home">
-    <div class="hero">
-      <div>
-        <h1>Dieci dita,<br>una squadra.</h1>
-        <p>Ogni frase scritta bene porta punti alla tua <b>Casa</b>: Aquila, Cero, Quercia e Tasso si sfidano a colpi di tastiera. Indici su <b>F</b> e <b>J</b>, occhi sullo schermo: la tastiera e le dita colorate ti dicono sempre quale tasto premere.</p>
-      </div>
-      <div class="namecard">
-        <label for="name">Come ti chiami?</label>
-        <input id="name" maxlength="24" autocomplete="off" placeholder="Scrivi il tuo nome">
+    <aside class="l-col">
+      <div class="pg">
+        <div class="lbl-g">Giocatore</div>
+        <input id="name" maxlength="24" autocomplete="off" placeholder="Come ti chiami?" aria-label="Il tuo nome">
+        <div class="lbl-g">La tua classe</div>
+        <div class="classi" id="fascia" role="tablist" aria-label="La tua classe"></div>
+        <div class="lbl-g">La tua Casa</div>
         <div class="case-pick" id="scelteCasa"></div>
         <div class="casa-avviso" id="casaAvviso"></div>
-        <div class="hint">I punti delle missioni completate si sommano alla tua Casa. Stelle e tasti conquistati si cancellano quando chiudi il browser; i punti restano in classifica.</div>
+      </div>
+      <p class="regole">Indici su <b>F</b> e <b>J</b>, occhi sullo schermo. Scegli un capitolo o sfoglia il libro a caso: ogni volta frasi nuove. Ogni frase scritta bene porta <b>punti alla tua Casa</b>. I punti restano in classifica.</p>
+    </aside>
+    <div class="c-col">
+      <div class="c-head">
+        <div><h1>Il libro delle frasi</h1><span class="archivio" id="archivio"></span></div>
+      </div>
+      <div class="libro-wrap">
+        <div class="libro" id="libro">
+          <div class="cop"></div>
+          <div class="pagine">
+            <div class="pagina sx"><h3 id="indiceTit">Indice</h3><ol class="indice" id="indice"></ol></div>
+            <div class="pagina dx" id="paginaDx"></div>
+          </div>
+        </div>
+        <div class="libro-btn">
+          <button class="btn-sfoglia" id="sfogliaBtn"><svg viewBox="0 0 24 24"><path d="M3 5c3-1 6-1 9 1v14c-3-2-6-2-9-1z"/><path d="M21 5c-3-1-6-1-9 1v14c3-2 6-2 9-1z" opacity=".7"/></svg>Sfoglia a caso</button>
+          <button class="btn-scrivi hidden" id="scriviBtn">Scrivi!</button>
+          <small>barra spaziatrice = sfoglia · Invio = scrivi</small>
+        </div>
       </div>
     </div>
-    <div class="arena">
-      <div class="box"><h2>Sfida tra Case <small id="notaCase"></small></h2><div id="listaCase"></div></div>
-      <div class="box"><h2>Classifica di oggi <small>giocatori</small></h2><ol id="listaClass"></ol><div class="nota" id="notaClass"></div></div>
-    </div>
-    <div class="trofei" id="trofei"></div>
-    <div class="section-title"><h2>Le missioni</h2><span id="totStars"></span></div>
-    <div class="seg" id="fascia" role="tablist" aria-label="Classe"></div>
-    <span class="archivio" id="archivio"></span>
-    <div class="missions" id="missions"></div>
+    <aside class="r-col">
+      <div class="pg"><h2>Sfida tra Case <small id="notaCase"></small></h2><div id="listaCase"></div></div>
+      <div class="pg"><h2>Classifica di oggi</h2><ol id="listaClass"></ol><div class="nota" id="notaClass"></div></div>
+    </aside>
   </section>
 
   <!-- ===== GIOCO ===== -->
@@ -411,7 +487,7 @@
       <div class="actions">
         <button class="btn big" id="rMap">Missioni</button>
         <button class="btn big" id="rRetry">Riprova</button>
-        <button class="btn big primary" id="rNext">Prossima missione</button>
+        <button class="btn big primary" id="rNext">Sfoglia ancora</button>
       </div>
     </div>
   </section>
@@ -1162,13 +1238,24 @@ function scegliItems(i){
   return scelti;
 }
 
+// simbolo e colore di ogni capitolo nel libro
+const SIMB_P = [{t:'ME·LA'},{t:'A·PE'},{t:'TT'},{t:'BA·NA·NA'},{i:'zampa'},{t:'GN'},{i:'matita'},{t:'ABC'}];
+const SIMB_S = [{t:'chi?'},{t:'cosa?'},{t:'dove?'},{t:'è'},{t:'Aa'},{t:'.'},{t:'?!'},{i:'libro'}];
+const SIMB_G = [{i:'foglia'},{i:'zampa'},{i:'cuore'},{t:'Aa'},{t:'àè'},{t:';:'},{t:'123'},{t:'@#'},{t:'«»'},{i:'libro'}];
+const COLORI_CAP = ['#6B61DB','#1F8A5B','#E07B1E','#2B5AA8','#C98F12','#0E8F8F','#8E44AD','#3D7DD8','#B5651D','#4E9A06'];
+[[MISSIONI_PRIMA, SIMB_P], [MISSIONI_SECONDA, SIMB_S], [MISSIONI_GRANDI, SIMB_G]].forEach(([ms, sy]) =>
+  ms.forEach((m, k) => { m.sym = sy[k]; m.col = COLORI_CAP[k % COLORI_CAP.length]; }));
+// 3ª, 4ª e 5ª condividono le missioni didattiche, distribuite per difficoltà
+const MG = i => MISSIONI_GRANDI[i];   // 0 Natura, 1 Animali, 2 Corpo, 3 Maiuscole, 4 Accenti, 5 Punteggiatura, 6 Numeri, 7 Simboli, 8 Proverbi, 9 Racconti
 // mult: i testi dei più piccoli sono brevi, i loro punti valgono di più per la sfida tra Case
 const PERCORSI = {
-  prima:   { label:'1ª',      sub:'parole',         missions:MISSIONI_PRIMA,   mult:3, upper:true  },
-  seconda: { label:'2ª',      sub:'frasi minime',   missions:MISSIONI_SECONDA, mult:2, upper:false },
-  grandi:  { label:'3ª – 5ª', sub:'frasi e testi',  missions:MISSIONI_GRANDI,  mult:1, upper:false }
+  prima:   { label:'1ª', sub:'parole',              missions:MISSIONI_PRIMA,               mult:3,   upper:true  },
+  seconda: { label:'2ª', sub:'frasi minime',        missions:MISSIONI_SECONDA,             mult:2,   upper:false },
+  terza:   { label:'3ª', sub:'scienze e Italia',    missions:[0, 1, 2, 3, 4, 8].map(MG),   mult:1.5, upper:false },
+  quarta:  { label:'4ª', sub:'grammatica e numeri', missions:[1, 3, 4, 5, 6, 8].map(MG),   mult:1.2, upper:false },
+  quinta:  { label:'5ª', sub:'simboli e racconti',  missions:[4, 5, 6, 7, 8, 9].map(MG),   mult:1,   upper:false }
 };
-let MISSIONS = MISSIONI_GRANDI;   // percorso attivo
+let MISSIONS = PERCORSI.terza.missions;   // percorso attivo
 
 /* =========================================================
    TASTIERA — layout italiano (Mac "Italiano – Pro" / ISO)
@@ -1302,7 +1389,7 @@ function battiDito(f, entrambiPollici){
    STATO, SALVATAGGIO, AUDIO
    ========================================================= */
 const STORE_KEY = 'ditaveloci.v1';
-let store = { lastName:'', voice:true, sound:true, tint:false, upper:false, fascia:'grandi', profiles:{} };
+let store = { lastName:'', voice:true, sound:true, tint:false, upper:false, fascia:'terza', profiles:{} };
 /* Dati del giocatore (nome, stelle, tasti conquistati) in sessionStorage:
    si cancellano alla chiusura del browser (Mac di laboratorio condivisi).
    In localStorage restano solo le preferenze del computer.
@@ -1315,10 +1402,10 @@ try {
   if ('profiles' in old || 'lastName' in old) localStorage.setItem(STORE_KEY, JSON.stringify(Object.fromEntries(PREFS.map(k => [k, store[k]]))));
 } catch(e) {}
 try { Object.assign(store, JSON.parse(sessionStorage.getItem(PLAYER_KEY)) || {}); } catch(e) {}
-if (!PERCORSI[store.fascia]) store.fascia = 'grandi';
+if (!PERCORSI[store.fascia]) store.fascia = 'terza';
 MISSIONS = PERCORSI[store.fascia].missions;
-// chiave delle stelle: il percorso 3ª-5ª usa l'indice semplice (compatibile con i salvataggi precedenti)
-const sk = i => store.fascia === 'grandi' ? i : store.fascia + '-' + i;
+// chiave delle stelle: classe + missione
+const sk = i => store.fascia + '-' + i;
 // in STAMPATO MAIUSCOLO le lettere si confrontano senza distinguere maiuscole/minuscole
 const norm = c => (store.upper && /\p{L}/u.test(c)) ? c.toLowerCase() : c;
 const save = () => {
@@ -1446,9 +1533,9 @@ async function caricaClassifiche(){
 }
 function mostraClassifiche(){
   const max = Math.max(1, ...CASE.map(c => totCase[c.id] || 0));
-  $('listaCase').innerHTML = CASE.slice().sort((a,b) => (totCase[b.id]||0) - (totCase[a.id]||0)).map(c => {
+  $('listaCase').innerHTML = CASE.slice().sort((a,b) => (totCase[b.id]||0) - (totCase[a.id]||0)).map((c, k) => {
     const p = totCase[c.id] || 0;
-    return `<div class="rigaCasa"><div class="top"><span class="nm"><i style="background:${c.col}"></i>${c.nome}${c.id === casa ? '<em>la tua</em>' : ''}</span><b>${p}</b></div>
+    return `<div class="rigaCasa"><div class="top"><span class="nm"><span class="rk">${k + 1}</span><i style="background:${c.col}"></i>${c.nome}${c.id === casa ? '<em>la tua</em>' : ''}</span><b>${p}</b></div>
       <div class="barra"><i style="width:${Math.round(p/max*100)}%;background:${c.col}"></i></div></div>`;
   }).join('');
   const mio = pulisci(playerName());
@@ -1468,7 +1555,7 @@ function mostraClassifiche(){
    parte tratteggiata sulla barra della propria Casa e nella riga del giocatore. */
 function puntiInCorso(){
   if (!G) return 0;
-  return (G.points + Math.max(0, (G.pos || 0) - 2 * (G.errItem || 0))) * PERCORSI[store.fascia].mult;
+  return Math.round((G.points + Math.max(0, (G.pos || 0) - 2 * (G.errItem || 0))) * PERCORSI[store.fascia].mult);
 }
 function mostraLive(){
   if (!G || $('game').classList.contains('hidden')) return;
@@ -1510,12 +1597,16 @@ function aggiornaChip(){
 }
 function buildCase(){
   $('scelteCasa').innerHTML = CASE.map(c =>
-    `<button class="casa-btn${casa === c.id ? ' sel' : ''}" data-id="${c.id}" style="--c:${c.col}"><span class="pallino"></span>${c.nome}</button>`).join('');
+    `<button class="casa-btn${casa === c.id ? ' sel' : ''}" data-id="${c.id}" style="--c:${c.col}">
+      <svg viewBox="0 0 42 48"><path d="M3 3h36v20c0 13-10 20-18 23C13 43 3 36 3 23z" fill="${c.col}" stroke="#F2B735" stroke-width="2.4"/>
+        <path d="M3 3h36v20c0 13-10 20-18 23C13 43 3 36 3 23z" fill="url(#lucescudo)" /><text x="21" y="29" text-anchor="middle" font-family="Fraunces,serif" font-weight="600" font-size="20" fill="#fff">${c.nome[0]}</text></svg>
+      ${c.nome}</button>`).join('')
+    + '<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="lucescudo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient></defs></svg>';
   $('scelteCasa').addEventListener('click', e => {
     const b = e.target.closest('.casa-btn'); if (!b) return;
     casa = b.dataset.id;
     try { sessionStorage.setItem('ditaveloci_casa', casa); } catch(err) {}
-    [...$('scelteCasa').children].forEach(x => x.classList.toggle('sel', x.dataset.id === casa));
+    [...$('scelteCasa').querySelectorAll('.casa-btn')].forEach(x => x.classList.toggle('sel', x.dataset.id === casa));
     $('casaAvviso').textContent = '';
     mostraClassifiche();
   });
@@ -1539,6 +1630,7 @@ const $ = id => document.getElementById(id);
 function show(id){
   ['home','game','result'].forEach(s => $(s).classList.toggle('hidden', s !== id));
   document.body.classList.toggle('ingame', id === 'game');
+  document.body.classList.toggle('lobby', id === 'home');
   window.scrollTo(0,0);
   if (id === 'game') adattaSchermo();
 }
@@ -1560,7 +1652,6 @@ function adattaSchermo(){
 addEventListener('resize', adattaSchermo);
 document.fonts?.ready.then(adattaSchermo);
 
-const isUnlocked = i => i === 0 || (profile().stars[sk(i-1)] || 0) >= 1;
 
 /* =========================================================
    TASTI CONQUISTATI: 3 stelle nella missione i = tasto numerico (i+1) % 10
@@ -1579,15 +1670,6 @@ function applicaConquiste(){
     if (on) el.insertAdjacentHTML('beforeend', medalSVG);
   });
 }
-function renderTrofei(){
-  const n = Math.min(10, MISSIONS.length);
-  const fatti = NUMERI.slice(0, n).filter((_, i) => conquistato(i)).length;
-  $('trofei').innerHTML = `<div class="lbl"><b>I tuoi tasti: ${fatti}/${n}</b>3 stelle in una missione = 1 tasto conquistato</div>
-    <div class="row">${NUMERI.map((def, i) => capHTML(def, i >= n ? 'off' : conquistato(i) ? 'conq' : '')).join('')}</div>`
-    + (percorsoCompleto() ? `<button class="btn-patente small" id="hPatente">La tua Patente · ${LIVELLI[livelloPercorso()].nome}</button>` : '');
-  $('hPatente')?.addEventListener('click', apriCerimonia);
-}
-
 /* =========================================================
    PATENTE DELLA TASTIERA
    Si ottiene completando tutte le missioni del percorso (almeno 1 stella ciascuna).
@@ -1659,7 +1741,7 @@ async function disegnaAttestato(cv, d){
     const ph = k * Math.PI / 3;
     [[13, 1], [197, 1], [13, 0], [284, 0]].forEach(([c, oriz]) => {
       ctx.beginPath();
-      const a = oriz ? 19 : 19, b = oriz ? 278 : 191;
+      const a = 19, b = oriz ? 278 : 191;
       for (let t = a; t <= b; t += .4) {
         const o = 2.7 * Math.sin(t * .42 + ph) * (0.75 + .25 * Math.cos(t * .05));
         oriz ? ctx.lineTo(t, c + o) : ctx.lineTo(c + o, t);
@@ -1848,6 +1930,102 @@ async function scaricaPatente(){
 }
 function chiudiCerimonia(){ $('cerimonia').classList.add('hidden'); }
 
+/* =========================================================
+   IL LIBRO DELLE FRASI
+   Pagina sinistra: indice dei capitoli della classe (scelta diretta).
+   Pagina destra: il capitolo aperto con l'anteprima delle frasi pescate.
+   "Sfoglia a caso": alcuni fogli girano in 3D (con un fruscio di carta)
+   e il libro si apre su un capitolo a sorpresa.
+   ========================================================= */
+const ICONE = {
+  foglia:'<path d="M4 20C4 10 10 4 20 4c0 10-6 16-16 16z"/><path d="M6 18L15 9" stroke="#fff" stroke-opacity=".55" stroke-width="1.6" fill="none"/>',
+  zampa:'<ellipse cx="12" cy="16.5" rx="5" ry="4"/><ellipse cx="5.5" cy="10.5" rx="2" ry="2.6"/><ellipse cx="9.5" cy="6.5" rx="2" ry="2.6"/><ellipse cx="14.5" cy="6.5" rx="2" ry="2.6"/><ellipse cx="18.5" cy="10.5" rx="2" ry="2.6"/>',
+  cuore:'<path d="M12 21s-8-5.2-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 5.8-8 11-8 11z"/>',
+  libro:'<path d="M3 5c3-1 6-1 9 1v14c-3-2-6-2-9-1z"/><path d="M21 5c-3-1-6-1-9 1v14c3-2 6-2 9-1z" opacity=".75"/>',
+  matita:'<path d="M4 20l1-5L15 5l4 4L9 19z"/><path d="M15 5l2-2 4 4-2 2z" opacity=".7"/>'
+};
+const libro = { fascia:null, scelta:null, items:null, sfoglia:false };
+const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' })[c]);
+function icona(ms){ const s = ms.sym || { t:'?' }; return s.i ? `<svg viewBox="0 0 24 24">${ICONE[s.i]}</svg>` : esc(s.t); }
+const scalaIcona = ms => ms.sym && ms.sym.t ? Math.min(.42, 1.25 / Math.max(2.6, ms.sym.t.length) + .05).toFixed(3) : .3;
+
+function preparaLibro(){
+  if (libro.fascia !== store.fascia) { libro.fascia = store.fascia; libro.scelta = null; libro.items = null; }
+  $('indiceTit').textContent = `Indice · classe ${PERCORSI[store.fascia].label}`;
+  const p = profile();
+  $('indice').innerHTML = MISSIONS.map((ms, i) => {
+    const st = p.stars[sk(i)] || 0;
+    return `<li><button data-i="${i}" class="${libro.scelta === i ? 'sel' : ''}" title="${esc(ms.desc)}">
+      <span class="ti" style="--h:${ms.col};--fs:calc(34px * ${scalaIcona(ms)})">${icona(ms)}</span>
+      <span class="tt"><b>${esc(ms.title)}</b><small>${esc(ms.desc)}</small></span>
+      ${st ? `<span class="st">${[1,2,3].map(k => starSVG(st >= k, 13)).join('')}</span>` : ''}
+      <span class="pg-n">${i + 1}</span></button></li>`;
+  }).join('');
+  mostraCapitolo();
+}
+function mostraCapitolo(){
+  const pg = $('paginaDx'), i = libro.scelta;
+  $('scriviBtn').classList.toggle('hidden', i == null);
+  if (i == null) {
+    pg.innerHTML = `<div class="vuota"><svg viewBox="0 0 24 24">${ICONE.libro}</svg><h3>Che cosa scriverai oggi?</h3>
+      <p>Scegli un capitolo dall'indice oppure sfoglia il libro a caso.</p></div>`;
+    return;
+  }
+  const ms = MISSIONS[i], it = libro.items, cosa = store.fascia === 'prima' ? 'parole' : 'frasi';
+  pg.innerHTML = `<div class="cap"><div class="num">Capitolo ${i + 1}</div>
+    <div class="testa"><span class="tile" style="--h:${ms.col};--fsr:${scalaIcona(ms)}">${icona(ms)}</span><h3>${esc(ms.title)}</h3></div>
+    <p class="desc">${esc(ms.desc)}</p>
+    <div class="ante"><div class="lbl">Le ${it.length} ${cosa} di oggi</div>
+      <ol>${it.slice(0, 3).map(t => `<li>${esc(t)}</li>`).join('')}</ol>
+      ${it.length > 3 ? `<span>… e altre ${it.length - 3}</span>` : ''}</div></div>`;
+}
+// fruscio di carta: rumore bianco filtrato, breve e morbido
+function fruscio(t = 0){
+  if (!store.sound) return;
+  try {
+    actx ||= new (window.AudioContext || window.webkitAudioContext)();
+    const len = Math.floor(actx.sampleRate * .28), buf = actx.createBuffer(1, len, actx.sampleRate), d = buf.getChannelData(0);
+    for (let k = 0; k < len; k++) d[k] = (Math.random() * 2 - 1) * Math.sin(Math.PI * k / len);
+    const src = actx.createBufferSource(), bp = actx.createBiquadFilter(), g = actx.createGain();
+    src.buffer = buf; bp.type = 'bandpass'; bp.frequency.value = 2600; bp.Q.value = .6; g.gain.value = .12;
+    src.connect(bp).connect(g).connect(actx.destination); src.start(actx.currentTime + t);
+  } catch(e) {}
+}
+function giraFogli(n, poi){
+  libro.sfoglia = true;
+  const dur = .62, passo = n > 2 ? .13 : .18;
+  for (let k = 0; k < n; k++) {
+    const f = document.createElement('div');
+    f.className = 'foglio';
+    f.style.setProperty('--d', dur + 's'); f.style.setProperty('--ritardo', k * passo + 's');
+    f.style.animation = `volta ${dur}s cubic-bezier(.45,.05,.35,1) ${k * passo}s both`;
+    f.innerHTML = '<div class="f"><div class="ombra"></div></div><div class="r"></div>';
+    $('libro').appendChild(f);
+    fruscio(k * passo);
+    setTimeout(() => f.remove(), (k * passo + dur) * 1000 + 60);
+  }
+  // il nuovo capitolo compare quando l'ultimo foglio ha superato la metà
+  setTimeout(() => { libro.sfoglia = false; poi(); }, ((n - 1) * passo + dur * .55) * 1000);
+}
+function apriCapitolo(i, nFogli){
+  if (libro.sfoglia) return;
+  if (!casaSceltaOk()) return;
+  store.lastName = $('name').value.trim(); save();
+  const items = scegliItems(i);
+  giraFogli(nFogli, () => {
+    libro.scelta = i; libro.items = items;
+    document.querySelectorAll('#indice button').forEach(b => b.classList.toggle('sel', +b.dataset.i === i));
+    mostraCapitolo();
+  });
+}
+function sfogliaCaso(){
+  if (libro.sfoglia || $('home').classList.contains('hidden')) return;
+  let i = Math.floor(Math.random() * MISSIONS.length);
+  if (MISSIONS.length > 1 && i === libro.scelta) i = (i + 1 + Math.floor(Math.random() * (MISSIONS.length - 1))) % MISSIONS.length;
+  apriCapitolo(i, 5 + Math.floor(Math.random() * 3));
+}
+function scrivi(){ if (libro.scelta != null && !libro.sfoglia) startMission(libro.scelta, libro.items); }
+
 /* coriandoli leggeri su canvas (oro + colore della Casa) */
 function coriandoli(){
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -1874,37 +2052,25 @@ function coriandoli(){
 
 function renderHome(){
   if (G) clearTimeout(G.timer);
-  const p = profile();
-  $('missions').innerHTML = MISSIONS.map((ms, i) => {
-    const st = p.stars[sk(i)] || 0, open = isUnlocked(i);
-    return `<button class="mcard ${st?'done':''}" data-i="${i}" ${open?'':'disabled'}>
-      ${open ? '' : `<span class="lock">${lockSVG}</span>`}
-      <span class="num">${i+1}</span>
-      <h3>${ms.title}</h3><p>${ms.desc}</p>
-      <span class="stars">${[1,2,3].map(n => starSVG(st >= n)).join('')}</span>
-    </button>`;
-  }).join('');
-  const tot = MISSIONS.reduce((a, _, i) => a + (p.stars[sk(i)] || 0), 0);
-  $('totStars').textContent = `${tot} stelle su ${MISSIONS.length*3}`;
   const nArch = MISSIONS.reduce((a, m) => a + (m.pool ? m.pool.length : 0), 0), conGen = MISSIONS.some(m => m.gen);
   $('archivio').textContent = store.fascia === 'prima'
     ? `${new Set(MISSIONS.flatMap(m => m.pool)).size} parole nell'archivio: ogni partita ne pesca di nuove`
     : (nArch ? `${nArch} frasi nell'archivio` : 'Frasi') + (conGen ? ' + combinazioni sempre nuove' : '') + ': ogni partita ne pesca di nuove';
-  renderTrofei();
   show('home');
+  preparaLibro();
 }
 
 /* ---------- partita ---------- */
 let G = null;   // stato della missione in corso
 
-function startMission(i){
+function startMission(i, items){
   if (G) clearTimeout(G.timer);
   store.lastName = $('name').value.trim(); save();
   G = { mi:i, item:0, correct:0, wrong:0, chars:0, timeMs:0, errBy:{}, t0:0, points:0 };
   aggiornaChip();
   $('gNum').textContent = `Missione ${i+1}`;
   $('gTitle').textContent = MISSIONS[i].title;
-  G.items = scegliItems(i);   // frasi nuove a ogni partita
+  G.items = items || scegliItems(i);   // frasi nuove a ogni partita (o quelle già mostrate nel libro)
   $('progress').innerHTML = G.items.map(() => '<i></i>').join('');
   applicaConquiste();
   show('game');
@@ -2034,11 +2200,11 @@ function finishMission(){
   const nuovaConquista = stars === 3 && prevStars < 3 && i < 10;
   p.stars[sk(i)] = Math.max(prevStars, stars);
   const mult = PERCORSI[store.fascia].mult;
-  const punti = (G.points + stars * 10) * mult;   // bonus: 10 punti per stella
+  const punti = Math.round((G.points + stars * 10) * mult);   // bonus: 10 punti per stella
   const c = casaById(casa);
   segnaPunteggio({ nome:playerName().slice(0, 16), casa, punti, missione:i+1, fascia:store.fascia, precisione:Math.round(acc), ppm });
   $('rGain').style.setProperty('--c', c.col);
-  $('rGain').textContent = `+${punti} punti per ${c.nome}` + (stars ? ` (bonus stelle +${stars*10})` : '') + (mult > 1 ? ` · punti ×${mult} per la ${PERCORSI[store.fascia].label}` : '');
+  $('rGain').textContent = `+${punti} punti per ${c.nome}` + (stars ? ` (bonus stelle +${stars*10})` : '') + (mult > 1 ? ` · punti ×${String(mult).replace('.', ',')} per la ${PERCORSI[store.fascia].label}` : '');
   const best = p.best[sk(i)];
   if (!best || ppm > best.ppm) p.best[sk(i)] = { ppm, acc:Math.round(acc) };
   save();
@@ -2064,8 +2230,6 @@ function finishMission(){
       }).join('') + '</div>'
     : '<h4>Nessun errore</h4><div style="color:var(--muted);font-size:.9rem">Tutti i tasti premuti al primo colpo.</div>';
 
-  const hasNext = i + 1 < MISSIONS.length;
-  $('rNext').classList.toggle('hidden', !hasNext || !isUnlocked(i + 1));
   if (percorsoCompleto() && livelloPercorso() === 'oro' && !(completoPrima && livPrima === 'oro')) $('rSub').textContent = `${name}, hai completato tutte le missioni con il massimo delle stelle.`;
   suonaStelle(stars);
   if (stars === 3) setTimeout(coriandoli, 700);
@@ -2101,16 +2265,24 @@ buildHands();
 Object.entries(PERCORSI).forEach(([k, pc]) => pc.missions.forEach((ms, i) => [...(ms.pool || []), ...(ms.gen ? Array.from({ length:200 }, ms.gen) : [])].forEach(t => [...t].forEach(c => { if (!charMap[c]) console.warn(`${k} missione ${i+1}: carattere non mappato «${c}» in «${t}»`); }))));
 
 $('name').value = store.lastName || '';
-$('name').addEventListener('input', () => { renderHome(); mostraClassifiche(); });
-$('missions').addEventListener('click', e => { const c = e.target.closest('.mcard'); if (c && !c.disabled && casaSceltaOk()) startMission(+c.dataset.i); });
+$('name').addEventListener('input', () => mostraClassifiche());
+$('name').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('name').blur(); } });
 $('exitBtn').addEventListener('click', () => { speechSynthesis.cancel?.(); renderHome(); });
 $('rMap').addEventListener('click', renderHome);
+$('sfogliaBtn').addEventListener('click', sfogliaCaso);
+$('scriviBtn').addEventListener('click', scrivi);
+$('indice').addEventListener('click', e => { const b = e.target.closest('button'); if (b && +b.dataset.i !== libro.scelta) apriCapitolo(+b.dataset.i, 2); });
+document.addEventListener('keydown', e => {
+  if ($('home').classList.contains('hidden') || !$('cerimonia').classList.contains('hidden') || document.activeElement === $('name')) return;
+  if (e.key === ' ') { e.preventDefault(); sfogliaCaso(); }
+  else if (e.key === 'Enter') { e.preventDefault(); libro.scelta != null ? scrivi() : sfogliaCaso(); }
+});
 $('rPatente').addEventListener('click', apriCerimonia);
 $('cerPdf').addEventListener('click', scaricaPatente);
 $('cerChiudi').addEventListener('click', chiudiCerimonia);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('cerimonia').classList.contains('hidden')) chiudiCerimonia(); });
 $('rRetry').addEventListener('click', () => startMission(G.mi));
-$('rNext').addEventListener('click', () => startMission(G.mi + 1));
+$('rNext').addEventListener('click', () => { renderHome(); setTimeout(sfogliaCaso, 350); });
 document.addEventListener('keydown', onKey);
 setInterval(() => { if (G && !$('game').classList.contains('hidden')) updateStats(); }, 1000);
 
@@ -2120,7 +2292,7 @@ bindToggle('tTint', 'tint', () => document.body.classList.toggle('tint', store.t
 bindToggle('tUpper', 'upper', () => document.body.classList.toggle('upper', store.upper));
 function buildFascia(){
   $('fascia').innerHTML = Object.entries(PERCORSI).map(([k, pc]) =>
-    `<button role="tab" data-k="${k}" aria-selected="${store.fascia === k}"><b>${pc.label}</b><span>${pc.sub}</span></button>`).join('');
+    `<button role="tab" data-k="${k}" aria-selected="${store.fascia === k}" title="${pc.sub}">${pc.label}</button>`).join('');
 }
 $('fascia').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b || b.dataset.k === store.fascia) return;
