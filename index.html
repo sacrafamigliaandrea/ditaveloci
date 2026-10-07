@@ -211,6 +211,21 @@
   .b-msg small{color:rgba(255,255,255,.5)}
   .prossimo-bonus{margin:-6px 0 16px;font-size:.88rem;color:var(--accent-ink)}
   .prossimo-bonus:empty{display:none}
+  /* schermata finale compatta: tutto visibile senza scroll sull'iMac, anche nel caso più ricco */
+  .result{padding:20px 32px 18px !important;margin-top:8px !important}
+  .result h2{margin:2px 0 2px !important;font-size:1.7rem !important}
+  .result .sub{margin:0 0 10px !important}
+  .bigstars svg{width:46px !important;height:46px !important}
+  .rstats{margin:10px 0 12px !important}
+  .rstats div{padding:8px !important}
+  .rstats .v{font-size:1.4rem !important}
+  .review{padding:10px 14px !important;margin-bottom:12px !important}
+  .gain{margin:0 0 10px !important;padding:8px 14px !important}
+  .conquista{margin:0 0 10px !important;padding:8px !important}
+  .conquista .stage{width:80px !important;height:80px !important}
+  .conquista .big{width:60px !important;height:60px !important;font-size:1.5rem !important}
+  .btn-patente:not(.small){margin:0 0 10px !important;padding:10px 16px !important;font-size:1rem !important}
+  .bonus-invito{margin-bottom:10px !important;padding:10px 14px !important}
   .bonus-invito{display:flex;align-items:center;gap:16px;margin:0 0 18px;padding:14px 18px;border-radius:16px;background:linear-gradient(135deg,#2B2580,#4A41B8);color:#fff;text-align:left;box-shadow:0 10px 26px rgba(43,37,128,.35)}
   .bonus-invito svg{flex:none;width:54px;height:54px}
   .bonus-invito div{flex:1}
@@ -386,6 +401,13 @@
   .freccia-mod span{background:#1C1850;color:#FFE58A;font-size:.8rem;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:999px;margin-bottom:2px;white-space:nowrap}
   .freccia-mod svg{width:34px;height:40px}
   @keyframes frecciaSu{50%{transform:translateY(8px)}}
+  /* pulsante "vai avanti" evidenziato come lo shift: lampeggio dorato + freccia che lo indica */
+  .evidenzia{position:relative;overflow:visible !important;animation:lampBtn .9s ease-in-out infinite}
+  @keyframes lampBtn{50%{box-shadow:0 0 0 6px rgba(242,183,53,.9),0 0 28px rgba(242,183,53,.85);transform:scale(1.05)}}
+  .evidenzia::after{content:'';position:absolute;left:50%;bottom:calc(100% + 6px);width:30px;height:36px;margin-left:-15px;pointer-events:none;
+    background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 46'%3E%3Cpath d='M14 2h12v22h10L20 44 4 24h10z' fill='%23F2B735' stroke='%235A3B00' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));animation:frecciaSu .7s ease-in-out infinite}
+  .invio-nota{margin:10px 0 0;font-size:.85rem;color:var(--muted)}
+  @media (prefers-reduced-motion:reduce){.evidenzia,.evidenzia::after{animation:none}}
   @media (prefers-reduced-motion:reduce){.keyboard .keys .key.target-mod,.freccia-mod{animation:none}}
   .keyboard .keys .key.miss{background:var(--warn-soft);color:#7A4A03}
 
@@ -578,6 +600,7 @@
         <button class="btn big" id="rRetry">Riprova</button>
         <button class="btn big primary" id="rNext">Sfoglia ancora</button>
       </div>
+      <p class="invio-nota">oppure premi <b>Invio</b> per continuare</p>
     </div>
   </section>
 </main>
@@ -2086,6 +2109,7 @@ function preparaLibro(){
 function mostraCapitolo(){
   const pg = $('paginaDx'), i = libro.scelta;
   $('scriviBtn').classList.toggle('hidden', i == null);
+  $('scriviBtn').classList.toggle('evidenzia', i != null);
   if (i == null) {
     pg.innerHTML = `<div class="vuota"><svg viewBox="0 0 24 24">${ICONE.libro}</svg><h3>Che cosa scriverai oggi?</h3>
       <p>Scegli un capitolo dall'indice oppure sfoglia il libro a caso.</p></div>`;
@@ -3287,6 +3311,10 @@ function finishMission(){
   if (percorsoCompleto() && livelloPercorso() === 'oro' && !(completoPrima && livPrima === 'oro')) $('rSub').textContent = `${name}, hai completato tutte le missioni con il massimo delle stelle.`;
   suonaStelle(stars);
   aggiornaInvitoBonus(bonusDovuto());   // pausa bonus ogni 2 esercizi
+  const bonusPronto = !$('rBonus').classList.contains('hidden');
+  $('rBonusGo').classList.toggle('evidenzia', bonusPronto);
+  $('rNext').classList.toggle('evidenzia', !bonusPronto);
+  setTimeout(() => $('result').querySelector('.evidenzia')?.scrollIntoView({ block:'nearest', behavior:'smooth' }), 900);
   renderPercorso();
   if (stars === 3) setTimeout(coriandoli, 700);
   // patente: nuova, oppure di livello migliore
@@ -3326,6 +3354,10 @@ $('name').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventD
 $('exitBtn').addEventListener('click', () => { speechSynthesis.cancel?.(); renderHome(); });
 $('rMap').addEventListener('click', renderHome);
 $('sfogliaBtn').addEventListener('click', sfogliaCaso);
+document.addEventListener('keydown', e => {
+  if ($('result').classList.contains('hidden') || BONUS.attivo || !$('cerimonia').classList.contains('hidden')) return;
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); e.stopImmediatePropagation(); $('result').querySelector('.evidenzia')?.click(); }   // il tasto vale una volta sola
+});
 /* Codice segreto: digitando "acerio" nella home si apre subito la Pesca delle lettere
    (partita libera: non sposta il percorso e non assegna punti alla Casa). */
 const CODICE_PESCA = 'acerio';
@@ -3344,7 +3376,7 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Enter') { e.preventDefault(); libro.scelta != null ? scrivi() : sfogliaCaso(); }
 });
 $('rPatente').addEventListener('click', apriCerimonia);
-$('rBonusGo').addEventListener('click', avviaBonus);
+$('rBonusGo').addEventListener('click', () => avviaBonus());   // niente argomento: il gioco lo decide il percorso
 $('bEsci').addEventListener('click', chiudiBonus);
 document.addEventListener('keydown', tastoBonus, true);
 addEventListener('resize', () => { if (BONUS.attivo) ridimensionaBonus(); });
