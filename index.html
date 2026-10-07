@@ -2248,7 +2248,7 @@ function fineBonus(vinto){
   if (vinto) setTimeout(coriandoli, 300);
 }
 function chiudiBonus(){
-  BONUS.attivo = false; BONUS.gioca = false; B.gioca = false;
+  BONUS.attivo = false; BONUS.gioca = false; B.gioca = false; BONUS.libera = false;
   cancelAnimationFrame(BONUS.raf);
   $('bonus').classList.add('hidden'); $('bMsg').classList.remove('on');
   renderHome();
@@ -2350,9 +2350,11 @@ function aggiornaInvitoBonus(pronto){
   $('rBonusTxt').textContent = g.desc;
   $('rProssimo').textContent = pronto ? '' : `Pausa bonus tra ${mancano} ${mancano === 1 ? 'esercizio' : 'esercizi'}: ${g.nome}`;
 }
-function avviaBonus(){
-  const g = prossimoGioco();
-  BONUS.dopo = 0; BONUS.turno++; BONUS.gioco = g.id; BONUS.attivo = true;
+function avviaBonus(forzato){
+  const g = forzato ? GIOCHI_BONUS.find(x => x.id === forzato) : prossimoGioco();
+  if (!forzato) { BONUS.dopo = 0; BONUS.turno++; }
+  BONUS.libera = !!forzato;
+  BONUS.gioco = g.id; BONUS.attivo = true;
   $('rBonus').classList.add('hidden');
   $('bonus').classList.remove('hidden');
   $('bMsg').classList.remove('on');
@@ -2388,6 +2390,7 @@ const VERDE = ['#D7F4E4', '#7FD3A5', '#1F8A5B'];
 const mostraLettera = ch => store.upper || /[a-z]/.test(ch) ? ch.toUpperCase() : ch;
 function fineGioco(o){
   BONUS.gioca = false;
+  if (BONUS.libera) { o.punti = 0; o.testo += ' <i>Partita aperta con il codice segreto: non assegna punti alla Casa.</i>'; }
   if (o.punti > 0 && casa) segnaPunteggio({ nome:playerName().slice(0, 16), casa, punti:o.punti, missione:0, fascia:store.fascia, precisione:o.prec || 0, ppm:0 });
   const c = casaById(casa);
   messaggioBonus(`<h2>${o.titolo}</h2>
@@ -2498,9 +2501,8 @@ function paroleClasse(maxLen){
   const out = new Set();
   MISSIONS.forEach(m => {
     const testi = [...(m.pool || []), ...(m.gen ? Array.from({ length:200 }, m.gen) : [])];
-    testi.forEach(t => t.split(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]+/).forEach((w, k) => {
-      if (k > 0 && /^[A-Z]/.test(w)) return;            // niente nomi propri
-      w = w.toLowerCase();
+    testi.forEach(t => t.split(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]+/).forEach(w => {
+      if (w !== w.toLowerCase()) return;                 // solo parole scritte minuscole: niente nomi propri
       if (w.length >= 3 && w.length <= maxLen) out.add(w);
     }));
   });
@@ -2596,7 +2598,7 @@ function dizionario(){
   if (DIZIONARIO) return DIZIONARIO;
   const out = new Set(), tutte = [...MISSIONI_PRIMA, ...MISSIONI_SECONDA, ...MISSIONI_GRANDI];
   tutte.forEach(m => [...(m.pool || []), ...(m.gen ? Array.from({ length:400 }, m.gen) : [])].forEach(t =>
-    t.split(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]+/).forEach((w, k) => { if (k > 0 && /^[A-Z]/.test(w)) return; w = w.toLowerCase(); if (w.length >= 3) out.add(w); })));
+    t.split(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]+/).forEach(w => { if (w === w.toLowerCase() && w.length >= 3) out.add(w); })));   // niente nomi propri
   return (DIZIONARIO = out);
 }
 const contaLettere = w => [...w].reduce((m, c) => (m[c] = (m[c] || 0) + 1, m), {});
@@ -3282,10 +3284,20 @@ $('name').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventD
 $('exitBtn').addEventListener('click', () => { speechSynthesis.cancel?.(); renderHome(); });
 $('rMap').addEventListener('click', renderHome);
 $('sfogliaBtn').addEventListener('click', sfogliaCaso);
+/* Codice segreto: digitando "acerio" nella home si apre subito la Pesca delle lettere
+   (partita libera: non sposta il percorso e non assegna punti alla Casa). */
+const CODICE_PESCA = 'acerio';
+let codiceDigitato = '';
+document.addEventListener('keydown', e => {
+  if ($('home').classList.contains('hidden') || BONUS.attivo || !$('cerimonia').classList.contains('hidden') || document.activeElement === $('name')) return;
+  if (e.key.length !== 1 || e.metaKey || e.ctrlKey) return;
+  codiceDigitato = (codiceDigitato + e.key.toLowerCase()).slice(-CODICE_PESCA.length);
+  if (codiceDigitato === CODICE_PESCA) { codiceDigitato = ''; if (classeSceltaOk()) avviaBonus('pesca'); }
+});
 $('scriviBtn').addEventListener('click', scrivi);
 $('indice').addEventListener('click', e => { const b = e.target.closest('button'); if (b && +b.dataset.i !== libro.scelta) apriCapitolo(+b.dataset.i, 2); });
 document.addEventListener('keydown', e => {
-  if ($('home').classList.contains('hidden') || !$('cerimonia').classList.contains('hidden') || document.activeElement === $('name')) return;
+  if ($('home').classList.contains('hidden') || BONUS.attivo || !$('cerimonia').classList.contains('hidden') || document.activeElement === $('name')) return;
   if (e.key === ' ') { e.preventDefault(); sfogliaCaso(); }
   else if (e.key === 'Enter') { e.preventDefault(); libro.scelta != null ? scrivi() : sfogliaCaso(); }
 });
