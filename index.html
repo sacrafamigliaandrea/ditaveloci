@@ -60,31 +60,66 @@
   body.lobby .toggle{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.14);color:#B9B5EA}
   body.lobby .toggle[aria-pressed="true"]{color:#fff}
   body.lobby .toggle .dot{background:rgba(255,255,255,.18)}
-  body.lobby main{flex:1;min-height:0;max-width:none;width:100%;padding:18px 28px 20px;position:relative}
-  #home{height:100%;display:grid;grid-template-columns:clamp(270px,19vw,360px) minmax(0,1fr) clamp(270px,19vw,360px);gap:22px}
+  body.lobby main{flex:1;min-height:0;max-width:none;width:100%;padding:12px 24px 14px;position:relative}
+  #home{height:100%;display:grid;grid-template-columns:clamp(270px,19vw,360px) minmax(0,1fr) clamp(270px,19vw,360px);grid-template-rows:minmax(0,1fr) auto;gap:14px 20px}
+  /* percorso mini nella barra in alto (esercizio e risultati) */
+  .tp-top{display:none;align-items:center;gap:12px;padding:5px 14px;border-radius:14px;background:#1C1850;box-shadow:inset 0 0 0 1px rgba(255,255,255,.1);max-width:62vw}
+  body.ingame .tp-top,body.inresult .tp-top{display:flex}
+  .tp-mini-tit{font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#A9A4EC}
+  .tp-top .tp-strada{gap:10px;justify-content:flex-start}
+  .tp-top .tp-strada::before{top:50%}
+  .tp-top .tp-es span{width:20px;height:20px;font-size:.66rem;border-width:1.5px}
+  .tp-top .tp-es span svg{width:12px;height:12px}
+  .tp-top .tp-es b,.tp-top .tp-gioco>span{display:none}
+  .tp-top .tp-ant{width:46px;border-radius:6px;border-width:1.5px;box-shadow:none}
+  .tp-top .tp-ok{display:none}
+  /* percorso a tappe */
+  .percorso{grid-column:1 / -1;display:flex;align-items:center;gap:16px;padding:6px 14px;border-radius:18px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12)}
+  .tp-tit{flex:none;display:flex;flex-direction:column;gap:1px;white-space:nowrap}
+  .tp-tit b{color:#fff;font-size:1rem}
+  .tp-tit small{color:#A9A4EC;font-size:.76rem}
+  .tp-strada{flex:1;min-width:0;display:flex;align-items:center;justify-content:space-between;position:relative}
+  .tp-strada::before{content:'';position:absolute;left:10px;right:10px;top:38%;border-top:3px dashed rgba(255,255,255,.18)}
+  .tp-es{position:relative;display:flex;flex-direction:column;align-items:center}
+  .tp-es span{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;font-weight:700;color:#C9C6F5;background:#2A2470;border:2px solid rgba(255,255,255,.2)}
+  .tp-es span svg{width:16px;height:16px}
+  .tp-es.fatto span{background:linear-gradient(180deg,#FFE58A,#F2B735);color:#3A2600;border-color:#FFE58A}
+  .tp-es.ora span{background:#5146C9;color:#fff;border-color:#C9C3FF;animation:polsoTp 1.4s ease-in-out infinite}
+  .tp-es b{position:absolute;top:29px;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:#FFD86B}
+  @keyframes polsoTp{50%{box-shadow:0 0 0 7px rgba(201,195,255,.25)}}
+  .tp-gioco{position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;opacity:.55}
+  .tp-gioco.fatto,.tp-gioco.ora{opacity:1}
+  .tp-ant{position:relative;width:clamp(68px,5vw,98px);aspect-ratio:12/7;border-radius:10px;overflow:hidden;border:2px solid rgba(255,255,255,.22);box-shadow:0 6px 16px rgba(0,0,0,.35)}
+  .tp-ant svg{display:block;width:100%;height:100%}
+  .tp-gioco.fatto .tp-ant{border-color:#F2B735}
+  .tp-gioco.ora .tp-ant{border-color:#FFD86B;animation:polsoTp 1.4s ease-in-out infinite}
+  .tp-ok{position:absolute;right:4px;top:4px;background:#1A1747;border-radius:50%;padding:2px;display:grid}
+  .tp-gioco>span{font-size:.72rem;font-weight:600;color:#DCD9FB;white-space:nowrap}
+  @media (prefers-reduced-motion:reduce){.tp-es.ora span,.tp-gioco.ora .tp-ant{animation:none}}
   .l-col,.r-col{display:flex;flex-direction:column;gap:16px;min-height:0}
   .c-col{display:flex;flex-direction:column;min-height:0}
-  .pg{background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:16px 18px;box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.1)}
+  .pg{padding:14px 16px !important;background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.04));border:1px solid rgba(255,255,255,.13);border-radius:20px;padding:16px 18px;box-shadow:0 14px 34px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.1)}
   .pg h2,.lbl-g{margin:0 0 10px;font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.12em;color:#A9A4EC;display:flex;justify-content:space-between;align-items:baseline}
   .pg h2 small{font-size:.7rem;letter-spacing:.04em;text-transform:none;color:rgba(255,255,255,.45);font-weight:400}
-  #name{width:100%;font:inherit;font-size:1.35rem;font-weight:600;padding:11px 14px;margin-bottom:14px;border:2px solid rgba(255,255,255,.16);border-radius:14px;outline:none;color:#fff;background:rgba(0,0,0,.28)}
+  #name{width:100%;font:inherit;font-size:1.15rem;font-weight:600;padding:8px 12px;margin-bottom:10px;border:2px solid rgba(255,255,255,.16);border-radius:14px;outline:none;color:#fff;background:rgba(0,0,0,.28)}
   #name::placeholder{color:rgba(255,255,255,.4);font-weight:400}
   #name:focus{border-color:#FFD86B;box-shadow:0 0 0 4px rgba(255,216,107,.18)}
-  .case-pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .casa-btn{display:flex;flex-direction:column;align-items:center;gap:6px;padding:10px 6px 9px;border-radius:14px;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#DCD9FB;font-size:.82rem;font-weight:600;transition:transform .15s,border-color .15s,background .15s,box-shadow .15s}
-  .casa-btn svg{width:42px;height:48px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
+  .case-pick{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .casa-btn{display:flex;flex-direction:row;align-items:center;gap:8px;padding:5px 8px;border-radius:10px;border:2px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#DCD9FB;font-size:.78rem;font-weight:600;text-align:left;line-height:1.15;transition:transform .15s,border-color .15s,background .15s,box-shadow .15s}
+  .casa-btn svg{flex:none;width:22px;height:26px;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35))}
   .casa-btn:hover{transform:translateY(-2px);border-color:var(--c)}
-  .casa-btn.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 32%,transparent);color:#fff;box-shadow:0 0 22px color-mix(in srgb,var(--c) 70%,transparent);transform:scale(1.04)}
-  .casa-avviso{min-height:18px;margin-top:8px;font-size:.85rem;color:#FFD86B;text-align:center}
+  .casa-btn.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 32%,transparent);color:#fff;box-shadow:0 0 16px color-mix(in srgb,var(--c) 70%,transparent);transform:none}
+  .casa-avviso{min-height:16px;margin-top:4px;font-size:.85rem;color:#FFD86B;text-align:center}
   .regole{font-size:.78rem;line-height:1.45;color:rgba(255,255,255,.55);margin-top:auto}
   .regole b{color:rgba(255,255,255,.85)}
   /* centro: intestazione e mappa */
-  .c-head{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:6px}
-  .c-head h1{margin:0;font-size:clamp(1.6rem,2.1vw,2.3rem);letter-spacing:-.01em;color:#fff;text-shadow:0 2px 14px rgba(107,97,219,.8)}
-  .archivio{display:block;margin-top:4px;font-size:.82rem;color:rgba(255,255,255,.55)}
+  .c-head{display:flex;align-items:baseline;gap:16px;margin-bottom:4px}
+  .c-head>div{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+  .c-head h1{margin:0;font-size:clamp(1.25rem,1.5vw,1.6rem);letter-spacing:-.01em;color:#fff;text-shadow:0 2px 14px rgba(107,97,219,.8)}
+  .archivio{display:inline;margin-top:0;font-size:.82rem;color:rgba(255,255,255,.55)}
   /* libro delle frasi */
-  .libro-wrap{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
-  .libro{position:relative;width:min(1000px,100%,calc((100vh - 300px) * 1.6));aspect-ratio:1.6;perspective:4200px}
+  .libro-wrap{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;container-type:size}
+  .libro{position:relative;width:min(1000px,100%,calc((100vh - 330px) * 1.6));width:min(1040px,calc(100% - 32px),calc((100cqh - 92px) * 1.6));aspect-ratio:1.6;perspective:4200px}
   .libro .cop{position:absolute;inset:-14px -16px;border-radius:18px;background:linear-gradient(135deg,#6B61DB,#3A31A0 60%,#2A2270);
     box-shadow:0 30px 70px rgba(0,0,0,.55),inset 0 0 0 2px rgba(255,255,255,.12)}
   .libro .cop::after{content:'';position:absolute;left:50%;top:0;bottom:0;width:18px;margin-left:-9px;background:linear-gradient(90deg,#241D6A,#4A41B8,#241D6A)}
@@ -119,6 +154,15 @@
   .cap .ante li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .cap .ante span{display:block;color:#9AA2B2;font-style:italic;line-height:32px}
   body.upper .cap .ante ol{text-transform:uppercase}
+  /* finestre basse: indice compatto, così tutti i capitoli restano visibili (la descrizione resta nel tooltip) */
+  @media (max-height:880px){
+    .indice{gap:1px}
+    .indice button{padding:3px 8px;gap:10px}
+    .indice .ti{width:28px;height:28px}
+    .indice .tt small{display:none}
+    .pagina h3{margin-bottom:6px}
+  }
+  .indice-vuoto{padding:10px 4px;line-height:32px;color:#5E6678}
   .vuota{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#5E6678;gap:10px}
   .vuota svg{width:90px;height:90px;fill:#C9C3FF}
   .vuota h3{color:#3A31A0}
@@ -133,7 +177,7 @@
   @keyframes volta{from{transform:rotateY(0)}to{transform:rotateY(-180deg)}}
   @keyframes ombraFoglio{0%,100%{opacity:0}50%{opacity:1}}
   .libro-btn{display:flex;gap:14px}
-  .btn-sfoglia,.btn-scrivi{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:13px 30px;font-size:1.15rem;font-weight:700;transition:transform .08s}
+  .btn-sfoglia,.btn-scrivi{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:10px 26px;font-size:1.05rem;font-weight:700;transition:transform .08s}
   .btn-sfoglia{color:#fff;background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.3)}
   .btn-sfoglia:hover{background:rgba(255,255,255,.18)}
   .btn-sfoglia svg{width:22px;height:22px;fill:currentColor}
@@ -141,11 +185,38 @@
   .btn-scrivi:active,.btn-sfoglia:active{transform:translateY(3px)}
   .libro-btn small{align-self:center;color:rgba(255,255,255,.45);font-size:.78rem}
   /* scelta della classe */
-  .classi{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px}
-  .classi button{aspect-ratio:1;border-radius:14px;border:2px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#DCD9FB;font:inherit;font-size:1.25rem;font-weight:700;transition:transform .15s,background .15s}
+  .classi{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
+  .classi button{height:36px;border-radius:10px;border:2px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05);color:#DCD9FB;font:inherit;font-size:1rem;font-weight:700;transition:transform .15s,background .15s}
   .classi button:hover{transform:translateY(-2px);border-color:rgba(255,255,255,.35)}
   .classi button[aria-selected="true"]{background:linear-gradient(180deg,#FFE58A,#F2B735);color:#3A2600;border-color:#FFE58A;box-shadow:0 0 18px rgba(242,183,53,.55)}
   @media (prefers-reduced-motion:reduce){.foglio{animation-duration:.01s !important}}
+  /* pausa bonus: Invasione delle lettere */
+  .bonus{position:fixed;inset:0;z-index:65;background:radial-gradient(ellipse at 50% 0%,#2B2580,#0B0A22 70%);overflow:hidden}
+  #cvBonus{position:absolute;inset:0;width:100%;height:100%;display:block}
+  .b-hud{position:absolute;top:16px;left:0;right:0;display:flex;justify-content:center;gap:16px;color:#EDEBFF;font-weight:700;font-size:1.05rem;letter-spacing:.04em;pointer-events:none}
+  .b-hud span{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);padding:8px 16px;border-radius:12px;font-variant-numeric:tabular-nums}
+  .b-hud .serie{color:#FFE58A}
+  .b-esci{position:absolute;top:16px;right:20px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.06);color:#DCD9FB;border-radius:10px;padding:8px 14px;font:inherit;font-size:.85rem}
+  .b-leg{position:absolute;bottom:14px;left:0;right:0;display:flex;justify-content:center;gap:18px;color:#C9C6F5;font-size:.88rem;pointer-events:none}
+  .b-leg i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
+  .b-msg{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center;color:#fff;background:rgba(11,10,34,.74);padding:20px}
+  .b-msg.on{display:flex}
+  .b-msg h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(2rem,4vw,3.4rem);margin:0;color:#FFE58A;text-shadow:0 0 18px rgba(242,183,53,.6)}
+  .b-msg p{margin:0;max-width:56ch;font-size:1.12rem;color:#DCD9FB;line-height:1.55}
+  .b-msg .b-stat{display:flex;gap:14px}
+  .b-msg .b-stat div{background:rgba(255,255,255,.08);border-radius:14px;padding:12px 20px;min-width:120px}
+  .b-msg .b-stat b{display:block;font-size:1.8rem;color:#fff}
+  .b-msg .b-stat span{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:#A9A4EC}
+  .b-msg button{border:0;border-radius:999px;padding:13px 34px;font:inherit;font-size:1.15rem;font-weight:800;color:#3A2600;background:linear-gradient(180deg,#FFE58A,#F2B735);box-shadow:0 5px 0 #B98410,0 12px 24px rgba(0,0,0,.4)}
+  .b-msg small{color:rgba(255,255,255,.5)}
+  .prossimo-bonus{margin:-6px 0 16px;font-size:.88rem;color:var(--accent-ink)}
+  .prossimo-bonus:empty{display:none}
+  .bonus-invito{display:flex;align-items:center;gap:16px;margin:0 0 18px;padding:14px 18px;border-radius:16px;background:linear-gradient(135deg,#2B2580,#4A41B8);color:#fff;text-align:left;box-shadow:0 10px 26px rgba(43,37,128,.35)}
+  .bonus-invito svg{flex:none;width:54px;height:54px}
+  .bonus-invito div{flex:1}
+  .bonus-invito b{display:block;font-size:1.1rem;color:#FFE58A}
+  .bonus-invito span{font-size:.9rem;color:#DCD9FB}
+  .bonus-invito button{flex:none;border:0;border-radius:999px;padding:11px 22px;font:inherit;font-weight:800;color:#3A2600;background:linear-gradient(180deg,#FFE58A,#F2B735);box-shadow:0 4px 0 #B98410}
   /* colonne laterali in tema scuro */
   #home .rigaCasa .top{color:#EDEBFF}
   #home .rigaCasa .nm em{color:#FFD86B;border-color:rgba(255,216,107,.4)}
@@ -391,6 +462,8 @@
     <div>Dita Veloci<small>allenamento alla tastiera</small></div>
   </div>
   <div class="spacer"></div>
+  <div class="tp-top" id="percorsoTop" aria-label="Il tuo percorso"></div>
+  <div class="spacer"></div>
   <button class="toggle" id="tVoice" aria-pressed="true"><span class="dot"></span>Voce</button>
   <button class="toggle" id="tSound" aria-pressed="true"><span class="dot"></span>Suoni</button>
   <button class="toggle" id="tTint" aria-pressed="false"><span class="dot"></span>Colori dita</button>
@@ -435,6 +508,7 @@
       <div class="pg"><h2>Sfida tra Case <small id="notaCase"></small></h2><div id="listaCase"></div></div>
       <div class="pg"><h2>Classifica di oggi</h2><ol id="listaClass"></ol><div class="nota" id="notaClass"></div></div>
     </aside>
+    <section class="percorso" id="percorso" aria-label="Il tuo percorso"></section>
   </section>
 
   <!-- ===== GIOCO ===== -->
@@ -478,6 +552,13 @@
       <div class="gain" id="rGain"></div>
       <div class="conquista hidden" id="rConq"></div>
       <button class="btn-patente hidden" id="rPatente"></button>
+      <p class="prossimo-bonus" id="rProssimo"></p>
+      <div class="bonus-invito hidden" id="rBonus">
+        <svg viewBox="0 0 54 54" aria-hidden="true"><path d="M17 10l-4-7M37 10l4-7" stroke="#C9BBF6" stroke-width="3" stroke-linecap="round"/><circle cx="13" cy="3.5" r="3" fill="#E6DEFC"/><circle cx="41" cy="3.5" r="3" fill="#E6DEFC"/>
+          <rect x="6" y="12" width="42" height="40" rx="10" fill="#A28EE8"/><rect x="6" y="10" width="42" height="38" rx="10" fill="#C9BBF6"/><text x="27" y="38" text-anchor="middle" font-family="Lexend,sans-serif" font-weight="700" font-size="24" fill="#1D2433">A</text></svg>
+        <div><b id="rBonusTit"></b><span id="rBonusTxt"></span></div>
+        <button id="rBonusGo">Gioca</button>
+      </div>
       <div class="rstats">
         <div><div class="v" id="rAcc"></div><div class="l">Precisione</div></div>
         <div><div class="v" id="rPpm"></div><div class="l">Parole al minuto</div></div>
@@ -493,6 +574,13 @@
   </section>
 </main>
 <canvas id="confetti" aria-hidden="true"></canvas>
+<div class="bonus hidden" id="bonus" role="dialog" aria-label="Pausa bonus: Invasione delle lettere">
+  <canvas id="cvBonus"></canvas>
+  <div class="b-hud"><span id="bOndata"></span><span id="bColpiti"></span><span class="serie" id="bSerie"></span></div>
+  <button class="b-esci" id="bEsci">Esci (Esc)</button>
+  <div class="b-leg" id="bLeg"></div>
+  <div class="b-msg" id="bMsg"></div>
+</div>
 <div class="cerim hidden" id="cerimonia" role="dialog" aria-label="Patente della Tastiera">
   <h2 id="cerTitolo">Patente della Tastiera</h2>
   <div class="att"><canvas id="cvAtt" width="2970" height="2100"></canvas></div>
@@ -1250,7 +1338,7 @@ const MG = i => MISSIONI_GRANDI[i];   // 0 Natura, 1 Animali, 2 Corpo, 3 Maiusco
 // mult: i testi dei più piccoli sono brevi, i loro punti valgono di più per la sfida tra Case
 const PERCORSI = {
   prima:   { label:'1ª', sub:'parole',              missions:MISSIONI_PRIMA,               mult:3,   upper:true  },
-  seconda: { label:'2ª', sub:'frasi minime',        missions:MISSIONI_SECONDA,             mult:2,   upper:false },
+  seconda: { label:'2ª', sub:'frasi minime',        missions:MISSIONI_SECONDA,             mult:2,   upper:true  },
   terza:   { label:'3ª', sub:'scienze e Italia',    missions:[0, 1, 2, 3, 4, 8].map(MG),   mult:1.5, upper:false },
   quarta:  { label:'4ª', sub:'grammatica e numeri', missions:[1, 3, 4, 5, 6, 8].map(MG),   mult:1.2, upper:false },
   quinta:  { label:'5ª', sub:'simboli e racconti',  missions:[4, 5, 6, 7, 8, 9].map(MG),   mult:1,   upper:false }
@@ -1280,6 +1368,8 @@ const FINGER_NAME = {
   'mignolo-s':'mignolo sinistro','anulare-s':'anulare sinistro','medio-s':'medio sinistro','indice-s':'indice sinistro',
   'indice-d':'indice destro','medio-d':'medio destro','anulare-d':'anulare destro','mignolo-d':'mignolo destro','pollice':'pollice'
 };
+// articolo giusto davanti al nome del dito: l'indice, l'anulare, il medio...
+const conArticolo = nome => (/^[aeiou]/.test(nome) ? "l'" : 'il ') + nome;
 const fingerOf = {};
 for (const [f, chars] of Object.entries(FINGERS)) for (const c of chars) fingerOf[c] = f;
 const fColor = f => f ? `var(--f-${f.split('-')[0]})` : 'transparent';
@@ -1388,29 +1478,35 @@ function battiDito(f, entrambiPollici){
 /* =========================================================
    STATO, SALVATAGGIO, AUDIO
    ========================================================= */
+/* Ricaricare la pagina (Cmd+R, F5, pulsante ricarica) cancella i dati del giocatore
+   come la chiusura del browser: sessionStorage altrimenti sopravviverebbe al reload. */
+try {
+  const nav = performance.getEntriesByType('navigation')[0];
+  if (nav && nav.type === 'reload') ['ditaveloci.giocatore', 'ditaveloci_casa', 'ditaveloci.visti'].forEach(k => sessionStorage.removeItem(k));
+} catch(e) {}
 const STORE_KEY = 'ditaveloci.v1';
-let store = { lastName:'', voice:true, sound:true, tint:false, upper:false, fascia:'terza', profiles:{} };
+let store = { lastName:'', voice:true, sound:true, tint:false, upper:false, fascia:null, profiles:{} };
 /* Dati del giocatore (nome, stelle, tasti conquistati) in sessionStorage:
    si cancellano alla chiusura del browser (Mac di laboratorio condivisi).
    In localStorage restano solo le preferenze del computer.
    I punteggi inviati restano comunque nella classifica condivisa. */
-const PREFS = ['voice', 'sound', 'tint', 'upper', 'fascia'];
+const PREFS = ['voice', 'sound', 'tint'];   // classe e maiuscolo li sceglie ogni studente
 const PLAYER_KEY = 'ditaveloci.giocatore';
 try {
   const old = JSON.parse(localStorage.getItem(STORE_KEY)) || {};
   PREFS.forEach(k => { if (k in old) store[k] = old[k]; });
-  if ('profiles' in old || 'lastName' in old) localStorage.setItem(STORE_KEY, JSON.stringify(Object.fromEntries(PREFS.map(k => [k, store[k]]))));
+  if ('profiles' in old || 'lastName' in old || 'fascia' in old || 'upper' in old) localStorage.setItem(STORE_KEY, JSON.stringify(Object.fromEntries(PREFS.map(k => [k, store[k]]))));
 } catch(e) {}
 try { Object.assign(store, JSON.parse(sessionStorage.getItem(PLAYER_KEY)) || {}); } catch(e) {}
-if (!PERCORSI[store.fascia]) store.fascia = 'terza';
-MISSIONS = PERCORSI[store.fascia].missions;
+if (!PERCORSI[store.fascia]) { store.fascia = null; store.upper = false; }   // nessuna classe preimpostata
+MISSIONS = store.fascia ? PERCORSI[store.fascia].missions : [];
 // chiave delle stelle: classe + missione
 const sk = i => store.fascia + '-' + i;
 // in STAMPATO MAIUSCOLO le lettere si confrontano senza distinguere maiuscole/minuscole
 const norm = c => (store.upper && /\p{L}/u.test(c)) ? c.toLowerCase() : c;
 const save = () => {
   try { localStorage.setItem(STORE_KEY, JSON.stringify(Object.fromEntries(PREFS.map(k => [k, store[k]])))); } catch(e) {}
-  try { sessionStorage.setItem(PLAYER_KEY, JSON.stringify({ lastName:store.lastName, profiles:store.profiles })); } catch(e) {}
+  try { sessionStorage.setItem(PLAYER_KEY, JSON.stringify({ lastName:store.lastName, fascia:store.fascia, upper:store.upper, profiles:store.profiles })); } catch(e) {}
 };
 const playerName = () => (document.getElementById('name').value.trim() || 'Giocatore');
 const profile = () => (store.profiles[playerName().toLowerCase()] ||= { stars:{}, best:{} });
@@ -1545,7 +1641,7 @@ function mostraClassifiche(){
         return `<li class="${nm === mio && r.c === casa ? 'io' : ''}"><span class="pl"><i style="background:${c ? c.col : 'var(--line)'}"></i><span>${i+1}. ${nm}</span></span><b>${+r.p || 0}</b></li>`;
       }).join('')
     : '<li><span class="pl"><span>Ancora nessun punteggio oggi</span></span></li>';
-  $('notaCase').textContent = 'punti totali';
+  $('notaCase').textContent = 'punti di oggi';
   $('notaClass').textContent = URL_CLASSIFICA ? 'condivisa · si aggiorna da sola · si azzera a mezzanotte' : 'classifica locale di questo computer';
   aggiornaChip();
   mostraLive();
@@ -1575,7 +1671,7 @@ function mostraLive(){
     else if (sopra) msg = `<div class="msg quasi">Ancora ${reale(sopra) - prev(mia) + 1} punti per superare ${sopra.nome}</div>`;
     else if (extra) msg = `<div class="msg su">${mia.nome} è in testa!</div>`;
   }
-  $('liveCase').innerHTML = `<h3>Sfida tra Case</h3>${barre}${msg}`;
+  $('liveCase').innerHTML = `<h3>Sfida tra Case di oggi</h3>${barre}${msg}`;
 
   // giocatori di oggi, con la mia riga aggiornata in tempo reale
   const mio = pulisci(playerName());
@@ -1611,7 +1707,14 @@ function buildCase(){
     mostraClassifiche();
   });
 }
+function classeSceltaOk(){
+  if (store.fascia) return true;
+  $('casaAvviso').textContent = 'Scegli prima la tua classe!';
+  $('fascia').animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}], {duration:220});
+  return false;
+}
 function casaSceltaOk(){
+  if (!classeSceltaOk()) return false;
   if (casa) return true;
   $('casaAvviso').textContent = 'Scegli prima la tua Casa!';
   $('scelteCasa').animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}], {duration:220});
@@ -1631,6 +1734,7 @@ function show(id){
   ['home','game','result'].forEach(s => $(s).classList.toggle('hidden', s !== id));
   document.body.classList.toggle('ingame', id === 'game');
   document.body.classList.toggle('lobby', id === 'home');
+  document.body.classList.toggle('inresult', id === 'result');
   window.scrollTo(0,0);
   if (id === 'game') adattaSchermo();
 }
@@ -1951,6 +2055,13 @@ const scalaIcona = ms => ms.sym && ms.sym.t ? Math.min(.42, 1.25 / Math.max(2.6,
 
 function preparaLibro(){
   if (libro.fascia !== store.fascia) { libro.fascia = store.fascia; libro.scelta = null; libro.items = null; }
+  if (!store.fascia) {
+    $('indiceTit').textContent = 'Indice';
+    $('indice').innerHTML = '<li class="indice-vuoto">Scegli la tua <b>classe</b> nel pannello a sinistra: qui comparirà l\'indice dei capitoli.</li>';
+    $('scriviBtn').classList.add('hidden');
+    $('paginaDx').innerHTML = `<div class="vuota"><svg viewBox="0 0 24 24">${ICONE.libro}</svg><h3>Prima di cominciare</h3><p>Scegli la tua classe e la tua Casa.</p></div>`;
+    return;
+  }
   $('indiceTit').textContent = `Indice · classe ${PERCORSI[store.fascia].label}`;
   const p = profile();
   $('indice').innerHTML = MISSIONS.map((ms, i) => {
@@ -2020,11 +2131,907 @@ function apriCapitolo(i, nFogli){
 }
 function sfogliaCaso(){
   if (libro.sfoglia || $('home').classList.contains('hidden')) return;
+  if (!casaSceltaOk()) return;
   let i = Math.floor(Math.random() * MISSIONS.length);
   if (MISSIONS.length > 1 && i === libro.scelta) i = (i + 1 + Math.floor(Math.random() * (MISSIONS.length - 1))) % MISSIONS.length;
   apriCapitolo(i, 5 + Math.floor(Math.random() * 3));
 }
 function scrivi(){ if (libro.scelta != null && !libro.sfoglia) startMission(libro.scelta, libro.items); }
+
+/* =========================================================
+   PAUSA BONUS: INVASIONE DELLE LETTERE
+   Space invaders didattico. Gli alieni sono tasti-lettera colorati con
+   il colore del dito che li deve premere; si colpiscono premendo il tasto.
+   Ondate: riga centrale → riga di sopra → tutte (con accenti/numeri per classe).
+   È il primo dei giochi premio (vedi GIOCHI_BONUS: cadenza fissa, ordine in crescendo).
+   ========================================================= */
+const BONUS = { dopo:0, turno:0, gioco:null, attivo:false, gioca:false, raf:0 };
+// cadenza fissa e prevedibile: nessuna ricompensa a probabilità variabile
+function bonusDovuto(){ BONUS.dopo++; return BONUS.dopo >= OGNI_N_ESERCIZI; }
+const EXTRA_BONUS = { prima:'', seconda:'è', terza:'àèìòù', quarta:'àèìòù', quinta:'àèìòù1234567890' };
+const ONDATE = {   // [righe, colonne] per ondata
+  prima:[[3, 6], [3, 7], [4, 8]], seconda:[[3, 7], [3, 8], [4, 9]], terza:[[3, 8], [4, 8], [4, 10]],
+  quarta:[[3, 8], [4, 9], [4, 10]], quinta:[[3, 9], [4, 10], [5, 10]]
+};
+const VEL_BONUS = { prima:16, seconda:22, terza:28, quarta:34, quinta:40 };   // px/s di partenza
+function lettereOndata(w){
+  const f = store.fascia;
+  if (w === 0) return 'asdfghjkl' + (f === 'prima' ? '' : 'ò');
+  if (w === 1) return 'qwertyuiop' + 'asdfghjkl';
+  return 'qwertyuiopasdfghjklzxcvbnm' + EXTRA_BONUS[f];
+}
+const coloreDito = ch => { const f = (charMap[ch] || {}).finger || 'pollice'; return GRAD_DITA[f.split('-')[0]] || GRAD_DITA.pollice; };
+const etichetta = ch => /[a-z]/.test(ch) ? ch.toUpperCase() : ch;
+
+const B = {};   // stato della partita bonus
+function avviaInvasione(){
+  $('bLeg').innerHTML = ['mignolo', 'anulare', 'medio', 'indice'].map(f => `<span><i style="background:${GRAD_DITA[f][1]}"></i>${f}</span>`).join('');
+  Object.assign(B, { ondata:0, colpiti:0, errori:0, serie:0, maxSerie:0, laser:[], scintille:[], fine:null, alieni:null });
+  messaggioBonus(`<h2>Invasione delle lettere!</h2>
+    <p>Le lettere stanno atterrando sulla tastiera. <b>Premi il tasto di una lettera</b> per colpirla.
+    Il colore ti dice <b>quale dito usare</b>. Non farle arrivare a terra!</p>
+    <button id="bVia">Via!</button><small>oppure barra spaziatrice</small>`);
+  $('bVia').onclick = iniziaOndata;
+  aggiornaHud();
+  cancelAnimationFrame(BONUS.raf); B.t = performance.now(); BONUS.raf = requestAnimationFrame(cicloBonus);
+}
+function messaggioBonus(html){ $('bMsg').innerHTML = html; $('bMsg').classList.add('on'); }
+function ridimensionaBonus(){
+  const cv = $('cvBonus'), dpr = window.devicePixelRatio || 1;
+  B.W = innerWidth; B.H = innerHeight;
+  cv.width = B.W * dpr; cv.height = B.H * dpr;
+  cv.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+  B.cella = Math.max(54, Math.min(96, B.W / 15));
+  B.terra = B.H - 120;
+  B.cx ??= B.W / 2; B.tx ??= B.W / 2;
+}
+function iniziaOndata(){
+  $('bMsg').classList.remove('on');
+  const [righe, col] = ONDATE[store.fascia][B.ondata], set = lettereOndata(B.ondata);
+  B.alieni = [];
+  for (let r = 0; r < righe; r++) for (let c = 0; c < col; c++)
+    B.alieni.push({ ch:set[Math.floor(Math.random() * set.length)], r, c, vivo:true });
+  B.totale = B.alieni.length;
+  B.fx = (B.W - col * B.cella) / 2; B.fy = 90; B.dir = 1; B.passo = 0;
+  B.vel = VEL_BONUS[store.fascia] * (1 + B.ondata * .25);
+  B.gioca = true; BONUS.gioca = true;
+  aggiornaHud();
+}
+function aggiornaHud(){ hudBonus(`Ondata ${Math.min(B.ondata + 1, 3)}/3`, `${B.colpiti} colpite`, `Serie ${B.serie}`); }
+const posAlieno = a => [B.fx + a.c * B.cella + B.cella / 2, B.fy + a.r * B.cella * .9 + B.cella / 2];
+
+function tastoBonus(e){
+  if (!BONUS.attivo) return;
+  if (e.key === 'Escape') { e.preventDefault(); chiudiBonus(); return; }
+  if ($('bMsg').classList.contains('on')) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); $('bMsg').querySelector('button')?.click(); }
+    return;
+  }
+  if (BONUS.gioco !== 'invasione') return ({ buio:tastoBuio, pioggia:tastoPioggia, paroliere:tastoParoliere, pesca:tastoPesca })[BONUS.gioco](e);
+  if (!B.gioca || e.metaKey || (e.ctrlKey && !e.altKey) || e.key.length !== 1) return;
+  e.preventDefault();
+  const k = e.key.toLowerCase();
+  const bersagli = B.alieni.filter(a => a.vivo && a.ch === k);
+  if (!bersagli.length) { B.errori++; B.serie = 0; B.flash = performance.now(); beep(220, .08, 'sine', .04); aggiornaHud(); return; }
+  // colpisce la lettera più bassa (la più pericolosa), a parità quella più vicina al cannone
+  bersagli.sort((a, b) => (b.r - a.r) || Math.abs(posAlieno(a)[0] - B.cx) - Math.abs(posAlieno(b)[0] - B.cx));
+  const a = bersagli[0], [x, y] = posAlieno(a);
+  a.vivo = false; B.tx = x;
+  B.colpiti++; B.serie++; B.maxSerie = Math.max(B.maxSerie, B.serie);
+  B.laser.push({ x, y, t:performance.now() });
+  const col = coloreDito(a.ch);
+  for (let k2 = 0; k2 < 16; k2++) B.scintille.push({ x, y, vx:(Math.random() - .5) * 320, vy:(Math.random() - .7) * 320, t:performance.now(), c:col[k2 % 3] });
+  suonoLaser();
+  aggiornaHud();
+  if (!B.alieni.some(a2 => a2.vivo)) setTimeout(ondataVinta, 350);
+}
+function ondataVinta(){
+  B.gioca = false;
+  if (store.sound) try { [523.25, 659.25, 783.99, 1046.5].forEach((f, k) => nota(f, k * .1, .35, .045)); } catch(e) {}
+  B.ondata++;
+  if (B.ondata >= 3) return fineBonus(true);
+  messaggioBonus(`<h2>Ondata ${B.ondata} superata!</h2><p>${B.ondata === 1 ? 'Ora arrivano le lettere della <b>riga di sopra</b>.' : 'Ultima ondata: <b>tutte le lettere</b>, più veloci!'}</p>
+    <button>Avanti</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = iniziaOndata;
+}
+function fineBonus(vinto){
+  B.gioca = false; BONUS.gioca = false; B.fine = vinto;
+  const tot = B.colpiti + B.errori, prec = tot ? Math.round(B.colpiti / tot * 100) : 0;
+  const punti = Math.round((B.colpiti + (vinto ? 10 : 0)) * PERCORSI[store.fascia].mult);   // il bonus vale meno di un esercizio
+  if (punti > 0 && casa) segnaPunteggio({ nome:playerName().slice(0, 16), casa, punti, missione:0, fascia:store.fascia, precisione:prec, ppm:0 });
+  const c = casaById(casa);
+  messaggioBonus(`<h2>${vinto ? 'Tastiera difesa!' : 'Le lettere sono atterrate!'}</h2>
+    <div class="b-stat"><div><b>${B.colpiti}</b><span>lettere colpite</span></div><div><b>${prec}%</b><span>precisione</span></div><div><b>${B.maxSerie}</b><span>serie migliore</span></div></div>
+    <p>${punti ? `+${punti} punti per ${c ? c.nome : 'la tua Casa'}.` : ''} ${vinto ? 'Hai respinto tutte e tre le ondate.' : 'Riprova la prossima volta: guarda il colore e usa il dito giusto.'}</p>
+    <button>Torna al libro</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = chiudiBonus;
+  if (vinto) setTimeout(coriandoli, 300);
+}
+function chiudiBonus(){
+  BONUS.attivo = false; BONUS.gioca = false; B.gioca = false;
+  cancelAnimationFrame(BONUS.raf);
+  $('bonus').classList.add('hidden'); $('bMsg').classList.remove('on');
+  renderHome();
+}
+
+function cicloBonus(t){
+  const dt = Math.min(.05, (t - B.t) / 1000); B.t = t;
+  const ctx = $('cvBonus').getContext('2d'), W = B.W, H = B.H, S = B.cella;
+  ctx.clearRect(0, 0, W, H);
+  // stelle che scorrono
+  ctx.fillStyle = 'rgba(255,255,255,.7)';
+  B.stelle.forEach(s => { s.y = (s.y + s.v * dt / H) % 1; ctx.beginPath(); ctx.arc(s.x * W, s.y * H, s.r, 0, 7); ctx.fill(); });
+  // terreno: una tastiera stilizzata
+  ctx.fillStyle = 'rgba(255,255,255,.06)';
+  for (let k = 0; k < 22; k++) { ctx.beginPath(); ctx.roundRect(W / 2 - 11 * 46 + k * 46, B.terra + 54, 40, 26, 6); ctx.fill(); }
+  ctx.strokeStyle = 'rgba(255,216,107,.35)'; ctx.setLineDash([6, 8]); ctx.beginPath(); ctx.moveTo(0, B.terra); ctx.lineTo(W, B.terra); ctx.stroke(); ctx.setLineDash([]);
+
+  // movimento della formazione
+  if (B.gioca && B.alieni) {
+    const vivi = B.alieni.filter(a => a.vivo);
+    const acc = 1 + (1 - vivi.length / B.totale) * 1.4;   // più ne colpisci, più accelerano (come l'originale)
+    B.fx += B.dir * B.vel * acc * dt;
+    const xs = vivi.map(a => B.fx + a.c * S), min = Math.min(...xs), max = Math.max(...xs) + S;
+    if ((B.dir > 0 && max > W - 30) || (B.dir < 0 && min < 30)) { B.dir *= -1; B.fy += S * .28; B.passo++; }
+    B.anim = Math.floor(t / 400) % 2;
+    const basso = Math.max(...vivi.map(a => B.fy + a.r * S * .9 + S));
+    if (basso >= B.terra) fineBonus(false);
+  }
+  // alieni-lettera
+  (B.alieni || []).forEach(a => {
+    if (!a.vivo) return;
+    const [x, y] = posAlieno(a), s = S * .72, col = coloreDito(a.ch), wob = B.anim ? 1 : -1;
+    ctx.strokeStyle = col[2]; ctx.lineWidth = 2.5; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x - s * .22, y - s * .5); ctx.lineTo(x - s * .32 + wob * 3, y - s * .78);
+    ctx.moveTo(x + s * .22, y - s * .5); ctx.lineTo(x + s * .32 + wob * 3, y - s * .78); ctx.stroke();
+    ctx.fillStyle = col[0]; ctx.beginPath(); ctx.arc(x - s * .32 + wob * 3, y - s * .8, 3.5, 0, 7); ctx.arc(x + s * .32 + wob * 3, y - s * .8, 3.5, 0, 7); ctx.fill();
+    ctx.fillStyle = col[2]; ctx.beginPath(); ctx.roundRect(x - s / 2, y - s / 2 + 4, s, s, 10); ctx.fill();
+    const g = ctx.createLinearGradient(0, y - s / 2, 0, y + s / 2); g.addColorStop(0, col[0]); g.addColorStop(1, col[1]);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(x - s / 2, y - s / 2, s, s, 10); ctx.fill();
+    ctx.fillStyle = '#1D2433'; ctx.font = `700 ${s * .52}px Lexend`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(etichetta(a.ch), x, y + 1);
+  });
+  // cannone
+  B.cx += (B.tx - B.cx) * Math.min(1, dt * 14);
+  const cy = B.terra + 24;
+  ctx.fillStyle = '#B98410'; ctx.beginPath(); ctx.roundRect(B.cx - 34, cy - 2, 68, 26, 10); ctx.fill();
+  const gc = ctx.createLinearGradient(0, cy - 30, 0, cy + 20); gc.addColorStop(0, '#FFF1B8'); gc.addColorStop(1, '#F2B735');
+  ctx.fillStyle = gc; ctx.beginPath(); ctx.roundRect(B.cx - 34, cy - 6, 68, 26, 10); ctx.fill();
+  ctx.beginPath(); ctx.roundRect(B.cx - 9, cy - 30, 18, 28, 6); ctx.fill();
+  if (B.flash && t - B.flash < 220) { ctx.strokeStyle = '#FFB547'; ctx.lineWidth = 3; ctx.beginPath(); ctx.roundRect(B.cx - 40, cy - 36, 80, 62, 12); ctx.stroke(); }
+  // laser
+  B.laser = B.laser.filter(l => t - l.t < 160);
+  B.laser.forEach(l => {
+    const k = 1 - (t - l.t) / 160;
+    ctx.strokeStyle = `rgba(124,242,176,${k})`; ctx.lineWidth = 5 * k + 1; ctx.shadowColor = '#7CF2B0'; ctx.shadowBlur = 14;
+    ctx.beginPath(); ctx.moveTo(B.cx, cy - 30); ctx.lineTo(l.x, l.y); ctx.stroke(); ctx.shadowBlur = 0;
+  });
+  // scintille dell'esplosione
+  B.scintille = B.scintille.filter(p => t - p.t < 600);
+  B.scintille.forEach(p => {
+    const e = (t - p.t) / 1000; ctx.globalAlpha = 1 - e / .6; ctx.fillStyle = p.c;
+    ctx.fillRect(p.x + p.vx * e, p.y + p.vy * e + 260 * e * e, 7, 7); ctx.globalAlpha = 1;
+  });
+  BONUS.raf = requestAnimationFrame(cicloBonus);
+}
+function suonoLaser(){
+  if (!store.sound) return;
+  try {
+    actx ||= new (window.AudioContext || window.webkitAudioContext)();
+    const t0 = actx.currentTime, o = actx.createOscillator(), g = actx.createGain();
+    o.type = 'triangle'; o.frequency.setValueAtTime(1100, t0); o.frequency.exponentialRampToValueAtTime(260, t0 + .14);
+    g.gain.setValueAtTime(.05, t0); g.gain.exponentialRampToValueAtTime(.0001, t0 + .16);
+    o.connect(g).connect(actx.destination); o.start(t0); o.stop(t0 + .18);
+    fruscio(.05);
+  } catch(e) {}
+}
+
+/* =========================================================
+   GIOCHI PREMIO: calendario fisso e motori di Tastiera al buio,
+   Pioggia di parole e Paroliere delle Case.
+   Cadenza: una pausa ogni OGNI_N_ESERCIZI esercizi (nessuna ricompensa a caso).
+   Ordine in crescendo: Invasione → Buio → Pioggia → Paroliere (solo dalla 3ª) → Pesca (finale).
+   ========================================================= */
+const OGNI_N_ESERCIZI = 2;
+const GIOCHI_BONUS = [
+  { id:'invasione', nome:'Invasione delle lettere', desc:'Difendi la tastiera colpendo le lettere con il dito giusto.' },
+  { id:'buio',      nome:'Tastiera al buio',        desc:'I tasti non hanno più le lettere: trovale a memoria.' },
+  { id:'pioggia',   nome:'Pioggia di parole',       desc:'Scrivi le parole prima che tocchino terra.' },
+  { id:'paroliere', nome:'Il Paroliere delle Case', desc:'Con le lettere estratte componi più parole che puoi.', grandi:true },
+  { id:'pesca',     nome:'Pesca delle lettere',     desc:'Pesca le lettere giuste, in ordine, per comporre le parole.' }
+];
+const GRANDI = ['terza', 'quarta', 'quinta'];
+const giochiClasse = () => GIOCHI_BONUS.filter(g => !g.grandi || GRANDI.includes(store.fascia));
+const prossimoGioco = () => { const l = giochiClasse(); return l[BONUS.turno % l.length]; };
+function aggiornaInvitoBonus(pronto){
+  const g = prossimoGioco(), mancano = OGNI_N_ESERCIZI - BONUS.dopo;
+  $('rBonus').classList.toggle('hidden', !pronto);
+  $('rBonusTit').textContent = `Pausa bonus: ${g.nome}!`;
+  $('rBonusTxt').textContent = g.desc;
+  $('rProssimo').textContent = pronto ? '' : `Pausa bonus tra ${mancano} ${mancano === 1 ? 'esercizio' : 'esercizi'}: ${g.nome}`;
+}
+function avviaBonus(){
+  const g = prossimoGioco();
+  BONUS.dopo = 0; BONUS.turno++; BONUS.gioco = g.id; BONUS.attivo = true;
+  $('rBonus').classList.add('hidden');
+  $('bonus').classList.remove('hidden');
+  $('bMsg').classList.remove('on');
+  cancelAnimationFrame(BONUS.raf);
+  B.stelle = Array.from({ length:120 }, () => ({ x:Math.random(), y:Math.random(), r:Math.random() * 1.6 + .3, v:Math.random() * 8 + 4 }));
+  ridimensionaBonus();
+  ({ invasione:avviaInvasione, buio:avviaBuio, pioggia:avviaPioggia, paroliere:avviaParoliere, pesca:avviaPesca })[g.id]();
+}
+
+/* ---------- strumenti comuni ---------- */
+function hudBonus(a, b, c){
+  $('bOndata').textContent = a; $('bColpiti').textContent = b;
+  $('bSerie').textContent = c || ''; $('bSerie').style.display = c ? '' : 'none';
+}
+function cieloBonus(ctx, dt){
+  ctx.clearRect(0, 0, B.W, B.H);
+  ctx.fillStyle = 'rgba(255,255,255,.7)';
+  B.stelle.forEach(s => { s.y = (s.y + s.v * dt / B.H) % 1; ctx.beginPath(); ctx.arc(s.x * B.W, s.y * B.H, s.r, 0, 7); ctx.fill(); });
+}
+function tastoCanvas(ctx, x, y, s, col, label, opz = {}){
+  ctx.globalAlpha = opz.alpha ?? 1;
+  ctx.fillStyle = col[2]; ctx.beginPath(); ctx.roundRect(x - s / 2, y - s / 2 + 4, s, s, s * .18); ctx.fill();
+  const g = ctx.createLinearGradient(0, y - s / 2, 0, y + s / 2); g.addColorStop(0, col[0]); g.addColorStop(1, col[1]);
+  ctx.fillStyle = g; ctx.beginPath(); ctx.roundRect(x - s / 2, y - s / 2, s, s, s * .18); ctx.fill();
+  if (opz.bordo) { ctx.strokeStyle = opz.bordo; ctx.lineWidth = 4; ctx.beginPath(); ctx.roundRect(x - s / 2 - 4, y - s / 2 - 4, s + 8, s + 12, s * .22); ctx.stroke(); }
+  if (label) { ctx.fillStyle = '#1D2433'; ctx.font = `700 ${s * .5}px Lexend`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(label, x, y + 1); }
+  if (opz.rilievo) { ctx.fillStyle = 'rgba(29,36,51,.35)'; ctx.fillRect(x - s * .12, y + s * .3, s * .24, 3); }
+  ctx.globalAlpha = 1;
+}
+const GRIGIO = ['#F2F4F8', '#D9DEE8', '#A9B1C2'];
+const AMBRA = ['#FFE7B8', '#FFC966', '#D99A1E'];
+const VERDE = ['#D7F4E4', '#7FD3A5', '#1F8A5B'];
+const mostraLettera = ch => store.upper || /[a-z]/.test(ch) ? ch.toUpperCase() : ch;
+function fineGioco(o){
+  BONUS.gioca = false;
+  if (o.punti > 0 && casa) segnaPunteggio({ nome:playerName().slice(0, 16), casa, punti:o.punti, missione:0, fascia:store.fascia, precisione:o.prec || 0, ppm:0 });
+  const c = casaById(casa);
+  messaggioBonus(`<h2>${o.titolo}</h2>
+    <div class="b-stat">${o.stats.map(([v, l]) => `<div><b>${v}</b><span>${l}</span></div>`).join('')}</div>
+    <p>${o.punti > 0 ? `+${o.punti} punti per ${c ? c.nome : 'la tua Casa'}. ` : ''}${o.testo}</p>
+    <button>Torna al libro</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = chiudiBonus;
+  if (o.festa) setTimeout(coriandoli, 300);
+  suonaStelle(o.festa ? 3 : 1);
+}
+const ripassoTesto = mancate => {
+  const l = Object.entries(mancate).sort((a, b) => b[1] - a[1]).slice(0, 6).map(([c]) => mostraLettera(c));
+  return l.length ? `Da ripassare: <b>${l.join(', ')}</b>.` : 'Nessun tasto da ripassare.';
+};
+
+/* =========================================================
+   TASTIERA AL BUIO
+   Compare una lettera grande; sulla tastiera disegnata i tasti sono vuoti
+   (restano solo i rilievi di F e J). Dopo un errore il tasto giusto si
+   illumina con la lettera e il nome del dito: l'errore diventa informazione.
+   ========================================================= */
+const D = {};
+function righeBuio(){
+  const r = ['qwertyuiop' + (GRANDI.includes(store.fascia) ? 'è' : ''), 'asdfghjkl' + (store.fascia === 'prima' ? '' : 'ò') + (GRANDI.includes(store.fascia) ? 'àù' : ''), 'zxcvbnm'];
+  if (store.fascia === 'quinta') r.unshift('1234567890');
+  return r;
+}
+function avviaBuio(){
+  const righe = righeBuio(), tutte = righe.join('');
+  const n = { prima:12, seconda:15 }[store.fascia] || 20;
+  const seq = [];
+  while (seq.length < n) { const c = tutte[Math.floor(Math.random() * tutte.length)]; if (c !== seq[seq.length - 1]) seq.push(c); }
+  Object.assign(D, { righe, seq, i:0, giuste:0, errori:0, primo:true, mancate:{}, flash:null, aiuto:'', t0:0, tempi:[] });
+  $('bLeg').innerHTML = '<span>Indici su <b>F</b> e <b>J</b>: senti i rilievi e non guardare le mani</span>';
+  hudBuio();
+  messaggioBonus(`<h2>Tastiera al buio</h2>
+    <p>Sui tasti non ci sono più le lettere! Appare una lettera: <b>premi il suo tasto senza guardare la tastiera</b>.
+    Se sbagli, ti mostro dov'era e quale dito usare.</p>
+    <button>Via!</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = () => { $('bMsg').classList.remove('on'); BONUS.gioca = true; D.t0 = performance.now(); };
+  B.t = performance.now(); BONUS.raf = requestAnimationFrame(cicloBuio);
+}
+function hudBuio(){ hudBonus(`Lettera ${Math.min(D.i + 1, D.seq.length)}/${D.seq.length}`, `${D.giuste} al primo colpo`); }
+function posTastoBuio(ch){
+  const s = Math.max(48, Math.min(78, B.W / 15)), gap = s * .16, base = B.H * .52;
+  for (let r = 0; r < D.righe.length; r++) {
+    const riga = D.righe[r], k = riga.indexOf(ch);
+    if (k < 0) continue;
+    const off = (D.righe.length === 4 ? [0, .25, .5, 1] : [0, .3, .8])[r] * s;
+    const w = riga.length * (s + gap);
+    return [B.W / 2 - w / 2 + off + k * (s + gap) + s / 2, base + r * (s + gap * 1.4), s];
+  }
+}
+function tastoBuio(e){
+  if (!BONUS.gioca || e.metaKey || (e.ctrlKey && !e.altKey) || e.key.length !== 1) return;
+  e.preventDefault();
+  const k = e.key.toLowerCase(), giusta = D.seq[D.i];
+  if (k === giusta) {
+    if (D.primo) D.giuste++;
+    D.tempi.push(performance.now() - D.t0);
+    D.flash = { ch:giusta, ok:true, t:performance.now() }; D.aiuto = '';
+    beep(880, .05, 'triangle', .04);
+    D.i++; D.primo = true; D.t0 = performance.now(); hudBuio();
+    if (D.i >= D.seq.length) setTimeout(fineBuio, 400);
+  } else {
+    D.errori++; D.primo = false; D.mancate[giusta] = (D.mancate[giusta] || 0) + 1;
+    D.flash = { ch:giusta, ok:false, t:performance.now() };
+    const dito = FINGER_NAME[(charMap[giusta] || {}).finger] || '';
+    D.aiuto = `È il tasto illuminato: usa ${conArticolo(dito)}`;
+    beep(220, .08, 'sine', .04);
+  }
+}
+function fineBuio(){
+  const n = D.seq.length, prec = Math.round(n / (n + D.errori) * 100);
+  const medio = D.tempi.length ? (D.tempi.reduce((a, b) => a + b, 0) / D.tempi.length / 1000).toFixed(1).replace('.', ',') : '0';
+  fineGioco({ titolo: D.giuste >= n * .8 ? 'Tastiera dominata!' : 'Tastiera esplorata!',
+    stats:[[`${D.giuste}/${n}`, 'al primo colpo'], [prec + '%', 'precisione'], [medio + ' s', 'per lettera']],
+    testo: ripassoTesto(D.mancate), punti: Math.round((D.giuste + (D.giuste >= n * .8 ? 5 : 0)) * PERCORSI[store.fascia].mult),
+    prec, festa: D.giuste >= n * .8 });
+}
+function cicloBuio(t){
+  const dt = Math.min(.05, (t - B.t) / 1000); B.t = t;
+  const ctx = $('cvBonus').getContext('2d'); cieloBonus(ctx, dt);
+  // lettera da cercare
+  const ch = D.seq[Math.min(D.i, D.seq.length - 1)];
+  if (D.i < D.seq.length) {
+    const s = Math.min(180, B.H * .2);
+    tastoCanvas(ctx, B.W / 2, B.H * .24, s, ['#FFFFFF', '#E7E5FA', '#8C83EC'], mostraLettera(ch));
+    if (D.aiuto) { ctx.fillStyle = '#FFE58A'; ctx.font = '600 20px Lexend'; ctx.textAlign = 'center'; ctx.fillText(D.aiuto, B.W / 2, B.H * .24 + s * .75); }
+  }
+  // tastiera senza lettere
+  D.righe.forEach(riga => [...riga].forEach(c => {
+    const [x, y, s] = posTastoBuio(c), f = D.flash, attivo = f && f.ch === c && t - f.t < (f.ok ? 350 : 1600);
+    const col = attivo ? (f.ok ? VERDE : AMBRA) : GRIGIO;
+    tastoCanvas(ctx, x, y, s, col, attivo ? mostraLettera(c) : '', { rilievo: c === 'f' || c === 'j' });
+  }));
+  BONUS.raf = requestAnimationFrame(cicloBuio);
+}
+
+/* =========================================================
+   PIOGGIA DI PAROLE
+   Cadono parole dell'archivio della classe. Alla prima lettera giusta il
+   gioco si aggancia alla parola (bordo dorato) e la si completa lettera per
+   lettera. Le parole sfuggite non fanno perdere: finiscono nel ripasso.
+   ========================================================= */
+const P2 = {};
+function paroleClasse(maxLen){
+  const out = new Set();
+  MISSIONS.forEach(m => {
+    const testi = [...(m.pool || []), ...(m.gen ? Array.from({ length:200 }, m.gen) : [])];
+    testi.forEach(t => t.split(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]+/).forEach((w, k) => {
+      if (k > 0 && /^[A-Z]/.test(w)) return;            // niente nomi propri
+      w = w.toLowerCase();
+      if (w.length >= 3 && w.length <= maxLen) out.add(w);
+    }));
+  });
+  return [...out];
+}
+function avviaPioggia(){
+  const f = store.fascia, n = { prima:10, seconda:12 }[f] || 15;
+  const lista = paroleClasse({ prima:6, seconda:7 }[f] || 9).sort(() => Math.random() - .5).slice(0, n);
+  Object.assign(P2, { coda:lista, cadute:[], prese:0, sfuggite:[], lettere:0, errori:0, lock:null, prossima:0,
+    ogni: { prima:3.6, seconda:3.1 }[f] || 2.6, vel: { prima:22, seconda:28, terza:34, quarta:40, quinta:46 }[f], flash:0, scoppi:[] });
+  $('bLeg').innerHTML = '<span>Scrivi una parola intera: alla prima lettera giusta resta agganciata (bordo dorato)</span>';
+  hudPioggia();
+  messaggioBonus(`<h2>Pioggia di parole</h2>
+    <p>Dal cielo cadono parole. <b>Scrivile tutte intere</b> prima che tocchino terra:
+    quando premi la prima lettera, la parola si aggancia e la completi lettera per lettera.</p>
+    <button>Via!</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = () => { $('bMsg').classList.remove('on'); BONUS.gioca = true; P2.prossima = performance.now(); };
+  B.t = performance.now(); BONUS.raf = requestAnimationFrame(cicloPioggia);
+}
+function hudPioggia(){ hudBonus(`Parole ${P2.prese + P2.sfuggite.length}/${P2.prese + P2.sfuggite.length + P2.coda.length + P2.cadute.length}`, `${P2.prese} prese`); }
+function tastoPioggia(e){
+  if (!BONUS.gioca || e.metaKey || (e.ctrlKey && !e.altKey) || e.key.length !== 1) return;
+  e.preventDefault();
+  const k = e.key.toLowerCase();
+  if (!P2.lock) {
+    const c = P2.cadute.filter(p => p.w[0] === k).sort((a, b) => b.y - a.y)[0];
+    if (!c) { P2.errori++; P2.flash = performance.now(); beep(220, .08, 'sine', .04); return; }
+    P2.lock = c; c.fatto = 0;
+  }
+  const p = P2.lock;
+  if (p.w[p.fatto] === k) {
+    p.fatto++; P2.lettere++; beep(1100, .02, 'triangle', .02);
+    if (p.fatto >= p.w.length) {
+      P2.prese++; P2.cadute = P2.cadute.filter(q => q !== p); P2.lock = null;
+      P2.scoppi.push({ x:p.x, y:p.y, w:p.w, t:performance.now() });
+      suonoLaser(); hudPioggia();
+    }
+  } else { P2.errori++; P2.flash = performance.now(); beep(220, .08, 'sine', .04); }
+}
+function cicloPioggia(t){
+  const dt = Math.min(.05, (t - B.t) / 1000); B.t = t;
+  const ctx = $('cvBonus').getContext('2d'); cieloBonus(ctx, dt);
+  const terra = B.H - 110, fs = Math.max(26, Math.min(40, B.W / 46));
+  ctx.strokeStyle = 'rgba(255,216,107,.35)'; ctx.setLineDash([6, 8]); ctx.beginPath(); ctx.moveTo(0, terra); ctx.lineTo(B.W, terra); ctx.stroke(); ctx.setLineDash([]);
+  if (BONUS.gioca) {
+    if (P2.coda.length && t >= P2.prossima) {
+      const w = P2.coda.shift(); ctx.font = `700 ${fs}px Lexend`;
+      const larg = ctx.measureText(mostraParola(w)).width + 40;
+      P2.cadute.push({ w, x: 60 + larg / 2 + Math.random() * (B.W - 120 - larg), y: 70, fatto:0 });
+      P2.prossima = t + P2.ogni * 1000; hudPioggia();
+    }
+    P2.cadute.forEach(p => { p.y += P2.vel * dt * (p === P2.lock ? .6 : 1); });   // la parola agganciata rallenta
+    P2.cadute.filter(p => p.y > terra).forEach(p => {
+      P2.sfuggite.push(p.w); if (P2.lock === p) P2.lock = null;
+    });
+    P2.cadute = P2.cadute.filter(p => p.y <= terra);
+    if (!P2.coda.length && !P2.cadute.length) { BONUS.gioca = false; setTimeout(finePioggia, 500); }
+  }
+  // parole
+  ctx.font = `700 ${fs}px Lexend`; ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+  P2.cadute.forEach(p => {
+    const testo = mostraParola(p.w), larg = ctx.measureText(testo).width, x0 = p.x - larg / 2;
+    ctx.fillStyle = 'rgba(255,253,246,.95)'; ctx.beginPath(); ctx.roundRect(x0 - 18, p.y - fs * .85, larg + 36, fs * 1.7, 14); ctx.fill();
+    if (p === P2.lock) { ctx.strokeStyle = t - P2.flash < 220 ? '#FFB547' : '#F2B735'; ctx.lineWidth = 4; ctx.stroke(); }
+    const fatto = testo.slice(0, p.fatto);
+    ctx.fillStyle = '#1F8A5B'; ctx.fillText(fatto, x0, p.y + 1);
+    ctx.fillStyle = '#1D2433'; ctx.fillText(testo.slice(p.fatto), x0 + ctx.measureText(fatto).width, p.y + 1);
+  });
+  P2.scoppi = P2.scoppi.filter(s => t - s.t < 500);
+  P2.scoppi.forEach(s => { const k = (t - s.t) / 500; ctx.globalAlpha = 1 - k; ctx.fillStyle = '#7CF2B0'; ctx.textAlign = 'center';
+    ctx.font = `700 ${fs * (1 + k * .6)}px Lexend`; ctx.fillText(mostraParola(s.w), s.x, s.y - k * 30); ctx.globalAlpha = 1; });
+  BONUS.raf = requestAnimationFrame(cicloPioggia);
+}
+const mostraParola = w => store.upper ? w.toUpperCase() : w;
+function finePioggia(){
+  const tot = P2.prese + P2.sfuggite.length, prec = Math.round(P2.lettere / Math.max(1, P2.lettere + P2.errori) * 100);
+  fineGioco({ titolo: P2.prese === tot ? 'Nemmeno una goccia a terra!' : 'Pioggia superata!',
+    stats:[[`${P2.prese}/${tot}`, 'parole prese'], [prec + '%', 'lettere giuste'], [P2.sfuggite.length, 'sfuggite']],
+    testo: P2.sfuggite.length ? `Ti sono sfuggite: <b>${P2.sfuggite.slice(0, 6).map(mostraParola).join(', ')}</b>. Riprova a scriverle a voce alta nella testa, lettera per lettera.` : 'Le hai prese tutte.',
+    punti: Math.round(P2.prese * 2 * PERCORSI[store.fascia].mult), prec, festa: P2.prese === tot });
+}
+
+/* =========================================================
+   IL PAROLIERE DELLE CASE (dalla 3ª)
+   Escono le lettere di una parola dell'archivio, mescolate. Si compongono
+   parole di almeno 3 lettere usando ogni tessera una sola volta (Invio per
+   confermare, Backspace per cancellare). Valgono le parole del dizionario
+   del gioco, costruito dall'archivio di tutte le classi.
+   ========================================================= */
+const PR = {};
+let DIZIONARIO = null;
+function dizionario(){
+  if (DIZIONARIO) return DIZIONARIO;
+  const out = new Set(), tutte = [...MISSIONI_PRIMA, ...MISSIONI_SECONDA, ...MISSIONI_GRANDI];
+  tutte.forEach(m => [...(m.pool || []), ...(m.gen ? Array.from({ length:400 }, m.gen) : [])].forEach(t =>
+    t.split(/[^a-zA-ZàèéìòùÀÈÉÌÒÙ]+/).forEach((w, k) => { if (k > 0 && /^[A-Z]/.test(w)) return; w = w.toLowerCase(); if (w.length >= 3) out.add(w); })));
+  return (DIZIONARIO = out);
+}
+const contaLettere = w => [...w].reduce((m, c) => (m[c] = (m[c] || 0) + 1, m), {});
+const siCompone = (w, tess) => { const n = contaLettere(w); return Object.keys(n).every(c => (tess[c] || 0) >= n[c]); };
+function nuovoTurnoParoliere(){
+  const diz = [...dizionario()], semi = diz.filter(w => w.length === 7 && /^[a-z]+$/.test(w));
+  let seme, possibili = [];
+  for (let k = 0; k < 80; k++) {
+    seme = semi[Math.floor(Math.random() * semi.length)];
+    const tess = contaLettere(seme);
+    possibili = diz.filter(w => w.length <= 7 && siCompone(w, tess));
+    if (possibili.length >= 8) break;
+  }
+  Object.assign(PR, { seme, tessere:[...seme].sort(() => Math.random() - .5), possibili:new Set(possibili),
+    trovate:[], scritta:'', fine: performance.now() + PR.durata * 1000, avviso:'', avvisoT:0 });
+}
+function avviaParoliere(){
+  Object.assign(PR, { turno:0, turni:2, durata:75, totale:0, tutte:[] });
+  $('bLeg').innerHTML = '<span>Invio = conferma la parola · Backspace = cancella una lettera · ogni tessera si usa una volta</span>';
+  messaggioBonus(`<h2>Il Paroliere delle Case</h2>
+    <p>Escono 7 lettere. <b>Componi più parole che puoi</b> (almeno 3 lettere), usando ogni lettera una volta sola.
+    Premi <b>Invio</b> per confermare. Le parole lunghe valgono di più: c'è sempre una parola che le usa tutte!</p>
+    <button>Via!</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = iniziaTurnoParoliere;
+  hudBonus('Turno 1/2', '0 parole');
+  B.t = performance.now(); BONUS.raf = requestAnimationFrame(cicloParoliere);
+}
+function iniziaTurnoParoliere(){ $('bMsg').classList.remove('on'); nuovoTurnoParoliere(); BONUS.gioca = true; hudParoliere(); }
+function hudParoliere(){ hudBonus(`Turno ${PR.turno + 1}/${PR.turni}`, `${PR.trovate.length}/${PR.possibili.size} parole`, `${PR.totale + PR.trovate.reduce((a, w) => a + w.length, 0)} lettere`); }
+function avvisoParoliere(t){ PR.avviso = t; PR.avvisoT = performance.now(); }
+function tastoParoliere(e){
+  if (!BONUS.gioca || e.metaKey || (e.ctrlKey && !e.altKey)) return;
+  if (e.key === 'Backspace') { e.preventDefault(); PR.scritta = PR.scritta.slice(0, -1); return; }
+  if (e.key === 'Enter') { e.preventDefault(); confermaParola(); return; }
+  if (e.key.length !== 1) return;
+  e.preventDefault();
+  const k = e.key.toLowerCase(), disp = contaLettere(PR.tessere.join('')), usate = contaLettere(PR.scritta);
+  if ((disp[k] || 0) > (usate[k] || 0)) PR.scritta += k;
+  else { avvisoParoliere(`La lettera ${mostraLettera(k)} non c'è o l'hai già usata`); beep(220, .08, 'sine', .04); }
+}
+function confermaParola(){
+  const w = PR.scritta;
+  if (w.length < 3) avvisoParoliere('Servono almeno 3 lettere');
+  else if (PR.trovate.includes(w)) avvisoParoliere('Parola già trovata');
+  else if (PR.possibili.has(w)) { PR.trovate.push(w); suonoLaser(); PR.scritta = ''; avvisoParoliere(`+${w.length} lettere`); hudParoliere(); return; }
+  else avvisoParoliere('Non è nel dizionario del gioco: prova un\'altra parola');
+  beep(220, .08, 'sine', .04);
+}
+function fineTurnoParoliere(){
+  BONUS.gioca = false;
+  PR.totale += PR.trovate.reduce((a, w) => a + w.length, 0); PR.tutte.push(...PR.trovate);
+  PR.turno++;
+  const lunga = [...PR.possibili].sort((a, b) => b.length - a.length)[0];
+  const testo = `Hai trovato <b>${PR.trovate.length}</b> parole su ${PR.possibili.size} del dizionario. La più lunga possibile era <b>${mostraParola(lunga)}</b>.`;
+  if (PR.turno >= PR.turni) return fineParoliere(testo);
+  messaggioBonus(`<h2>Turno finito!</h2><p>${testo}</p><button>Turno ${PR.turno + 1}</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = iniziaTurnoParoliere;
+}
+function fineParoliere(ultimo){
+  const lunga = PR.tutte.sort((a, b) => b.length - a.length)[0] || '-';
+  fineGioco({ titolo:'Paroliere completato!', stats:[[PR.tutte.length, 'parole trovate'], [PR.totale, 'lettere in tutto'], [mostraParola(lunga), 'la tua più lunga']],
+    testo: ultimo, punti: Math.round(PR.totale / 2 * PERCORSI[store.fascia].mult), prec:0, festa: PR.tutte.length >= 6 });
+}
+function cicloParoliere(t){
+  const dt = Math.min(.05, (t - B.t) / 1000); B.t = t;
+  const ctx = $('cvBonus').getContext('2d'); cieloBonus(ctx, dt);
+  if (!PR.tessere) { BONUS.raf = requestAnimationFrame(cicloParoliere); return; }
+  const s = Math.max(60, Math.min(104, B.W / 13)), gap = s * .22;
+  // tempo che resta (regola il ritmo, non il punteggio)
+  const resta = Math.max(0, (PR.fine - t) / 1000);
+  if (BONUS.gioca && resta <= 0) fineTurnoParoliere();
+  const bw = Math.min(700, B.W * .6);
+  ctx.fillStyle = 'rgba(255,255,255,.1)'; ctx.beginPath(); ctx.roundRect(B.W / 2 - bw / 2, 78, bw, 10, 5); ctx.fill();
+  ctx.fillStyle = '#FFD86B'; ctx.beginPath(); ctx.roundRect(B.W / 2 - bw / 2, 78, bw * resta / PR.durata, 10, 5); ctx.fill();
+  // tessere: colorate con il dito che le preme; quelle già usate nella parola in corso sono spente
+  const usate = contaLettere(PR.scritta), visto = {}, w = PR.tessere.length * (s + gap) - gap;
+  PR.tessere.forEach((c, k) => {
+    visto[c] = (visto[c] || 0) + 1;
+    tastoCanvas(ctx, B.W / 2 - w / 2 + s / 2 + k * (s + gap), B.H * .62, s, coloreDito(c), mostraLettera(c), { alpha: visto[c] <= (usate[c] || 0) ? .25 : 1 });
+  });
+  // parola in composizione
+  const sw = Math.max(1, PR.scritta.length) * (s * .8 + 8);
+  ctx.fillStyle = 'rgba(255,253,246,.95)'; ctx.beginPath(); ctx.roundRect(B.W / 2 - Math.max(sw, s * 3) / 2 - 20, B.H * .4 - s * .6, Math.max(sw, s * 3) + 40, s * 1.2, 16); ctx.fill();
+  ctx.fillStyle = '#1D2433'; ctx.font = `700 ${s * .6}px Lexend`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(PR.scritta ? mostraParola(PR.scritta) : '', B.W / 2, B.H * .4 + 2);
+  if (!PR.scritta) { ctx.fillStyle = '#9AA2B2'; ctx.font = `500 ${s * .28}px Lexend`; ctx.fillText('scrivi una parola…', B.W / 2, B.H * .4 + 2); }
+  if (PR.avviso && t - PR.avvisoT < 1800) { ctx.fillStyle = '#FFE58A'; ctx.font = '600 20px Lexend'; ctx.fillText(PR.avviso, B.W / 2, B.H * .4 + s * .95); }
+  // parole trovate
+  ctx.font = '600 20px Lexend'; ctx.textAlign = 'left'; ctx.fillStyle = '#7CF2B0';
+  PR.trovate.forEach((p, k) => ctx.fillText(mostraParola(p), 40 + Math.floor(k / 12) * 170, 150 + (k % 12) * 30));
+  BONUS.raf = requestAnimationFrame(cicloParoliere);
+}
+
+/* =========================================================
+   PESCA DELLE LETTERE (gioco finale della sequenza)
+   In alto la parola da comporre; nel mare nuotano pesci-lettera colorati
+   come il dito che li preme. Si pesca premendo il tasto della lettera che
+   serve ORA: la parola si compone in ordine (ortografia). La lettera
+   necessaria arriva sempre entro pochi secondi; gli errori non penalizzano.
+   ========================================================= */
+const PE = {};
+function avviaPesca(){
+  const f = store.fascia, n = { prima:4, seconda:5 }[f] || 6, maxLen = { prima:5, seconda:6 }[f] || 8;
+  const parole = paroleClasse(maxLen).filter(w => /^[a-zàèìòù]+$/.test(w)).sort(() => Math.random() - .5).slice(0, n);
+  Object.assign(PE, { monti:null, cima:null, parole, wi:0, pos:0, pesci:[], presi:0, errori:0, lenza:null, avviso:'', avvisoT:0, ultimoServe:0,
+    prossimo:0, vel: { prima:55, seconda:70, terza:85, quarta:100, quinta:115 }[f], festaT:0,
+    bolle: Array.from({ length:40 }, () => ({ x:Math.random(), y:Math.random(), r:Math.random() * 4 + 2, v:Math.random() * 30 + 20 })) });
+  $('bLeg').innerHTML = ['mignolo', 'anulare', 'medio', 'indice'].map(d => `<span><i style="background:${GRAD_DITA[d][1]}"></i>${d}</span>`).join('');
+  hudPesca();
+  messaggioBonus(`<h2>Pesca delle lettere</h2>
+    <p>In alto c'è una parola da comporre. <b>Premi il tasto della lettera che serve</b>: la lenza pesca il pesce con quella lettera.
+    Le lettere vanno pescate <b>in ordine</b>, come quando scrivi. Il colore del pesce ti dice quale dito usare.</p>
+    <button>Via!</button><small>oppure barra spaziatrice</small>`);
+  $('bMsg').querySelector('button').onclick = () => { $('bMsg').classList.remove('on'); BONUS.gioca = true; PE.prossimo = performance.now(); PE.ultimoServe = performance.now(); };
+  B.t = performance.now(); BONUS.raf = requestAnimationFrame(cicloPesca);
+}
+function hudPesca(){ hudBonus(`Parola ${Math.min(PE.wi + 1, PE.parole.length)}/${PE.parole.length}`, `${PE.presi} pesci`); }
+const parolaPesca = () => PE.parole[PE.wi] || '';
+function nuovoPesce(ch){
+  const dir = Math.random() < .5 ? 1 : -1, s = Math.max(70, Math.min(104, B.W / 18));
+  PE.pesci.push({ ch, dir, s, x: dir > 0 ? -s : B.W + s, y: B.H * (.42 + Math.random() * .42), v: PE.vel * (.7 + Math.random() * .6), fase: Math.random() * 6 });
+}
+function generaPesci(t){
+  const w = parolaPesca(); if (!w) return;
+  const serve = w[PE.pos], presenti = PE.pesci.filter(p => p.ch === serve && !p.preso).length;
+  // la lettera che serve non manca mai a lungo
+  if (!presenti && t - PE.ultimoServe > 2200) { nuovoPesce(serve); PE.ultimoServe = t; return; }
+  if (t < PE.prossimo || PE.pesci.length >= 9) return;
+  const r = Math.random();
+  const ch = r < .4 ? serve : r < .7 ? w[Math.floor(Math.random() * w.length)] : 'aeiourstlnmcp'[Math.floor(Math.random() * 13)];
+  if (ch === serve) PE.ultimoServe = t;
+  nuovoPesce(ch);
+  PE.prossimo = t + 900 + Math.random() * 600;
+}
+function tastoPesca(e){
+  if (!BONUS.gioca || e.metaKey || (e.ctrlKey && !e.altKey) || e.key.length !== 1) return;
+  e.preventDefault();
+  if (PE.lenza) return;                                  // la lenza è già in acqua
+  const k = e.key.toLowerCase(), serve = parolaPesca()[PE.pos];
+  if (k !== serve) {
+    PE.errori++; PE.avviso = `Ora serve la ${mostraLettera(serve)}`; PE.avvisoT = performance.now();
+    beep(220, .08, 'sine', .04); return;
+  }
+  const cima = PE.cima || [B.W * .2, B.H * .2];
+  const c = PE.pesci.filter(p => p.ch === k && !p.preso && p.x > 0 && p.x < B.W)
+    .sort((a, b) => Math.hypot(a.x - cima[0], a.y - cima[1]) - Math.hypot(b.x - cima[0], b.y - cima[1]))[0];
+  if (!c) { PE.avviso = `Aspetta un pesce con la ${mostraLettera(k)}`; PE.avvisoT = performance.now(); return; }
+  c.preso = true; PE.lenza = { pesce:c, fase:'scende', t:performance.now() };
+  beep(660, .05, 'triangle', .03);
+}
+function pescato(){
+  PE.presi++; PE.pos++; PE.lenza = null;
+  PE.pesci = PE.pesci.filter(p => !p.preso);
+  beep(990, .06, 'triangle', .04);
+  if (PE.pos >= parolaPesca().length) {
+    PE.wi++; PE.pos = 0; PE.festaT = performance.now();
+    if (store.sound) try { [523.25, 659.25, 783.99].forEach((f, k) => nota(f, k * .08, .3, .04)); } catch(e) {}
+    if (PE.wi >= PE.parole.length) { BONUS.gioca = false; setTimeout(finePesca, 700); }
+  }
+  hudPesca();
+}
+function finePesca(){
+  const prec = Math.round(PE.presi / Math.max(1, PE.presi + PE.errori) * 100);
+  fineGioco({ titolo:'Che pescata!', stats:[[PE.parole.length, 'parole composte'], [PE.presi, 'lettere pescate'], [prec + '%', 'precisione']],
+    testo:`Hai pescato: <b>${PE.parole.map(mostraParola).join(', ')}</b>.`,
+    punti: Math.round((PE.presi + PE.parole.length * 2) * PERCORSI[store.fascia].mult), prec, festa:true });
+}
+// pescatore illustrato (SVG incorporato: ispirato ad Andrea Cerioli, stile flat). Punta della canna: (196, 8) nel viewBox 200x280
+const SVG_PESCATORE = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 280" role="img"> <title>Il pescatore</title> <defs> <pattern id="quadri" width="8" height="8" patternUnits="userSpaceOnUse"> <rect width="8" height="8" fill="#7E8668"/> <path d="M0 4H8M4 0V8" stroke="#6A7155" stroke-width="1.6"/> <path d="M0 .6H8M.6 0V8" stroke="#A3A98B" stroke-width=".7"/> </pattern> <linearGradient id="lente" x1="0" y1="0" x2="0" y2="1"> <stop offset="0" stop-color="#4A2416"/><stop offset="1" stop-color="#B8703F"/> </linearGradient> <linearGradient id="pelle" x1="0" y1="0" x2="1" y2="0"> <stop offset="0" stop-color="#E9B992"/><stop offset="1" stop-color="#D49B74"/> </linearGradient> <linearGradient id="ombraBusto" x1="0" y1="0" x2="1" y2="0"> <stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset=".7" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".22"/> </linearGradient> </defs> <g id="gambe"> <path d="M70 216 H90 Q93 232 88 246 L86 258 H72 L71 246 Q66 230 70 216 Z" fill="#D49B74"/> <path d="M108 216 H128 Q132 232 127 246 L125 258 H111 L110 246 Q105 230 108 216 Z" fill="#E3B089"/> <path d="M66 256 H90 Q97 256 98 262 V268 H64 V262 Z" fill="#3E3128"/> <path d="M106 256 H128 Q136 256 137 262 V268 H104 V262 Z" fill="#4E3D31"/> <path d="M64 266 H98 M104 266 H137" stroke="#E7DFC6" stroke-width="2"/> </g> <g id="bermuda"> <path d="M70 164 H130 L134 220 H106 L100 186 L94 220 H66 Z" fill="#CFC2A6"/> <path d="M100 186 L94 220 H87 Z" fill="#B8AA8B"/> <rect x="114" y="194" width="16" height="15" rx="2" fill="#BDAF90"/> <path d="M114 198 h16" stroke="#A89A7C" stroke-width="1.5"/> <path d="M66 213 H94 M106 213 H134" stroke="#B8AA8B" stroke-width="3"/> <rect x="70" y="162" width="60" height="6" fill="#5A4636"/> <rect x="96" y="161" width="8" height="8" rx="1" fill="#C9A24A"/> </g> <g id="busto"> <path d="M52 100 Q54 86 76 82 L124 82 Q146 86 148 100 L134 166 Q100 172 66 166 Z" fill="url(#quadri)"/> <path d="M52 100 Q54 86 76 82 L124 82 Q146 86 148 100 L134 166 Q100 172 66 166 Z" fill="url(#ombraBusto)"/> <path d="M92 82 L100 98 L108 82 Z" fill="#D49B74"/> <path d="M97 89 Q100 92 103 89" stroke="#B9805C" stroke-width="1.2" fill="none"/> <path d="M87 80 L99 99 L92 102 L79 84 Z M113 80 L101 99 L108 102 L121 84 Z" fill="#646B50"/> <path d="M100 99 V166" stroke="#5A614A" stroke-width="1.5"/> <g fill="#E6E2D3"><circle cx="100" cy="118" r="1.6"/><circle cx="100" cy="136" r="1.6"/><circle cx="100" cy="154" r="1.6"/></g> <rect x="70" y="108" width="22" height="22" rx="2" fill="#737B5E"/> <path d="M69 106 h24 v8 l-12 3 l-12 -3z" fill="#5F664C"/> <rect x="108" y="108" width="22" height="22" rx="2" fill="#737B5E"/> <path d="M107 106 h24 v8 l-12 3 l-12 -3z" fill="#5F664C"/> <path d="M66 166 Q100 172 134 166" stroke="#5A614A" stroke-width="2" fill="none"/> </g> <g id="braccio-dietro"> <path d="M56 96 Q44 118 66 132 L86 126 Q76 112 76 98 Z" fill="url(#quadri)"/> <path d="M62 124 L88 118 L91 129 L66 136 Z" fill="#5F664C"/> <path d="M84 122 Q108 126 130 139 L127 151 Q106 141 83 136 Z" fill="#D49B74"/> <path d="M94 128 Q108 132 120 140" stroke="#BF8763" stroke-width="1.3" fill="none"/> </g> <g id="braccio-davanti"> <path d="M140 92 Q157 100 153 124 L139 126 Q136 112 128 100 Z" fill="url(#quadri)"/> <path d="M138 122 L153 120.5 L154.5 130 L140 132.5 Z" fill="#5F664C"/> <path d="M139 131 Q152 132 149 141 L130 163 L119 156 Z" fill="url(#pelle)"/> <path d="M144 138 Q138 148 130 156" stroke="#C48C68" stroke-width="1.3" fill="none"/> </g> <g id="canna"> <path d="M116 176 L196 8" stroke="#2B2220" stroke-width="3.2" stroke-linecap="round"/> <path d="M116 176 L128 151" stroke="#1D2433" stroke-width="5.5" stroke-linecap="round"/> <circle cx="124" cy="166" r="5" fill="#C9CED8" stroke="#6B7180" stroke-width="1.5"/> <path d="M124 166 L131 164" stroke="#6B7180" stroke-width="1.6" stroke-linecap="round"/> </g> <g id="mani"> <ellipse cx="131" cy="146" rx="7.5" ry="7" fill="#D49B74"/> <path d="M125 143 q6 -3 12 1" stroke="#B9805C" stroke-width="1.4" fill="none"/> <ellipse cx="124" cy="161" rx="7.5" ry="7" fill="#E3B089"/> <path d="M118 158 q6 -3 12 1" stroke="#C48C68" stroke-width="1.4" fill="none"/> <rect x="114" y="157" width="7" height="5" rx="2" fill="#2B2220"/> </g> <g id="testa"> <path d="M90 66 H110 L112 84 Q100 88 88 84 Z" fill="#D49B74"/> <ellipse cx="80" cy="47" rx="4.5" ry="7" fill="#D49B74"/> <ellipse cx="120" cy="47" rx="4.5" ry="7" fill="#D49B74"/> <path d="M81 38 C81 18 119 18 119 38 L118 54 C116 66 108 74 100 75 C92 74 84 66 82 54 Z" fill="url(#pelle)"/> <path d="M83 52 Q86 62 92 66" stroke="#C48C68" stroke-width="1.2" fill="none" opacity=".6"/> <path d="M117 52 Q114 62 108 66" stroke="#C48C68" stroke-width="1.2" fill="none" opacity=".6"/> <path d="M82 50 C83 66 92 74 100 75 C108 74 117 66 118 50 Q116 62 110 66 Q100 70 90 66 Q84 62 82 50 Z" fill="#4A3B30" opacity=".55"/> <path d="M93 61 Q100 58.5 107 61 Q100 62 93 61 Z" fill="#4A3B30" opacity=".42"/> <path d="M97 70 Q100 72 103 70 V73 Q100 74 97 73 Z" fill="#4A3B30" opacity=".5"/> <path d="M94 64.5 Q100 67.5 107 63.5" stroke="#8E5544" stroke-width="1.7" fill="none" stroke-linecap="round"/> <path d="M107 63.5 Q108.5 62.5 109 61.5" stroke="#8E5544" stroke-width="1.3" fill="none" stroke-linecap="round"/> <path d="M100 46 L98 55 Q100 57 103 55" stroke="#B9805C" stroke-width="1.5" fill="none" stroke-linecap="round"/> <path d="M80 42 Q78 22 92 17 Q101 14 110 17 Q123 22 120 42 Q119 33 115 28 Q112 31 108 26 Q100 22 91 26 Q87 31 84 28 Q81 33 80 42 Z" fill="#3A2E25"/> <path d="M88 21 Q98 15 112 20" stroke="#5E4C3F" stroke-width="2" fill="none" stroke-linecap="round"/> <path d="M80 42 Q79 46 80 49 M120 42 Q121 46 120 49" stroke="#3A2E25" stroke-width="2.5" opacity=".5"/> <path d="M84 37 Q89 34 95 36.5 M105 36.5 Q111 34 116 37" stroke="#2B2220" stroke-width="2.6" fill="none" stroke-linecap="round"/> <path d="M81.6 40 Q82 37.2 86 37 L95 37.4 Q98.4 37.8 98.4 41.2 Q98.6 47.4 95.2 50.6 Q91.6 53 87.2 52.2 Q82.2 51 81.6 45.6 Q81.3 42.4 81.6 40 Z" fill="url(#lente)" stroke="#2E1C14" stroke-width="2.4" stroke-linejoin="round"/> <path d="M 118.4 40 Q 118 37.2 114 37 L 105 37.4 Q 101.6 37.8 101.6 41.2 Q 101.4 47.4 104.8 50.6 Q 108.4 53 112.8 52.2 Q 117.8 51 118.4 45.6 Q 118.7 42.4 118.4 40 Z" fill="url(#lente)" stroke="#2E1C14" stroke-width="2.4" stroke-linejoin="round"/> <path d="M98.4 40.6 Q100 38.6 101.6 40.6" stroke="#2E1C14" stroke-width="2.2" fill="none"/> <path d="M81.8 39.6 L79 39.2 M118.2 39.6 L121 39.2" stroke="#2E1C14" stroke-width="2"/> <circle cx="83" cy="38.6" r=".9" fill="#E6E2D3"/><circle cx="117" cy="38.6" r=".9" fill="#E6E2D3"/> <path d="M85 41 Q86.5 39.4 90 39.4" stroke="#fff" stroke-width="1.6" opacity=".6" fill="none" stroke-linecap="round"/> <path d="M104 41 Q105.5 39.4 109 39.4" stroke="#fff" stroke-width="1.6" opacity=".6" fill="none" stroke-linecap="round"/> </g> </svg>`;
+const IMG_PESCATORE = new Image();
+IMG_PESCATORE.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(SVG_PESCATORE);
+
+// paesaggio della pesca: montagne, pini, nuvole, sassi e alghe generati una volta per partita
+function paesaggioPesca(){
+  const r = () => Math.random();
+  PE.monti = [0, 1].map(l => Array.from({ length:9 }, (_, k) => ({ x:k / 8 + (r() - .5) * .06, h:.35 + r() * .5 - l * .12 })));
+  PE.pini = Array.from({ length:34 }, () => ({ x:r(), h:.5 + r() * .5 }));
+  PE.nuvole = Array.from({ length:5 }, () => ({ x:r(), y:.15 + r() * .35, s:.6 + r() * .7, v:4 + r() * 6 }));
+  PE.sassi = Array.from({ length:26 }, () => ({ x:r(), w:.012 + r() * .03, h:.4 + r() * .5, c:['#6B6F7A', '#7D828E', '#5A5E68', '#8C8576'][Math.floor(r() * 4)] }));
+  PE.conchiglie = Array.from({ length:6 }, () => ({ x:r(), s:.7 + r() * .5 }));
+  PE.alghe = Array.from({ length:16 }, (_, k) => ({ x:(k + r() * .6) / 16, h:.12 + r() * .14, f:r() * 6 }));
+}
+// pesci d'acqua dolce: trota, cavedano, carpa (disegnati verso destra, poi specchiati)
+const SPECIE = ['trota', 'cavedano', 'carpa'];
+function disegnaPesce(ctx, p, t){
+  const s = p.s, x = p.x, y = p.y + Math.sin(t / 400 + p.fase) * 6, d = p.dir, sp = p.specie || (p.specie = SPECIE[Math.floor(Math.random() * 3)]);
+  const coda = Math.sin(t / 140 + p.fase) * 5;
+  const C = {
+    trota:    { rx:.68, ry:.25, top:'#5E6B3C', mid:'#C8C6A0', ventre:'#F4F0E2', pinna:'#7C7A55', bordo:'#4C5730' },
+    cavedano: { rx:.62, ry:.29, top:'#56646F', mid:'#C9D2D9', ventre:'#FFFFFF', pinna:'#E8893A', bordo:'#46525C' },
+    carpa:    { rx:.6,  ry:.38, top:'#6E4E17', mid:'#C9962B', ventre:'#F4D98A', pinna:'#9A6B22', bordo:'#5A3E10' }
+  }[sp];
+  const rx = s * C.rx, ry = s * C.ry;
+  ctx.save(); ctx.translate(x, y); ctx.scale(d, 1);
+  // coda (forcuta per cavedano e carpa, quasi dritta per la trota)
+  ctx.fillStyle = sp === 'cavedano' ? '#7E8A93' : C.pinna;
+  ctx.beginPath(); ctx.moveTo(-rx * .85, 0);
+  ctx.lineTo(-rx - s * .32, -ry * 1.2 + coda);
+  ctx.quadraticCurveTo(-rx - s * (sp === 'trota' ? .26 : .18), coda * .5, -rx - s * .32, ry * 1.2 + coda);
+  ctx.closePath(); ctx.fill();
+  if (sp === 'cavedano') { ctx.strokeStyle = '#2E3A44'; ctx.lineWidth = 2; ctx.stroke(); }
+  // pinne: dorsale (lunga nella carpa), anale, ventrale; adiposa della trota
+  ctx.fillStyle = sp === 'cavedano' ? '#7E8A93' : C.pinna;
+  if (sp === 'carpa') { ctx.beginPath(); ctx.moveTo(-rx * .55, -ry * .85); ctx.quadraticCurveTo(-rx * .1, -ry * 1.6, rx * .25, -ry * .95); ctx.lineTo(-rx * .55, -ry * .85); ctx.fill(); }
+  else { ctx.beginPath(); ctx.moveTo(-rx * .2, -ry * .9); ctx.quadraticCurveTo(0, -ry * 1.75, rx * .2, -ry * .92); ctx.closePath(); ctx.fill(); }
+  if (sp === 'trota') { ctx.beginPath(); ctx.ellipse(-rx * .62, -ry * .92, s * .05, s * .03, 0, 0, 7); ctx.fill(); }
+  ctx.fillStyle = C.pinna;
+  ctx.beginPath(); ctx.moveTo(-rx * .45, ry * .85); ctx.quadraticCurveTo(-rx * .35, ry * 1.6, -rx * .15, ry * .9); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(rx * .05, ry * .9); ctx.quadraticCurveTo(rx * .15, ry * 1.5, rx * .28, ry * .85); ctx.closePath(); ctx.fill();
+  // corpo
+  const g = ctx.createLinearGradient(0, -ry, 0, ry);
+  g.addColorStop(0, C.top); g.addColorStop(.5, C.mid); g.addColorStop(1, C.ventre);
+  ctx.fillStyle = g; ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, 0, 7); ctx.fill();
+  ctx.save(); ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, 0, 7); ctx.clip();
+  if (sp === 'trota') {
+    ctx.fillStyle = 'rgba(232,140,150,.45)'; ctx.fillRect(-rx, -ry * .12, rx * 2, ry * .32);        // fascia rosata
+    ctx.fillStyle = '#2B2A20';
+    for (let k = 0; k < 16; k++) { const a = (k * 37) % 100 / 100, b = (k * 61) % 100 / 100; ctx.beginPath(); ctx.arc(-rx * .8 + a * rx * 1.5, -ry * .85 + b * ry * .7, s * .018, 0, 7); ctx.fill(); }
+  } else {
+    // squame: grandi per la carpa, bordate di scuro per il cavedano
+    const q = sp === 'carpa' ? s * .11 : s * .075;
+    ctx.strokeStyle = sp === 'carpa' ? 'rgba(90,62,16,.45)' : 'rgba(46,58,68,.4)'; ctx.lineWidth = sp === 'carpa' ? 1.4 : 1;
+    for (let i = -6; i <= 6; i++) for (let j = -4; j <= 4; j++) { ctx.beginPath(); ctx.arc(i * q + (j % 2) * q / 2, j * q * .8, q * .55, -Math.PI / 2, Math.PI / 2); ctx.stroke(); }
+  }
+  ctx.fillStyle = 'rgba(255,255,255,.18)'; ctx.beginPath(); ctx.ellipse(-rx * .1, -ry * .45, rx * .7, ry * .18, 0, 0, 7); ctx.fill();   // riflesso
+  ctx.restore();
+  ctx.strokeStyle = C.bordo; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.ellipse(0, 0, rx, ry, 0, 0, 7); ctx.stroke();
+  // opercolo, pinna pettorale, occhio, bocca
+  ctx.strokeStyle = C.bordo; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(rx * .45, 0, ry * .75, -1.2, 1.2); ctx.stroke();
+  ctx.fillStyle = C.pinna; ctx.beginPath(); ctx.ellipse(rx * .3, ry * .35, s * .1, s * .045, .5 + Math.sin(t / 200 + p.fase) * .25, 0, 7); ctx.fill();
+  const ex = rx * .7, ey = -ry * .25;
+  ctx.fillStyle = sp === 'carpa' ? '#F2D27A' : '#FFFFFF'; ctx.beginPath(); ctx.arc(ex, ey, s * .065, 0, 7); ctx.fill();
+  ctx.fillStyle = '#1D2433'; ctx.beginPath(); ctx.arc(ex + s * .01, ey, s * .038, 0, 7); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ex + s * .02, ey - s * .015, s * .012, 0, 7); ctx.fill();
+  ctx.strokeStyle = C.bordo; ctx.lineWidth = 1.6; ctx.beginPath(); ctx.arc(rx * .96, ry * .12, s * .04, 2, 3.6); ctx.stroke();
+  if (sp === 'carpa') {   // barbigli
+    ctx.strokeStyle = '#8A6420'; ctx.lineWidth = 1.4;
+    ctx.beginPath(); ctx.moveTo(rx * .95, ry * .2); ctx.quadraticCurveTo(rx * 1.05, ry * .55, rx * .98, ry * .75); ctx.stroke();
+  }
+  ctx.restore();
+  // lettera su un dischetto colorato come il dito da usare (sempre leggibile, non specchiato)
+  const col = coloreDito(p.ch), bx = x - d * s * .08, r = s * .2;
+  ctx.fillStyle = col[1]; ctx.beginPath(); ctx.arc(bx, y, r, 0, 7); ctx.fill();
+  ctx.strokeStyle = '#FFFDF6'; ctx.lineWidth = 2.5; ctx.stroke();
+  ctx.fillStyle = '#1D2433'; ctx.font = `700 ${r * 1.3}px Lexend`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(mostraLettera(p.ch), bx, y + 1);
+}
+function cicloPesca(t){
+  const dt = Math.min(.05, (t - B.t) / 1000); B.t = t;
+  const ctx = $('cvBonus').getContext('2d'), W = B.W, H = B.H, acqua = H * .34, fondo = H - 40;
+  if (!PE.monti) paesaggioPesca();
+  ctx.clearRect(0, 0, W, H);
+
+  // --- cielo al tramonto, sole, nuvole ---
+  let g = ctx.createLinearGradient(0, 0, 0, acqua);
+  g.addColorStop(0, '#1C1850'); g.addColorStop(.55, '#5A4FB8'); g.addColorStop(1, '#F2B26B');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, acqua);
+  const sole = ctx.createRadialGradient(W * .78, acqua - 30, 4, W * .78, acqua - 30, 120);
+  sole.addColorStop(0, 'rgba(255,241,184,1)'); sole.addColorStop(.25, 'rgba(255,216,107,.8)'); sole.addColorStop(1, 'rgba(255,216,107,0)');
+  ctx.fillStyle = sole; ctx.beginPath(); ctx.arc(W * .78, acqua - 30, 120, 0, 7); ctx.fill();
+  ctx.fillStyle = 'rgba(255,255,255,.55)';
+  PE.nuvole.forEach(n => {
+    n.x = (n.x + n.v * dt / W) % 1.2; const x = n.x * W - W * .1, y = n.y * acqua, s = 40 * n.s;
+    ctx.beginPath(); ctx.ellipse(x, y, s * 1.6, s * .45, 0, 0, 7); ctx.ellipse(x - s * .6, y + 2, s * .8, s * .35, 0, 0, 7); ctx.ellipse(x + s * .5, y - s * .2, s, s * .5, 0, 0, 7); ctx.fill();
+  });
+  // --- montagne (due piani) e pini sulla riva ---
+  [['#4A4290', .55], ['#2E2870', .78]].forEach(([c, base], l) => {
+    ctx.fillStyle = c; ctx.beginPath(); ctx.moveTo(0, acqua);
+    PE.monti[l].forEach(m => ctx.lineTo(m.x * W, acqua - acqua * base * m.h * .7));
+    ctx.lineTo(W, acqua); ctx.closePath(); ctx.fill();
+    if (l === 0) { ctx.fillStyle = 'rgba(255,255,255,.55)';     // neve sulle cime lontane
+      PE.monti[0].forEach(m => { const x = m.x * W, y = acqua - acqua * base * m.h * .7; if (m.h > .6) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 14, y + 14); ctx.lineTo(x + 14, y + 14); ctx.fill(); } }); }
+  });
+  ctx.fillStyle = '#1B3A2C';
+  PE.pini.forEach(p => { const x = p.x * W, h = 34 * p.h, y = acqua + 2;
+    ctx.beginPath(); ctx.moveTo(x, y - h); ctx.lineTo(x - h * .28, y); ctx.lineTo(x + h * .28, y); ctx.fill(); });
+
+  // --- acqua: superficie mossa, gradiente di profondità, raggi e riflessi ---
+  g = ctx.createLinearGradient(0, acqua, 0, H);
+  g.addColorStop(0, '#3F86C4'); g.addColorStop(.45, '#1F5C96'); g.addColorStop(1, '#0B2142');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, H);
+  for (let x = 0; x <= W; x += 16) ctx.lineTo(x, acqua + Math.sin(x / 55 + t / 650) * 5 + Math.sin(x / 23 + t / 400) * 2);
+  ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = 2;
+  for (let k = 0; k < 18; k++) { const x = ((k * 97 + t / 30) % (W + 80)) - 40, y = acqua + 10 + (k % 4) * 9;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + 12, y - 4, x + 24, y); ctx.stroke(); }
+  ctx.fillStyle = 'rgba(255,216,107,.18)';               // riflesso del sole sull'acqua
+  for (let k = 0; k < 7; k++) ctx.fillRect(W * .78 - 50 + Math.sin(t / 300 + k) * 20, acqua + 8 + k * 9, 100 - k * 10, 3);
+  ctx.fillStyle = 'rgba(255,255,255,.045)';
+  for (let k = 0; k < 6; k++) { const x = (k + .5) * W / 6 + Math.sin(t / 2200 + k) * 50;
+    ctx.beginPath(); ctx.moveTo(x - 26, acqua); ctx.lineTo(x + 26, acqua); ctx.lineTo(x + 140, fondo); ctx.lineTo(x - 70, fondo); ctx.fill(); }
+  // caustiche: macchie di luce che tremolano
+  ctx.fillStyle = 'rgba(255,255,255,.05)';
+  for (let k = 0; k < 24; k++) { const x = (k * 151) % W + Math.sin(t / 900 + k) * 20, y = acqua + 60 + (k * 67) % (fondo - acqua - 80);
+    ctx.beginPath(); ctx.ellipse(x, y, 30 + Math.sin(t / 500 + k) * 10, 8, Math.sin(k), 0, 7); ctx.fill(); }
+
+  // --- fondale: sabbia, sassi, conchiglie, alghe con foglie ---
+  g = ctx.createLinearGradient(0, fondo - 20, 0, H); g.addColorStop(0, '#8C7A55'); g.addColorStop(1, '#5E5038');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(0, H);
+  for (let x = 0; x <= W; x += 40) ctx.lineTo(x, fondo + Math.sin(x / 140) * 8);
+  ctx.lineTo(W, H); ctx.fill();
+  PE.sassi.forEach(sa => { const x = sa.x * W, w = sa.w * W, y = fondo + Math.sin(x / 140) * 8 + 6;
+    ctx.fillStyle = sa.c; ctx.beginPath(); ctx.ellipse(x, y, w, w * sa.h, 0, Math.PI, 0); ctx.fill();
+    ctx.fillStyle = 'rgba(255,255,255,.12)'; ctx.beginPath(); ctx.ellipse(x - w * .3, y - w * sa.h * .6, w * .3, w * sa.h * .2, 0, 0, 7); ctx.fill(); });
+  PE.conchiglie.forEach(c => { const x = c.x * W, y = fondo + Math.sin(x / 140) * 8 + 8, s = 9 * c.s;
+    ctx.fillStyle = '#F3D9C2'; ctx.beginPath(); ctx.arc(x, y, s, Math.PI, 0); ctx.fill();
+    ctx.strokeStyle = '#C9A88A'; ctx.lineWidth = 1; for (let k = -2; k <= 2; k++) { ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + k * s * .4, y - s * .9); ctx.stroke(); } });
+  PE.alghe.forEach(a => {
+    const x = a.x * W, h = a.h * H, onda = Math.sin(t / 900 + a.f) * 18;
+    ctx.strokeStyle = '#2E8B57'; ctx.lineWidth = 5; ctx.lineCap = 'round';
+    ctx.beginPath(); ctx.moveTo(x, fondo + 6); ctx.quadraticCurveTo(x + onda, fondo - h * .5, x + onda * .6, fondo - h); ctx.stroke();
+    ctx.fillStyle = '#3FA46A';
+    for (let k = 1; k <= 4; k++) { const f = k / 5, lx = x + onda * f * .8, ly = fondo - h * f, lato = k % 2 ? 1 : -1;
+      ctx.beginPath(); ctx.ellipse(lx + lato * 9, ly, 11, 4, lato * .6 + onda / 60, 0, 7); ctx.fill(); }
+  });
+  ctx.fillStyle = 'rgba(255,255,255,.25)'; ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 1;
+  PE.bolle.forEach(b => { b.y -= b.v * dt / H; if (b.y < acqua / H + .03) { b.y = 1; b.x = Math.random(); }
+    const x = b.x * W + Math.sin(t / 500 + b.r) * 6, y = b.y * H;
+    ctx.beginPath(); ctx.arc(x, y, b.r, 0, 7); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = 'rgba(255,255,255,.7)'; ctx.beginPath(); ctx.arc(x - b.r * .35, y - b.r * .35, b.r * .3, 0, 7); ctx.fill(); ctx.fillStyle = 'rgba(255,255,255,.25)'; });
+
+  // --- pesci ---
+  if (BONUS.gioca) generaPesci(t);
+  PE.pesci.forEach(p => { if (!p.preso) p.x += p.dir * p.v * dt; });
+  PE.pesci = PE.pesci.filter(p => p.preso || (p.x > -p.s * 2 && p.x < W + p.s * 2));
+  PE.pesci.filter(p => p.y > acqua).forEach(p => disegnaPesce(ctx, p, t));
+
+  // --- barca di legno con il pescatore (a sinistra, per lasciare libera la parola al centro) ---
+  const bx = W * .2, oscilla = Math.sin(t / 700) * 4, by = acqua + oscilla;
+  const ph = Math.min(H * .34, 300), pw = ph * 200 / 280, px = bx - pw * .55, py = by - 22 - ph * .93;
+  if (IMG_PESCATORE.complete) ctx.drawImage(IMG_PESCATORE, px, py, pw, ph);
+  PE.cima = [px + pw * 196 / 200, py + ph * 8 / 280];
+  ctx.fillStyle = 'rgba(11,33,66,.35)'; ctx.beginPath(); ctx.ellipse(bx, by + 26, 120, 10, 0, 0, 7); ctx.fill();   // riflesso
+  g = ctx.createLinearGradient(0, by - 26, 0, by + 20); g.addColorStop(0, '#C47A3A'); g.addColorStop(1, '#7A4A22');
+  ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(bx - 120, by - 24); ctx.lineTo(bx + 120, by - 24); ctx.quadraticCurveTo(bx + 112, by + 4, bx + 78, by + 18); ctx.lineTo(bx - 82, by + 18); ctx.quadraticCurveTo(bx - 114, by + 4, bx - 120, by - 24); ctx.fill();
+  ctx.strokeStyle = 'rgba(60,32,14,.55)'; ctx.lineWidth = 1.5;
+  for (const k of [-12, -2, 8]) { ctx.beginPath(); ctx.moveTo(bx - 116 + Math.abs(k) * .3, by + k); ctx.lineTo(bx + 116 - Math.abs(k) * .3, by + k); ctx.stroke(); }
+  ctx.fillStyle = '#F2B735'; ctx.beginPath(); ctx.roundRect(bx - 124, by - 30, 248, 8, 4); ctx.fill();
+  ctx.font = 'italic 600 24px Fraunces'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillStyle = 'rgba(60,32,14,.6)'; ctx.fillText('acerio', bx - 28, by - 2);   // nome della barca
+  ctx.fillStyle = '#FFF1B8'; ctx.fillText('acerio', bx - 30, by - 4);
+  ctx.strokeStyle = '#8A5A2B'; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(bx + 60, by - 30); ctx.lineTo(bx + 150, by + 30); ctx.stroke();   // remo
+  ctx.fillStyle = '#8A5A2B'; ctx.beginPath(); ctx.ellipse(bx + 156, by + 34, 14, 6, .6, 0, 7); ctx.fill();
+
+  // --- lenza: galleggiante a riposo; scende verso il pesce e lo tira su ---
+  const cima = PE.cima; let amo = [cima[0] + 40, acqua + 4 + Math.sin(t / 500) * 3];
+  if (PE.lenza) {
+    const L = PE.lenza, p = L.pesce, e = (t - L.t) / 1000;
+    if (L.fase === 'scende') {
+      const k = Math.min(1, e / .35); amo = [cima[0] + (p.x - cima[0]) * k, cima[1] + (p.y - cima[1]) * k];
+      if (k >= 1) { L.fase = 'sale'; L.t = t; L.da = [p.x, p.y]; }
+    } else {
+      const k = Math.min(1, e / .45); p.x = L.da[0] + (cima[0] - L.da[0]) * k; p.y = L.da[1] + (cima[1] + 40 - L.da[1]) * k; amo = [p.x, p.y];
+      if (k >= 1) pescato();
+    }
+    if (p.y <= acqua) disegnaPesce(ctx, p, t);                 // il pesce fuori dall'acqua resta visibile
+  }
+  ctx.strokeStyle = 'rgba(255,255,255,.75)'; ctx.lineWidth = 1.4;
+  ctx.beginPath(); ctx.moveTo(cima[0], cima[1]); ctx.quadraticCurveTo((cima[0] + amo[0]) / 2, Math.max(cima[1], amo[1]) - 10, amo[0], amo[1]); ctx.stroke();
+  if (!PE.lenza) {
+    ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(amo[0], amo[1] - 4, 6, Math.PI, 0); ctx.fill();
+    ctx.fillStyle = '#E07B1E'; ctx.beginPath(); ctx.arc(amo[0], amo[1] - 4, 6, 0, Math.PI); ctx.fill();
+  }
+
+  // --- parola da comporre ---
+  const w = parolaPesca() || PE.parole[PE.parole.length - 1] || '', s = Math.max(44, Math.min(66, W / 24)), gap = 10;
+  const fatto = PE.wi >= PE.parole.length ? w.length : PE.pos, tot = w.length * (s + gap) - gap, wy = 108;
+  ctx.fillStyle = 'rgba(28,24,80,.55)'; ctx.beginPath(); ctx.roundRect(W / 2 - tot / 2 - 18, wy - s / 2 - 14, tot + 36, s + 28, 18); ctx.fill();
+  [...w].forEach((c, k) => {
+    const x = W / 2 - tot / 2 + s / 2 + k * (s + gap);
+    if (k < fatto) tastoCanvas(ctx, x, wy, s, coloreDito(c), mostraLettera(c));
+    else {
+      ctx.strokeStyle = k === fatto && Math.floor(t / 400) % 2 ? '#FFD86B' : 'rgba(255,255,255,.45)'; ctx.lineWidth = 3; ctx.setLineDash([6, 5]);
+      ctx.beginPath(); ctx.roundRect(x - s / 2, wy - s / 2, s, s, s * .18); ctx.stroke(); ctx.setLineDash([]);
+    }
+  });
+  ctx.textAlign = 'center';
+  if (t - PE.festaT < 700 && PE.wi > 0) { ctx.fillStyle = '#7CF2B0'; ctx.font = '700 22px Lexend'; ctx.fillText('Parola composta!', W / 2, wy + s / 2 + 34); }
+  else if (PE.avviso && t - PE.avvisoT < 1500) { ctx.fillStyle = '#FFE58A'; ctx.font = '600 20px Lexend'; ctx.fillText(PE.avviso, W / 2, wy + s / 2 + 34); }
+  BONUS.raf = requestAnimationFrame(cicloPesca);
+}
+
+/* =========================================================
+   PERCORSO A TAPPE (home): 2 esercizi → 1 gioco, per tutti i giochi della classe.
+   Mostra dove si trova lo studente nella sessione; i giochi hanno un'anteprima.
+   ========================================================= */
+const ANTEPRIME = {
+  invasione:`<svg viewBox="0 0 120 70"><rect width="120" height="70" fill="#1A1747"/>
+    <g fill="#fff" opacity=".5"><circle cx="12" cy="10" r=".8"/><circle cx="104" cy="16" r=".8"/><circle cx="60" cy="6" r=".8"/><circle cx="88" cy="40" r=".8"/></g>
+    <g font-family="Lexend,sans-serif" font-weight="700" font-size="10" text-anchor="middle" fill="#1D2433">
+      <rect x="26" y="12" width="16" height="16" rx="3" fill="#FFD49A"/><text x="34" y="24">F</text>
+      <rect x="52" y="12" width="16" height="16" rx="3" fill="#A9E5C3"/><text x="60" y="24">D</text>
+      <rect x="78" y="12" width="16" height="16" rx="3" fill="#C9BBF6"/><text x="86" y="24">A</text>
+      <path d="M30 12l-3-5M38 12l3-5M56 12l-3-5M64 12l3-5M82 12l-3-5M90 12l3-5" stroke="#E6DEFC" stroke-width="1.2"/></g>
+    <path d="M60 52L60 30" stroke="#7CF2B0" stroke-width="2"/>
+    <rect x="49" y="52" width="22" height="8" rx="3" fill="#F2B735"/><rect x="57" y="46" width="6" height="8" rx="2" fill="#F2B735"/></svg>`,
+  buio:`<svg viewBox="0 0 120 70"><rect width="120" height="70" fill="#1A1747"/>
+    <rect x="48" y="6" width="24" height="24" rx="5" fill="#F4F3FD"/><text x="60" y="23" font-family="Lexend,sans-serif" font-weight="700" font-size="14" text-anchor="middle" fill="#1D2433">J</text>
+    <g fill="#D9DEE8">${Array.from({ length:8 }, (_, k) => `<rect x="${14 + k * 12}" y="38" width="10" height="10" rx="2"/>`).join('')}${Array.from({ length:7 }, (_, k) => `<rect x="${19 + k * 12}" y="51" width="10" height="10" rx="2"/>`).join('')}</g>
+    <rect x="62" y="38" width="10" height="10" rx="2" fill="#FFC966"/></svg>`,
+  pioggia:`<svg viewBox="0 0 120 70"><rect width="120" height="70" fill="#1A1747"/>
+    <g font-family="Lexend,sans-serif" font-weight="700" font-size="9" text-anchor="middle">
+      <rect x="10" y="8" width="34" height="13" rx="4" fill="#FFFDF6"/><text x="27" y="17.5" fill="#1D2433">MELA</text>
+      <rect x="70" y="20" width="36" height="13" rx="4" fill="#FFFDF6" stroke="#F2B735" stroke-width="1.6"/><text x="88" y="29.5" fill="#1D2433"><tspan fill="#1F8A5B">SO</tspan>LE</text>
+      <rect x="34" y="36" width="36" height="13" rx="4" fill="#FFFDF6"/><text x="52" y="45.5" fill="#1D2433">NAVE</text></g>
+    <path d="M0 60H120" stroke="#FFD86B" stroke-width="1" stroke-dasharray="3 3" opacity=".6"/></svg>`,
+  paroliere:`<svg viewBox="0 0 120 70"><rect width="120" height="70" fill="#1A1747"/>
+    <rect x="34" y="8" width="52" height="16" rx="4" fill="#FFFDF6"/><text x="60" y="20" font-family="Lexend,sans-serif" font-weight="700" font-size="10" text-anchor="middle" fill="#1D2433">VOLO</text>
+    <g font-family="Lexend,sans-serif" font-weight="700" font-size="8" text-anchor="middle" fill="#1D2433">
+      ${['V', 'O', 'L', 'A', 'N', 'D', 'O'].map((c, k) => `<rect x="${8 + k * 15}" y="36" width="13" height="13" rx="3" fill="${['#FFD49A', '#A3D5F7', '#A3D5F7', '#C9BBF6', '#FFD49A', '#A9E5C3', '#A3D5F7'][k]}"/><text x="${14.5 + k * 15}" y="45.5">${c}</text>`).join('')}</g></svg>`,
+  pesca:`<svg viewBox="0 0 120 70"><defs><linearGradient id="pcPrev" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5A4FB8"/><stop offset="1" stop-color="#F2B26B"/></linearGradient></defs>
+    <rect width="120" height="24" fill="url(#pcPrev)"/><path d="M0 24L20 14L34 20L52 10L70 20L90 12L120 22V24Z" fill="#2E2870"/>
+    <rect y="24" width="120" height="46" fill="#2A6FB0"/>
+    <path d="M14 20H40L36 26H18Z" fill="#B5651D"/><path d="M30 20L46 4" stroke="#E7DFC6" stroke-width="1"/><path d="M46 4Q56 20 62 44" stroke="#fff" stroke-width=".6" fill="none"/>
+    <ellipse cx="72" cy="48" rx="14" ry="6" fill="#C9962B"/><path d="M58 48L52 43V53Z" fill="#9A6B22"/><circle cx="79" cy="46.5" r="1.2" fill="#1D2433"/>
+    <circle cx="70" cy="48" r="4" fill="#FFD49A"/><text x="70" y="50.5" font-family="Lexend,sans-serif" font-weight="700" font-size="6" text-anchor="middle" fill="#1D2433">G</text>
+    <path d="M100 70Q98 58 102 50M108 70Q110 60 106 54" stroke="#2E8B57" stroke-width="2" fill="none"/></svg>`
+};
+function renderPercorso(){
+  const giochi = giochiClasse(), n = giochi.length;
+  const fatti = BONUS.turno % n, giro = Math.floor(BONUS.turno / n) + 1;
+  const tappe = [];
+  giochi.forEach((g, j) => {
+    for (let e = 0; e < OGNI_N_ESERCIZI; e++) {
+      const num = j * OGNI_N_ESERCIZI + e + 1;
+      const stato = j < fatti || (j === fatti && e < BONUS.dopo) ? 'fatto' : (j === fatti && e === BONUS.dopo ? 'ora' : '');
+      tappe.push(`<div class="tp-es ${stato}" title="Esercizio ${num}"><span>${stato === 'fatto' ? '<svg viewBox="0 0 16 16"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>' : num}</span>${stato === 'ora' ? '<b>ora</b>' : ''}</div>`);
+    }
+    const stato = j < fatti ? 'fatto' : (j === fatti && BONUS.dopo >= OGNI_N_ESERCIZI ? 'ora' : '');
+    tappe.push(`<div class="tp-gioco ${stato}" title="${esc(g.desc)}"><div class="tp-ant">${ANTEPRIME[g.id]}${stato === 'fatto' ? '<i class="tp-ok">' + starSVG(true, 14) + '</i>' : ''}</div><span>${esc(g.nome)}</span></div>`);
+  });
+  const strada = `<div class="tp-strada">${tappe.join('')}</div>`;
+  $('percorso').innerHTML = `<div class="tp-tit"><b>Il tuo percorso</b><small>${giro > 1 ? `giro ${giro} · ` : ''}2 esercizi, poi un gioco</small></div>${strada}`;
+  $('percorsoTop').innerHTML = `<span class="tp-mini-tit">Percorso</span>${strada}`;
+}
 
 /* coriandoli leggeri su canvas (oro + colore della Casa) */
 function coriandoli(){
@@ -2053,11 +3060,13 @@ function coriandoli(){
 function renderHome(){
   if (G) clearTimeout(G.timer);
   const nArch = MISSIONS.reduce((a, m) => a + (m.pool ? m.pool.length : 0), 0), conGen = MISSIONS.some(m => m.gen);
-  $('archivio').textContent = store.fascia === 'prima'
+  $('archivio').textContent = !store.fascia ? 'Scegli la tua classe e la tua Casa per aprire il libro'
+    : store.fascia === 'prima'
     ? `${new Set(MISSIONS.flatMap(m => m.pool)).size} parole nell'archivio: ogni partita ne pesca di nuove`
     : (nArch ? `${nArch} frasi nell'archivio` : 'Frasi') + (conGen ? ' + combinazioni sempre nuove' : '') + ': ogni partita ne pesca di nuove';
   show('home');
   preparaLibro();
+  renderPercorso();
 }
 
 /* ---------- partita ---------- */
@@ -2074,6 +3083,7 @@ function startMission(i, items){
   $('progress').innerHTML = G.items.map(() => '<i></i>').join('');
   applicaConquiste();
   show('game');
+  renderPercorso();
   loadItem();
   updateStats();
 }
@@ -2107,7 +3117,7 @@ function markCurrent(){
   if (!info) { $('fingerHint').textContent = ''; return; }
   keyEl[info.id].classList.add('target');
   lightFinger(info.finger, info.id === 'space');
-  let hint = `<span class="sw" style="background:${fColor(info.finger)}"></span>Usa il <b>${FINGER_NAME[info.finger]}</b>`;
+  let hint = `<span class="sw" style="background:${fColor(info.finger)}"></span>Usa ${FINGER_NAME[info.finger].match(/^[aeiou]/) ? "l'" : 'il '}<b>${FINGER_NAME[info.finger]}</b>`;
   if (info.shift) {
     // shift con la mano opposta a quella che preme il tasto
     const shiftId = info.finger.endsWith('-s') ? 'shiftR' : 'shiftL';
@@ -2232,6 +3242,8 @@ function finishMission(){
 
   if (percorsoCompleto() && livelloPercorso() === 'oro' && !(completoPrima && livPrima === 'oro')) $('rSub').textContent = `${name}, hai completato tutte le missioni con il massimo delle stelle.`;
   suonaStelle(stars);
+  aggiornaInvitoBonus(bonusDovuto());   // pausa bonus ogni 2 esercizi
+  renderPercorso();
   if (stars === 3) setTimeout(coriandoli, 700);
   // patente: nuova, oppure di livello migliore
   const patente = percorsoCompleto() && (!completoPrima || livelloPercorso() !== livPrima);
@@ -2278,6 +3290,10 @@ document.addEventListener('keydown', e => {
   else if (e.key === 'Enter') { e.preventDefault(); libro.scelta != null ? scrivi() : sfogliaCaso(); }
 });
 $('rPatente').addEventListener('click', apriCerimonia);
+$('rBonusGo').addEventListener('click', avviaBonus);
+$('bEsci').addEventListener('click', chiudiBonus);
+document.addEventListener('keydown', tastoBonus, true);
+addEventListener('resize', () => { if (BONUS.attivo) ridimensionaBonus(); });
 $('cerPdf').addEventListener('click', scaricaPatente);
 $('cerChiudi').addEventListener('click', chiudiCerimonia);
 document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('cerimonia').classList.contains('hidden')) chiudiCerimonia(); });
@@ -2297,12 +3313,14 @@ function buildFascia(){
 $('fascia').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b || b.dataset.k === store.fascia) return;
   store.fascia = b.dataset.k; MISSIONS = PERCORSI[store.fascia].missions;
-  store.upper = PERCORSI[store.fascia].upper;   // 1ª: stampato maiuscolo in automatico
+  store.upper = PERCORSI[store.fascia].upper;   // 1ª e 2ª: stampato maiuscolo in automatico
+  $('casaAvviso').textContent = '';
   $('tUpper').setAttribute('aria-pressed', store.upper); document.body.classList.toggle('upper', store.upper);
   document.body.dataset.fascia = store.fascia;
   save(); buildFascia(); renderHome();
 });
-document.body.dataset.fascia = store.fascia;
+document.body.dataset.fascia = store.fascia || '';
+document.body.classList.toggle('upper', store.upper);
 buildFascia();
 buildCase();
 renderHome();
