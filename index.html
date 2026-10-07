@@ -417,6 +417,12 @@
   @keyframes lampBtn{50%{box-shadow:0 0 0 6px rgba(242,183,53,.9),0 0 28px rgba(242,183,53,.85);transform:scale(1.05)}}
   .evidenzia::after{content:'';position:absolute;left:50%;bottom:calc(100% + 6px);width:30px;height:36px;margin-left:-15px;pointer-events:none;
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 46'%3E%3Cpath d='M14 2h12v22h10L20 44 4 24h10z' fill='%23F2B735' stroke='%235A3B00' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat center/contain;filter:drop-shadow(0 3px 4px rgba(0,0,0,.35));animation:frecciaSu .7s ease-in-out infinite}
+  .passo-guida{border-radius:14px}
+  #passoNome{margin-bottom:10px}
+  #passoNome #name{margin-bottom:0}
+  .passo-guida.evidenzia{animation:lampGuida .9s ease-in-out infinite}
+  @keyframes lampGuida{50%{box-shadow:0 0 0 5px rgba(242,183,53,.9),0 0 24px rgba(242,183,53,.8)}}
+  .passo-guida.evidenzia::after{width:22px;height:26px;margin-left:-11px;bottom:calc(100% - 4px);z-index:2}
   .invio-nota{margin:10px 0 0;font-size:.85rem;color:var(--muted)}
   @media (prefers-reduced-motion:reduce){.evidenzia,.evidenzia::after{animation:none}}
   @media (prefers-reduced-motion:reduce){.keyboard .keys .key.target-mod,.freccia-mod{animation:none}}
@@ -516,12 +522,12 @@
   <section id="home">
     <aside class="l-col">
       <div class="pg">
-        <div class="lbl-g">Giocatore</div>
-        <input id="name" maxlength="24" autocomplete="off" placeholder="Come ti chiami?" aria-label="Il tuo nome">
-        <div class="lbl-g">La tua classe</div>
-        <div class="classi" id="fascia" role="tablist" aria-label="La tua classe"></div>
-        <div class="lbl-g">La tua Casa</div>
-        <div class="case-pick" id="scelteCasa"></div>
+        <div class="lbl-g">1 · Il tuo nome</div>
+        <div class="passo-guida" id="passoNome"><input id="name" maxlength="24" autocomplete="off" placeholder="Come ti chiami?" aria-label="Il tuo nome"></div>
+        <div class="lbl-g">2 · La tua classe</div>
+        <div class="classi passo-guida" id="fascia" role="tablist" aria-label="La tua classe"></div>
+        <div class="lbl-g">3 · La tua Casa</div>
+        <div class="case-pick passo-guida" id="scelteCasa"></div>
         <div class="casa-avviso" id="casaAvviso"></div>
       </div>
       <p class="regole">Indici su <b>F</b> e <b>J</b>, occhi sullo schermo. Scegli un capitolo o sfoglia il libro a caso: ogni volta frasi nuove. Ogni frase scritta bene porta <b>punti alla tua Casa</b>. I punti restano in classifica.</p>
@@ -1743,14 +1749,23 @@ function buildCase(){
     + '<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="lucescudo" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".35"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".25"/></linearGradient></defs></svg>';
   $('scelteCasa').addEventListener('click', e => {
     const b = e.target.closest('.casa-btn'); if (!b) return;
+    if (!classeSceltaOk()) return;                   // ordine guidato: prima nome e classe
     casa = b.dataset.id;
     try { sessionStorage.setItem('ditaveloci_casa', casa); } catch(err) {}
     [...$('scelteCasa').querySelectorAll('.casa-btn')].forEach(x => x.classList.toggle('sel', x.dataset.id === casa));
     $('casaAvviso').textContent = '';
     mostraClassifiche();
+    evidenziaLibro();
   });
 }
+function nomeSceltoOk(){
+  if ($('name').value.trim()) return true;
+  $('casaAvviso').textContent = 'Scrivi prima il tuo nome!';
+  $('name').focus();
+  return false;
+}
 function classeSceltaOk(){
+  if (!nomeSceltoOk()) return false;
   if (store.fascia) return true;
   $('casaAvviso').textContent = 'Scegli prima la tua classe!';
   $('fascia').animate([{transform:'translateX(-4px)'},{transform:'translateX(4px)'},{transform:'translateX(0)'}], {duration:220});
@@ -2110,6 +2125,7 @@ function preparaLibro(){
     $('indiceTit').textContent = 'Indice';
     $('indice').innerHTML = '<li class="indice-vuoto">Scegli la tua <b>classe</b> nel pannello a sinistra: qui comparirà l\'indice dei capitoli.</li>';
     $('scriviBtn').classList.add('hidden');
+    evidenziaLibro();
     $('paginaDx').innerHTML = `<div class="vuota"><svg viewBox="0 0 24 24">${ICONE.libro}</svg><h3>Prima di cominciare</h3><p>Scegli la tua classe e la tua Casa.</p></div>`;
     return;
   }
@@ -2125,10 +2141,20 @@ function preparaLibro(){
   }).join('');
   mostraCapitolo();
 }
+// un solo pulsante lampeggia: "Sfoglia a caso" finché non c'è un capitolo aperto (con classe e Casa scelte), poi "Scrivi!"
+function evidenziaLibro(){
+  const nome = !!$('name').value.trim(), aperto = libro.scelta != null && !!store.fascia;
+  const passo = !nome ? 'nome' : !store.fascia ? 'classe' : !casa ? 'casa' : aperto ? 'scrivi' : 'sfoglia';
+  $('passoNome').classList.toggle('evidenzia', passo === 'nome');
+  $('fascia').classList.toggle('evidenzia', passo === 'classe');
+  $('scelteCasa').classList.toggle('evidenzia', passo === 'casa');
+  $('sfogliaBtn').classList.toggle('evidenzia', passo === 'sfoglia');
+  $('scriviBtn').classList.toggle('evidenzia', passo === 'scrivi');
+}
 function mostraCapitolo(){
   const pg = $('paginaDx'), i = libro.scelta;
   $('scriviBtn').classList.toggle('hidden', i == null);
-  $('scriviBtn').classList.toggle('evidenzia', i != null);
+  evidenziaLibro();
   if (i == null) {
     pg.innerHTML = `<div class="vuota"><svg viewBox="0 0 24 24">${ICONE.libro}</svg><h3>Che cosa scriverai oggi?</h3>
       <p>Scegli un capitolo dall'indice oppure sfoglia il libro a caso.</p></div>`;
@@ -3140,6 +3166,7 @@ function renderHome(){
   show('home');
   preparaLibro();
   renderPercorso();
+  if (!$('name').value.trim()) setTimeout(() => $('name').focus(), 100);
 }
 
 /* ---------- partita ---------- */
@@ -3368,7 +3395,7 @@ buildHands();
 Object.entries(PERCORSI).forEach(([k, pc]) => pc.missions.forEach((ms, i) => [...(ms.pool || []), ...(ms.gen ? Array.from({ length:200 }, ms.gen) : [])].forEach(t => [...t].forEach(c => { if (!charMap[c]) console.warn(`${k} missione ${i+1}: carattere non mappato «${c}» in «${t}»`); }))));
 
 $('name').value = store.lastName || '';
-$('name').addEventListener('input', () => mostraClassifiche());
+$('name').addEventListener('input', () => { mostraClassifiche(); evidenziaLibro(); if ($('name').value.trim() && $('casaAvviso').textContent.startsWith('Scrivi')) $('casaAvviso').textContent = ''; });
 $('name').addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); $('name').blur(); } });
 $('exitBtn').addEventListener('click', () => { speechSynthesis.cancel?.(); renderHome(); });
 $('rMap').addEventListener('click', renderHome);
@@ -3417,6 +3444,7 @@ function buildFascia(){
 }
 $('fascia').addEventListener('click', e => {
   const b = e.target.closest('button'); if (!b || b.dataset.k === store.fascia) return;
+  if (!nomeSceltoOk()) return;                       // ordine guidato: prima il nome
   store.fascia = b.dataset.k; MISSIONS = PERCORSI[store.fascia].missions;
   store.upper = PERCORSI[store.fascia].upper;   // 1ª e 2ª: stampato maiuscolo in automatico
   $('casaAvviso').textContent = '';
