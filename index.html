@@ -379,7 +379,14 @@
   .keyboard .keys .key.target{background:var(--accent);color:#fff;box-shadow:0 0 0 3px rgba(81,70,201,.28),0 1px 0 rgba(0,0,0,.25)}
   .key.target .s,.key.target.mod{color:#fff}
   .key.target::before{background:#fff}
-  .keyboard .keys .key.target-mod{background:#BEB8F2;color:var(--accent-ink)}
+  .keyboard .keys .key.target-mod{background:#BEB8F2;color:var(--accent-ink);animation:lampMod .7s steps(2,jump-none) infinite}
+  @keyframes lampMod{50%{background:var(--accent);color:#fff;box-shadow:0 0 0 4px rgba(242,183,53,.75)}}
+  .keyboard{position:relative}
+  .freccia-mod{position:absolute;z-index:4;display:flex;flex-direction:column;align-items:center;pointer-events:none;animation:frecciaSu .7s ease-in-out infinite;filter:drop-shadow(0 4px 6px rgba(0,0,0,.3))}
+  .freccia-mod span{background:#1C1850;color:#FFE58A;font-size:.8rem;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:999px;margin-bottom:2px;white-space:nowrap}
+  .freccia-mod svg{width:34px;height:40px}
+  @keyframes frecciaSu{50%{transform:translateY(8px)}}
+  @media (prefers-reduced-motion:reduce){.keyboard .keys .key.target-mod,.freccia-mod{animation:none}}
   .keyboard .keys .key.miss{background:var(--warn-soft);color:#7A4A03}
 
   /* ---------- mani guida ---------- */
@@ -536,7 +543,8 @@
     <div class="deck" id="deck">
       <aside class="live" id="liveCase" aria-label="Sfida tra Case"></aside>
       <div class="deck-c" id="deckC">
-        <div class="keyboard"><div class="keys" id="keys"></div></div>
+        <div class="keyboard"><div class="keys" id="keys"></div>
+          <div class="freccia-mod hidden" id="frecciaMod" aria-hidden="true"><span id="frecciaTxt">shift</span><svg viewBox="0 0 40 46"><path d="M14 2h12v22h10L20 44 4 24h10z" fill="#F2B735" stroke="#5A3B00" stroke-width="2.5" stroke-linejoin="round"/></svg></div></div>
         <svg class="hands" viewBox="0 -14 640 230" aria-hidden="true" id="hands"></svg>
       </div>
       <aside class="live" id="liveTop" aria-label="Classifica di oggi"></aside>
@@ -1752,6 +1760,7 @@ function adattaSchermo(){
     w = Math.max(520, Math.min(maxW, w * avail / deck.offsetHeight));
   }
   root.style.setProperty('--kbw', Math.floor(w) + 'px');
+  posizionaFreccia();
 }
 addEventListener('resize', adattaSchermo);
 document.fonts?.ready.then(adattaSchermo);
@@ -2712,7 +2721,7 @@ function avviaPesca(){
     <p>In alto c'è una parola da comporre. <b>Premi il tasto della lettera che serve</b>: la lenza pesca il pesce con quella lettera.
     Le lettere vanno pescate <b>in ordine</b>, come quando scrivi. Il colore del pesce ti dice quale dito usare.</p>
     <button>Via!</button><small>oppure barra spaziatrice</small>`);
-  $('bMsg').querySelector('button').onclick = () => { $('bMsg').classList.remove('on'); BONUS.gioca = true; PE.prossimo = performance.now(); PE.ultimoServe = performance.now(); };
+  $('bMsg').querySelector('button').onclick = () => { $('bMsg').classList.remove('on'); BONUS.gioca = true; PE.prossimo = performance.now(); PE.ultimoServe = performance.now(); speak(parolaPesca()); };
   B.t = performance.now(); BONUS.raf = requestAnimationFrame(cicloPesca);
 }
 function hudPesca(){ hudBonus(`Parola ${Math.min(PE.wi + 1, PE.parole.length)}/${PE.parole.length}`, `${PE.presi} pesci`); }
@@ -2757,6 +2766,7 @@ function pescato(){
     PE.wi++; PE.pos = 0; PE.festaT = performance.now();
     if (store.sound) try { [523.25, 659.25, 783.99].forEach((f, k) => nota(f, k * .08, .3, .04)); } catch(e) {}
     if (PE.wi >= PE.parole.length) { BONUS.gioca = false; setTimeout(finePesca, 700); }
+    else setTimeout(() => speak(parolaPesca()), 500);
   }
   hudPesca();
 }
@@ -2965,7 +2975,25 @@ function cicloPesca(t){
 
   // --- parola da comporre ---
   const w = parolaPesca() || PE.parole[PE.parole.length - 1] || '', s = Math.max(44, Math.min(66, W / 24)), gap = 10;
-  const fatto = PE.wi >= PE.parole.length ? w.length : PE.pos, tot = w.length * (s + gap) - gap, wy = 108;
+  const fatto = PE.wi >= PE.parole.length ? w.length : PE.pos, tot = w.length * (s + gap) - gap, wy = 160;
+  // la parola da pescare, leggibile per intero: fatte in verde, attuale in oro sottolineata
+  if (w) {
+    const etich = 'Pesca la parola:', parola = mostraParola(w), fp = Math.max(26, Math.min(40, W / 48));
+    ctx.font = `600 ${fp * .55}px Lexend`; const le = ctx.measureText(etich).width;
+    ctx.font = `800 ${fp}px Lexend`; const lw = [...parola].map(c => ctx.measureText(c).width + fp * .12), lp = lw.reduce((a, b) => a + b, 0);
+    const x0 = W / 2 - (le + 14 + lp) / 2, y0 = 92;
+    ctx.fillStyle = 'rgba(28,24,80,.6)'; ctx.beginPath(); ctx.roundRect(x0 - 18, y0 - fp * .8, le + 14 + lp + 36, fp * 1.6, 16); ctx.fill();
+    ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+    ctx.font = `600 ${fp * .55}px Lexend`; ctx.fillStyle = '#C9C6F5'; ctx.fillText(etich, x0, y0 + 2);
+    ctx.font = `800 ${fp}px Lexend`;
+    let x = x0 + le + 14;
+    [...parola].forEach((c, k) => {
+      ctx.fillStyle = k < fatto ? '#7CF2B0' : k === fatto ? '#FFD86B' : '#FFFFFF';
+      ctx.fillText(c, x, y0 + 2);
+      if (k === fatto) { ctx.fillStyle = '#FFD86B'; ctx.fillRect(x, y0 + fp * .55, lw[k] - fp * .12, 4); }
+      x += lw[k];
+    });
+  }
   ctx.fillStyle = 'rgba(28,24,80,.55)'; ctx.beginPath(); ctx.roundRect(W / 2 - tot / 2 - 18, wy - s / 2 - 14, tot + 36, s + 28, 18); ctx.fill();
   [...w].forEach((c, k) => {
     const x = W / 2 - tot / 2 + s / 2 + k * (s + gap);
@@ -3116,7 +3144,8 @@ function markCurrent(){
   document.querySelectorAll('.key.target, .key.target-mod').forEach(e => e.classList.remove('target','target-mod'));
   document.querySelectorAll('#hands .finger.on').forEach(e => e.classList.remove('on'));
   const c = norm(G.text[G.pos]), info = charMap[c];
-  if (!info) { $('fingerHint').textContent = ''; return; }
+  G.modTasto = null;
+  if (!info) { $('fingerHint').textContent = ''; posizionaFreccia(); return; }
   keyEl[info.id].classList.add('target');
   lightFinger(info.finger, info.id === 'space');
   let hint = `<span class="sw" style="background:${fColor(info.finger)}"></span>Usa ${FINGER_NAME[info.finger].match(/^[aeiou]/) ? "l'" : 'il '}<b>${FINGER_NAME[info.finger]}</b>`;
@@ -3124,15 +3153,28 @@ function markCurrent(){
     // shift con la mano opposta a quella che preme il tasto
     const shiftId = info.finger.endsWith('-s') ? 'shiftR' : 'shiftL';
     keyEl[shiftId].classList.add('target-mod');
+    G.modTasto = shiftId; G.modNome = 'shift';
     lightFinger(MOD_FINGER[shiftId]);
     hint += ` + <b>${FINGER_NAME[MOD_FINGER[shiftId]]}</b> su shift`;
   }
   if (info.alt) {
     keyEl.optL.classList.add('target-mod');
+    G.modTasto = 'optL'; G.modNome = 'option';
     lightFinger('pollice');
     hint += ` + <b>pollice sinistro</b> su option`;
   }
   $('fingerHint').innerHTML = hint;
+  posizionaFreccia();
+}
+// freccia animata sopra il tasto modificatore da tenere premuto (shift per le maiuscole, option per @ e #)
+function posizionaFreccia(){
+  const f = $('frecciaMod');
+  if (!G || !G.modTasto) { f.classList.add('hidden'); return; }
+  const k = keyEl[G.modTasto].getBoundingClientRect(), kb = document.querySelector('.keyboard').getBoundingClientRect();
+  $('frecciaTxt').textContent = G.modNome;
+  f.classList.remove('hidden');
+  f.style.left = (k.left - kb.left + k.width / 2 - f.offsetWidth / 2) + 'px';
+  f.style.top = (k.top - kb.top - f.offsetHeight - 4) + 'px';
 }
 function lightFinger(f, bothThumbs){
   document.querySelectorAll(`#hands .finger[data-f="${f}"]`).forEach((e, n) => { if (bothThumbs || f !== 'pollice' || n === 0) e.classList.add('on'); });
