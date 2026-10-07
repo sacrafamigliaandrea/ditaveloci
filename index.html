@@ -493,10 +493,10 @@
 
 <header class="topbar">
   <div class="brand">
-    <svg class="logo-campus" viewBox="0 0 300 116" role="img" aria-label="campus sacrafamiglia.education">
+    <svg class="logo-campus" viewBox="0 0 300 116" role="img" aria-label="campus sacrafamiglia.edu">
       <rect width="300" height="72" fill="var(--lc-blocco)"/>
       <text x="150" y="57" text-anchor="middle" font-family="Lexend,sans-serif" font-weight="600" font-size="66" fill="#fff" textLength="262" lengthAdjust="spacingAndGlyphs">campus</text>
-      <text x="0" y="106" font-family="Lexend,sans-serif" font-size="34" textLength="300" lengthAdjust="spacingAndGlyphs"><tspan font-weight="300" fill="var(--lc-sacra)">sacra</tspan><tspan font-weight="700" fill="var(--lc-famiglia)">famiglia</tspan><tspan font-weight="600" font-style="italic" fill="var(--lc-edu)">.education</tspan></text>
+      <text x="0" y="106" font-family="Lexend,sans-serif" font-size="34" textLength="300" lengthAdjust="spacingAndGlyphs"><tspan font-weight="300" fill="var(--lc-sacra)">sacra</tspan><tspan font-weight="700" fill="var(--lc-famiglia)">famiglia</tspan><tspan font-weight="600" font-style="italic" fill="var(--lc-edu)">.edu</tspan></text>
     </svg>
     <span class="brand-sep"></span>
     <div>Dita Veloci<small>allenamento alla tastiera</small></div>
@@ -1915,7 +1915,7 @@ async function disegnaAttestato(cv, d){
   ctx.fillStyle = '#5146C9'; ctx.fillRect(lx, 24, lw, 7.2);
   ctx.fillStyle = '#fff'; ctx.font = '600 6.4px Lexend'; ctx.textAlign = 'center';
   ctx.save(); ctx.translate(CX, 29.8); ctx.scale(26.2 / ctx.measureText('campus').width, 1); ctx.fillText('campus', 0, 0); ctx.restore();
-  const parti = [['sacra', '300', '#8C83EC'], ['famiglia', '700', '#3A31A0'], ['.education', 'italic 600', '#5E6678']];
+  const parti = [['sacra', '300', '#8C83EC'], ['famiglia', '700', '#3A31A0'], ['.edu', 'italic 600', '#5E6678']];
   ctx.textAlign = 'left';
   const larg = parti.map(([t, w]) => { ctx.font = `${w} 3.4px Lexend`; return ctx.measureText(t).width; }), k = lw / larg.reduce((a, b) => a + b, 0);
   let px = lx; parti.forEach(([t, w, c], i) => { ctx.font = `${w} 3.4px Lexend`; ctx.fillStyle = c;
